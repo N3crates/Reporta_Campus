@@ -1,0 +1,126 @@
+{
+  "fecha": "2026-11-18T17:07:03.184Z",
+  "navegador": "Chromium / Edge 157.0.4341.60",
+  "anchos": [
+    320,
+    390,
+    768,
+    1440
+  ],
+  "pruebas": [
+    {
+      "prueba": "inicio: carga y sin desborde a 320px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "reportar: carga y sin desborde a 320px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "incidencias: carga y sin desborde a 320px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "detalle: carga y sin desborde a 320px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "inicio: carga y sin desborde a 390px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "reportar: carga y sin desborde a 390px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "incidencias: carga y sin desborde a 390px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "detalle: carga y sin desborde a 390px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "inicio: carga y sin desborde a 768px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "reportar: carga y sin desborde a 768px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "incidencias: carga y sin desborde a 768px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "detalle: carga y sin desborde a 768px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "inicio: carga y sin desborde a 1440px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "reportar: carga y sin desborde a 1440px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "incidencias: carga y sin desborde a 1440px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "detalle: carga y sin desborde a 1440px",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Tailwind y Google Fonts cargan desde CDN",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Menú móvil abre, Escape cierra y devuelve foco",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Navegación móvil hacia formulario y listado",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Búsqueda por folio y filtros combinados",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Estado vacío y recuperación al limpiar",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Listado abre el detalle correspondiente y su historial",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Detalle inexistente presenta salida al listado",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Formulario vacío valida sin cargar Firebase",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Modo muestra recorre formulario → detalle → listado sin Firebase",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Contenido de muestra se escapa y títulos largos no desbordan",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Error del adaptador real muestra mensaje y reactiva botón (fallo simulado)",
+      "resultado": "Correcto"
+    },
+    {
+      "prueba": "Cero errores JavaScript sin capturar",
+      "resultado": "Correcto"
+    }
+  ],
+  "erroresJavaScript": [],
+  "limite": "Sin guardado real en Firebase. El fallo de envío fue simulado para comprobar la interfaz."
+}

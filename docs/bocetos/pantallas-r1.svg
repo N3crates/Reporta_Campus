@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="1000" viewBox="0 0 1680 1000" role="img" aria-labelledby="title desc">
+<title id="title">Bocetos de ReportaCampus, revisión 1</title>
+<desc id="desc">Cuatro pantallas de escritorio y adaptación móvil. Inicio, reporte, listado y detalle enlazados.</desc>
+<rect width="1680" height="1000" fill="#f4f5f1"/>
+<style>text{font-family:Arial,sans-serif;fill:#304238} .label{font-size:12px;fill:#647365} .h{font-weight:bold;font-size:17px}</style>
+<text x="40" y="45" class="h">REPORTACAMPUS · BOCETOS DE PANTALLAS · REVISIÓN 1</text>
+<text x="40" y="70" class="label">Juan Manuel Razo Gayosso · HU-01, HU-02 y HU-03 · 18 de noviembre de 2026</text>
+<text x="40" y="115" class="h">01 · Inicio</text>
+<rect x="40" y="135" width="370" height="390" rx="8" fill="#fff" stroke="#cfd6cb"/>
+<rect x="40" y="135" width="370" height="36" rx="8" fill="#e5ebe0" stroke="#cfd6cb"/>
+<text x="52" y="158" class="label">ReportaCampus</text>
+<text x="230" y="158" class="label">Inicio · Lista · Reportar</text>
+<text x="58" y="205" class="h">Tu campus. Tu voz.</text>
+<rect x="58" y="225" width="180" height="7" rx="3" fill="#e6eae1" stroke="#e6eae1"/>
+<rect x="58" y="242" width="180" height="7" rx="3" fill="#e6eae1" stroke="#e6eae1"/>
+<rect x="58" y="259" width="180" height="7" rx="3" fill="#e6eae1" stroke="#e6eae1"/>
+<rect x="58" y="288" width="148" height="32" rx="8" fill="#dce7d3" stroke="#cfd6cb"/>
+<text x="68" y="309" class="label">Reportar incidencia</text>
+<rect x="225" y="224" width="166" height="150" rx="8" fill="#eaf0e5" stroke="#cfd6cb"/>
+<text x="238" y="249" class="label">Cómo funciona</text>
+<text x="239" y="280" class="label">1. Describe</text>
+<text x="239" y="310" class="label">2. Seguimiento</text>
+<text x="239" y="340" class="label">3. Solución</text>
+<rect x="58" y="402" width="102" height="78" rx="8" fill="#f4f6f1" stroke="#cfd6cb"/>
+<rect x="170" y="402" width="102" height="78" rx="8" fill="#f4f6f1" stroke="#cfd6cb"/>
+<rect x="282" y="402" width="102" height="78" rx="8" fill="#f4f6f1" stroke="#cfd6cb"/>
+<text x="63" y="500" class="label">Ejemplos de estados / datos de muestra</text>
+<text x="450" y="115" class="h">02 · Reportar</text>
+<rect x="450" y="135" width="370" height="390" rx="8" fill="#fff" stroke="#cfd6cb"/>
+<rect x="450" y="135" width="370" height="36" rx="8" fill="#e5ebe0" stroke="#cfd6cb"/>
+<text x="462" y="158" class="label">ReportaCampus</text>
+<text x="640" y="158" class="label">Inicio · Lista · Reportar</text>
+<text x="468" y="205" class="h">Reportar una incidencia</text>
+<text x="468" y="232" class="label">Título *</text>
+<rect x="468" y="240" width="218" height="28" rx="8" fill="#f8f9f6" stroke="#cfd6cb"/>
+<text x="468" y="286" class="label">Categoría * / Edificio *</text>
+<rect x="468" y="294" width="218" height="28" rx="8" fill="#f8f9f6" stroke="#cfd6cb"/>
+<text x="468" y="340" class="label">Aula o espacio *</text>
+<rect x="468" y="348" width="218" height="28" rx="8" fill="#f8f9f6" stroke="#cfd6cb"/>
+<text x="468" y="394" class="label">Descripción *</text>
+<rect x="468" y="402" width="218" height="28" rx="8" fill="#f8f9f6" stroke="#cfd6cb"/>
+<rect x="701" y="222" width="100" height="196" rx="8" fill="#eaf0e5" stroke="#cfd6cb"/>
+<text x="713" y="246" class="label">Guía breve</text>
+<text x="468" y="468" class="label">□ Probar sin enviar (opcional)</text>
+<rect x="605" y="480" width="80" height="28" rx="8" fill="#dce7d3" stroke="#cfd6cb"/>
+<text x="615" y="498" class="label">Enviar</text>
+<text x="860" y="115" class="h">03 · Incidencias</text>
+<rect x="860" y="135" width="370" height="390" rx="8" fill="#fff" stroke="#cfd6cb"/>
+<rect x="860" y="135" width="370" height="36" rx="8" fill="#e5ebe0" stroke="#cfd6cb"/>
+<text x="872" y="158" class="label">ReportaCampus</text>
+<text x="1050" y="158" class="label">Inicio · Lista · Reportar</text>
+<text x="878" y="205" class="h">Incidencias del campus</text>
+<rect x="878" y="225" width="333" height="100" rx="8" fill="#f4f6f1" stroke="#cfd6cb"/>
+<text x="890" y="248" class="label">Buscar por título o folio</text>
+<text x="890" y="278" class="label">Estado · Prioridad</text>
+<text x="890" y="305" class="label">Categoría · Edificio</text>
+<rect x="878" y="345" width="159" height="68" rx="8" fill="#fff" stroke="#cfd6cb"/>
+<text x="888" y="365" class="label">Folio + estado</text>
+<text x="888" y="386" class="label">Título / ubicación</text>
+<text x="888" y="404" class="label">Ver detalle →</text>
+<rect x="1052" y="345" width="159" height="68" rx="8" fill="#fff" stroke="#cfd6cb"/>
+<text x="1062" y="365" class="label">Folio + estado</text>
+<text x="1062" y="386" class="label">Título / ubicación</text>
+<text x="1062" y="404" class="label">Ver detalle →</text>
+<rect x="878" y="425" width="159" height="68" rx="8" fill="#fff" stroke="#cfd6cb"/>
+<text x="888" y="445" class="label">Folio + estado</text>
+<text x="888" y="466" class="label">Título / ubicación</text>
+<text x="888" y="484" class="label">Ver detalle →</text>
+<rect x="1052" y="425" width="159" height="68" rx="8" fill="#fff" stroke="#cfd6cb"/>
+<text x="1062" y="445" class="label">Folio + estado</text>
+<text x="1062" y="466" class="label">Título / ubicación</text>
+<text x="1062" y="484" class="label">Ver detalle →</text>
+<text x="1270" y="115" class="h">04 · Detalle</text>
+<rect x="1270" y="135" width="370" height="390" rx="8" fill="#fff" stroke="#cfd6cb"/>
+<rect x="1270" y="135" width="370" height="36" rx="8" fill="#e5ebe0" stroke="#cfd6cb"/>
+<text x="1282" y="158" class="label">ReportaCampus</text>
+<text x="1460" y="158" class="label">Inicio · Lista · Reportar</text>
+<text x="1288" y="205" class="h">Título de la incidencia</text>
+<text x="1288" y="228" class="label">Folio · Estado · Fecha</text>
+<rect x="1288" y="248" width="174" height="211" rx="8" fill="#f5f7f1" stroke="#cfd6cb"/>
+<text x="1300" y="275" class="label">Información completa</text>
+<rect x="1300" y="300" width="145" height="7" rx="3" fill="#e6eae1" stroke="#e6eae1"/>
+<rect x="1300" y="325" width="145" height="7" rx="3" fill="#e6eae1" stroke="#e6eae1"/>
+<rect x="1300" y="350" width="145" height="7" rx="3" fill="#e6eae1" stroke="#e6eae1"/>
+<rect x="1300" y="390" width="145" height="7" rx="3" fill="#e6eae1" stroke="#e6eae1"/>
+<rect x="1300" y="411" width="145" height="7" rx="3" fill="#e6eae1" stroke="#e6eae1"/>
+<rect x="1300" y="432" width="145" height="7" rx="3" fill="#e6eae1" stroke="#e6eae1"/>
+<rect x="1477" y="248" width="145" height="211" rx="8" fill="#f5f7f1" stroke="#cfd6cb"/>
+<text x="1488" y="275" class="label">Historial</text>
+<text x="1492" y="310" class="label">Reportado</text>
+<text x="1492" y="360" class="label">En proceso</text>
+<text x="1492" y="410" class="label">Resuelto</text>
+<text x="1288" y="494" class="label">← Volver al listado</text>
+<text x="40" y="575" class="h">NAVEGACIÓN: Inicio → Reportar → Listado → Detalle → Listado</text>
+<text x="40" y="603" class="label">Los enlaces del encabezado están disponibles en todas las pantallas. Lista y detalle comparten datos ficticios.</text>
+<rect x="40" y="640" width="210" height="310" rx="8" fill="#fff" stroke="#cfd6cb"/>
+<rect x="40" y="640" width="210" height="38" rx="8" fill="#e5ebe0" stroke="#cfd6cb"/>
+<text x="52" y="664" class="label">ReportaCampus</text>
+<text x="216" y="664" class="label">☰</text>
+<text x="55" y="707" class="h">Vista móvil</text>
+<rect x="55" y="725" width="180" height="35" rx="8" fill="#f3f5ed" stroke="#cfd6cb"/>
+<text x="66" y="748" class="label">Menú desplegable</text>
+<rect x="55" y="776" width="180" height="37" rx="8" fill="#f4f6f1" stroke="#cfd6cb"/>
+<rect x="55" y="825" width="180" height="37" rx="8" fill="#f4f6f1" stroke="#cfd6cb"/>
+<rect x="55" y="874" width="180" height="37" rx="8" fill="#f4f6f1" stroke="#cfd6cb"/>
+<text x="300" y="690" class="h">ADAPTACIÓN MÓVIL</text>
+<text x="300" y="730" class="label">Menú colapsable con botón accesible y cierre con Escape.</text>
+<text x="300" y="762" class="label">Las columnas pasan a una sola columna según el espacio disponible.</text>
+<text x="300" y="794" class="label">Los filtros y campos ocupan el ancho disponible.</text>
+<text x="300" y="826" class="label">Las tarjetas evitan tablas anchas y desbordamiento horizontal.</text>
+<text x="300" y="858" class="label">Los textos largos pueden partirse sin ocultar contenido.</text>
+<text x="300" y="890" class="label">Se contemplan validación, éxito, lista vacía y detalle no encontrado.</text>
+<text x="300" y="940" class="label">Tipografía final: Plus Jakarta Sans · Tailwind CSS por CDN · HTML y JavaScript sin frameworks</text>
+</svg>
