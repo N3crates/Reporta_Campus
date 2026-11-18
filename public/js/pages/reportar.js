@@ -1,4 +1,4 @@
-import { registrarIncidencia } from '../folio.js'
+import { createDemoReport } from '../demo-data.js'
 
 // Validadores 
 function required(value, fieldName) {
@@ -29,6 +29,7 @@ function mostrarErrores(errores) {
     </ul>
   `
   errorAlert.classList.remove('hidden')
+  errorAlert.focus()
   errorAlert.scrollIntoView({ behavior: 'smooth' })
 }
 
@@ -44,7 +45,7 @@ function setLoading(isLoading) {
     btnSubmit.classList.add('opacity-50', 'cursor-not-allowed')
   } else {
     btnSubmit.disabled = false
-    btnSubmit.textContent = 'Enviar Reporte'
+    btnSubmit.textContent = document.getElementById('modo-demo').checked ? 'Probar sin enviar' : 'Enviar reporte'
     btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed')
   }
 }
@@ -80,15 +81,29 @@ form.addEventListener('submit', async (e) => {
   try {
     setLoading(true)
 
-    const resultado = await registrarIncidencia({
-      ...payload,
-      prioridad: 'media'
-    })
+    const isDemo = document.getElementById('modo-demo').checked
+    let resultado
+    if (isDemo) {
+      resultado = createDemoReport(payload)
+    } else {
+      // Mantiene la transacción original. La carga diferida permite validar
+      // y explorar la interfaz aun sin una configuración Firebase disponible.
+      const { registrarIncidencia } = await import('../folio.js')
+      resultado = await registrarIncidencia({ ...payload, prioridad: 'media' })
+    }
+    document.getElementById('success-title').textContent = isDemo ? '¡Demostración completada!' : '¡Incidencia registrada con éxito!'
+    document.getElementById('success-note').textContent = isDemo ? 'Folio de muestra. No se guardó un reporte real; está disponible en esta pestaña.' : 'Guarda tu folio para consultar el avance.'
+    const detailLink = document.getElementById('success-detail')
+    detailLink.href = isDemo ? `detalle.html?id=${encodeURIComponent(resultado.id)}` : 'incidencias.html'
+    detailLink.textContent = isDemo ? 'Ver reporte de muestra →' : 'Consultar incidencias →'
 
     // Exito: mostramos el folio
     folioGeneradoEl.textContent = resultado.folio
     successAlert.classList.remove('hidden')
+    const demoWasEnabled = document.getElementById('modo-demo').checked
     form.reset()
+    document.getElementById('modo-demo').checked = demoWasEnabled
+    updateCounter()
     successAlert.scrollIntoView({ behavior: 'smooth' })
 
   } catch (error) {
@@ -98,3 +113,12 @@ form.addEventListener('submit', async (e) => {
     setLoading(false)
   }
 })
+
+const demoToggle = document.getElementById('modo-demo')
+demoToggle.addEventListener('change', () => {
+  btnSubmit.textContent = demoToggle.checked ? 'Probar sin enviar' : 'Enviar reporte'
+})
+function updateCounter() {
+  document.getElementById('descripcion-contador').textContent = `${document.getElementById('descripcion').value.length} / 500`
+}
+document.getElementById('descripcion').addEventListener('input', updateCounter)

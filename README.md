@@ -45,7 +45,7 @@ reportacampus/
 │       ├── firebase.js
 │       ├── auth.js
 │       ├── incidencias.js
-│       ├── folios.js
+│       ├── folio.js
 │       ├── ui.js
 │       └── pages/
 ├── docs/            # historias de usuario, modelo de datos, estados, entregas
@@ -66,7 +66,7 @@ reportacampus/
 1. Clonar el repositorio:
 
        git clone https://github.com/N3crates/Reporta_Campus.git
-       cd reportacampus
+       cd Reporta_Campus
 
 2. Verificar que `public/js/firebase-config.js` apunte al proyecto Firebase del equipo.
    Estos datos identifican el proyecto y no son secretos; la seguridad depende de las reglas de Firestore.
@@ -85,7 +85,7 @@ reportacampus/
 2. Activar **Firestore Database** y **Authentication** (método correo/contraseña).
 3. Copiar la configuración web de la app en `public/js/firebase-config.js`.
 4. Publicar las reglas de `firestore.rules` desde la consola de Firebase (pestaña *Reglas*).
-5. Crear los datos iniciales (categorías y edificios) según `docs/modelo-de-datos.md`.
+5. Crear los datos iniciales (categorías y edificios) según `docs/modelo-datos.md`.
 
 > **Seguridad:** nunca se debe subir al repositorio una cuenta de servicio, archivos `.env`, contraseñas ni datos personales reales. Las reglas de Firestore no deben usar `allow read, write: if true`.
 
@@ -104,14 +104,14 @@ reportacampus/
 | `usuarios` | nombre, correo, rol |
 | `contadores` | ultimoFolio |
 
-Detalle completo en [`docs/modelo-de-datos.md`](docs/modelo-de-datos.md).
+Detalle completo en [`docs/modelo-datos.md`](docs/modelo-datos.md).
 
 ## Estados y prioridades
 
 - **Estados:** reportado → en proceso → resuelto
 - **Prioridades:** baja, media, alta
 
-Diagrama en [`docs/estados-y-prioridades.md`](docs/estados-y-prioridades.md).
+Diagrama en [`docs/estados_prioridades.md`](docs/estados_prioridades.md).
 
 ## Flujo de trabajo en Git
 
@@ -136,10 +136,10 @@ Después se abre un Pull Request hacia `develop`, con evidencia y revisión de u
 
 ## Documentación
 
-- [Historias de usuario](docs/historias-de-usuario.md)
-- [Modelo de datos](docs/modelo-de-datos.md)
-- [Estados y prioridades](docs/estados-y-prioridades.md)
-- [Entrega de la Revisión 1](docs/entrega-revision-1.md)
+- [Historias de usuario](docs/historias-usuario.md)
+- [Modelo de datos](docs/modelo-datos.md)
+- [Estados y prioridades](docs/estados_prioridades.md)
+- [Entrega de la Revisión 1](docs/entrega_revision_1.md)
 
 ## Equipo
 
@@ -156,3 +156,55 @@ Después se abre un Pull Request hacia `develop`, con evidencia y revisión de u
 - [ ] Revisión 1 (19 de noviembre): base navegable, historias, modelo de datos y primera funcionalidad
 - [ ] Revisión 2 (26 de noviembre): persistencia, flujo principal, validaciones y pruebas
 - [ ] Revisión 3 (3 de diciembre): MVP completo, release `v1.0.0` y demo
+
+## Interfaz de la revisión 1 (Juan Manuel Razo Gayosso)
+
+Las pantallas `public/index.html`, `reportar.html`, `incidencias.html` y `detalle.html`
+están enlazadas y usan Tailwind por CDN, Raleway y navegación móvil.
+El listado y el detalle muestran incidencias ficticias de `public/js/demo-data.js`.
+Los filtros combinados funcionan sobre esos ejemplos; todavía no consultan Firestore.
+
+### Probar la interfaz sin configurar Firebase
+
+Con Node.js, ejecutar `npm start` y abrir `http://127.0.0.1:4173`.
+No hace falta instalar dependencias para iniciar este servidor estático.
+También se puede usar Live Server, como se indica arriba.
+Se necesita Internet para Tailwind y Google Fonts.
+
+En el formulario, activar **Probar sin enviar** para generar un folio con prefijo
+`DEMO-`, abrir su detalle y encontrarlo en el listado de esa misma pestaña.
+Este modo usa memoria de sesión del navegador y **no guarda en Firebase**.
+No acredita las pruebas de persistencia de las revisiones 2 y 3.
+Sin activar esa opción, el envío conserva `registrarIncidencia()` y su transacción
+Firestore original; requiere la configuración y las reglas acordadas por el equipo.
+
+### Evidencia y pruebas de frontend
+
+- [Entrega de frontend y recorrido de demostración](docs/frontend-revision-1.md)
+- [Bocetos de las cuatro pantallas](docs/bocetos/pantallas-r1.svg)
+- [Capturas en móvil y escritorio](docs/capturas/revision-1/README.md)
+- [Resultados de pruebas de navegador](docs/pruebas/resultados-ui.json)
+
+Para repetir la comprobación de interfaz:
+
+```powershell
+npm ci
+npx playwright install chromium
+npm run test:ui
+# Para regenerar también las capturas y el registro de resultados:
+npm run evidence
+```
+
+Playwright es una dependencia de desarrollo para las pruebas, no un framework de
+la aplicación. La app sigue siendo HTML, utilidades Tailwind y módulos JavaScript.
+Si se usa Edge instalado en Windows, se puede definir `PLAYWRIGHT_EXECUTABLE_PATH`
+con la ruta de `msedge.exe` antes de ejecutar las pruebas, sin instalar Chromium.
+
+
+### Identidad visual de la comunidad UG
+
+La interfaz usa azul `#0A263D`, amarillo `#FFD300`, dorado `#8C6E39` y Raleway,
+con abejas, panales y una ilustración de arquitectura universitaria.
+La investigación se documenta en [referencias de diseño UG](docs/referencias-diseno-ug.md).
+La procedencia de los escudos y los gráficos propios está en
+[recursos visuales](public/assets/README.md).
