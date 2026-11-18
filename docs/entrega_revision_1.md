@@ -18,8 +18,8 @@ funcionalidad real (formulario validado que genera un folio de incidencia).
 |---|---|---|---|---|---|
 | Estructura | Repo, ramas, README, carpetas y documentación | [A] | feature/estructura-inicial | #[ ] | Integrado |
 | HU-01 | Formulario validado que genera folio | [D] | feature/formulario-reporte | #[ ] | [ ] |
-| HU-02 | Listado responsivo con búsqueda y filtros de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | Pendiente de registrar | Implementado; revisión/fusión pendientes |
-| HU-03 | Detalle e historial de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | Pendiente de registrar | Implementado; revisión/fusión pendientes |
+| HU-02 | Listado responsivo con búsqueda y filtros de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Implementado; revisión/fusión pendientes |
+| HU-03 | Detalle e historial de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Implementado; revisión/fusión pendientes |
 | Modelo | Colecciones de Firestore documentadas | [C] | feature/modelo-datos | #[ ] | [ ] |
 | Estados | Diagrama de estados y prioridades | [E] | feature/docs-estados | #[ ] | [ ] |
 
@@ -70,7 +70,7 @@ Cambios en esta revisión: modelo creado desde cero.
 | Integrante | Tarea | Commit/PR | Evidencia |
 |---|---|---|---|
 | Nestor Isaac Hernandez Duran | Repo, README, historias, issues | [enlace] | [enlace] |
-| Juan Manuel Razo Gayosso | Cuatro pantallas, navegación, bocetos, capturas y pruebas de UI | feature/pantallas-ui; PR pendiente de registrar | [Entrega frontend](frontend-revision-1.md), [capturas](capturas/revision-1/README.md) |
+| Juan Manuel Razo Gayosso | Cuatro pantallas, navegación, bocetos, capturas y pruebas de UI | [PR #8](https://github.com/N3crates/Reporta_Campus/pull/8) | [Entrega frontend](frontend-revision-1.md), [capturas](capturas/revision-1/README.md) |
 | Javier Guillermo Cú Rangel | Modelo de datos en Firestore | [enlace] | [documento] |
 | Juan Carlos Zuñiga Alfaro | Formulario y generación de folio | [enlace] | [demo] |
 | David Zapien Sabedra | Diagrama de estados y revisión de PR | [enlace] | [documento] |

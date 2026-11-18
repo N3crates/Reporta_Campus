@@ -4,6 +4,7 @@
 **Fecha de revisión:** jueves 19 de noviembre de 2026
 **Issue:** [#2](https://github.com/N3crates/Reporta_Campus/issues/2)
 **Rama:** `feature/pantallas-ui` → `develop`
+**Pull Request:** [#8: pantallas responsivas y evidencias de frontend](https://github.com/N3crates/Reporta_Campus/pull/8)
 **Estado:** implementación y evidencia terminadas; revisión de otro integrante y fusión pendientes.
 
 ## Qué se entrega
