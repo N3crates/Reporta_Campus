@@ -55,6 +55,30 @@ La [plantilla de entrega](entrega_revision_1.md) conserva los resultados de T-02
 y T-03 aportados por frontend. Esas evidencias son de Juan Manuel; no se presentan
 como una nueva ejecución de David. El modo de muestra no acredita T-01.
 
+## Comprobación de datos de muestra
+
+Se agregó `tests/datos-muestra.cjs` para comprobar los seis ejemplos ya existentes,
+sin cambiar su autoría ni escribir en Firebase. Usa el ejecutor de pruebas de
+Node.js (18 o posterior), sin dependencias adicionales.
+
+```powershell
+npm run test:datos
+```
+
+Resultado local del 18 de noviembre de 2026, Node.js v24.11.0: **4 pruebas
+correctas**, sin fallos. Registro: [resultados en formato TAP](pruebas/resultados-datos-muestra.tap).
+
+| Comprobación | Resultado |
+|---|---|
+| Cobertura de los tres estados y las tres prioridades | Correcto |
+| IDs/folios únicos, campos válidos y categorías/edificios existentes | Correcto |
+| Historial cronológico, sin saltos ni retrocesos, y estado final consistente | Correcto |
+| Comentario no vacío en los cierres | Correcto |
+
+Estas pruebas validan ejemplos de presentación. No prueban las reglas de
+Firestore, permisos por rol, concurrencia ni persistencia. Las 28 comprobaciones
+de navegador del frontend no se volvieron a ejecutar en este avance.
+
 ## Revisión de Pull Requests
 
 El issue #5 pide revisar al menos un PR de otro integrante y dejar comentarios.
