@@ -4,68 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="ReportaCampus: reporta y da seguimiento a las incidencias de mantenimiento de tu campus.">
-  <meta name="theme-color" content="#123f37">
+  <meta name="theme-color" content="#0a263d">
   <title>Inicio · ReportaCampus</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="min-h-screen flex flex-col">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <header class="border-b border-stone-200 bg-white">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-wrap min-h-22 items-center justify-between gap-4 py-4">
-      <a href="index.html" class="flex items-center gap-3 font-extrabold tracking-tight text-lg" aria-label="ReportaCampus, inicio">
-        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-5h6v5M9 9h1m4 0h1M9 12h1m4 0h1"/></svg></span>
-        <span>Reporta<span class="text-emerald-700">Campus</span><small class="hidden sm:block text-[10px] font-semibold tracking-[.18em] uppercase text-stone-500">Cuidamos nuestro espacio</small></span>
-      </a>
-      <button id="menu-toggle" class="md:hidden rounded-lg border border-stone-300 p-2.5 text-sm font-bold flex items-center gap-2" aria-expanded="false" aria-controls="navegacion">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span class="sr-only sm:not-sr-only">Menú</span>
-      </button>
-      <nav id="navegacion" aria-label="Navegación principal" class="hidden w-full flex-col gap-1 md:flex md:w-auto md:flex-row md:items-center md:gap-3"><a href="index.html" aria-current="page" class="nav-link">Inicio</a><a href="incidencias.html" class="nav-link">Incidencias</a><a href="reportar.html" class="nav-link">Reportar</a></nav>
+  <div class="university-strip"><div class="max-w-7xl mx-auto px-5 sm:px-8 flex justify-between gap-3"><span>UNIVERSIDAD DE GUANAJUATO</span><span class="academic-label">Proyecto académico · 2026</span></div></div>
+  <header class="university-header bg-white">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 masthead">
+      <a href="https://www.ugto.mx/" target="_blank" rel="noopener noreferrer" class="university-seal" aria-label="Universidad de Guanajuato, sitio oficial (abre en otra pestaña)"><img src="assets/escudo-ug.png" alt="Universidad de Guanajuato" width="150" height="128"></a>
+      <a href="index.html" class="project-brand" aria-label="ReportaCampus, inicio"><span class="brand-kicker">COMUNIDAD UNIVERSITARIA</span><span class="brand-title">Reporta<span>Campus</span></span><span class="brand-caption">Cuidemos nuestra colmena.</span></a>
+      <div class="community-brand hidden md:flex"><img src="assets/abeja.svg" alt="" width="40" height="40"><div><strong>#SomosAbejasUG</strong><span>Cada acción hace comunidad.</span></div></div>
     </div>
+    <div class="navigation-bar"><div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-wrap items-center justify-between">
+      <button id="menu-toggle" class="md:hidden flex items-center gap-3 py-4 font-bold text-sm" aria-expanded="false" aria-controls="navegacion"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menú</span></button>
+      <span class="md:hidden text-[10px] text-[#ffd300] font-bold tracking-wider">#SomosAbejasUG</span>
+      <nav id="navegacion" aria-label="Navegación principal" class="hidden w-full flex-col md:flex md:w-auto md:flex-row"><a href="index.html" aria-current="page" class="nav-link">Inicio</a><a href="incidencias.html" class="nav-link">Incidencias</a><a href="reportar.html" class="nav-link">Reportar</a></nav>
+      <span class="hidden md:block text-[11px] text-slate-300">Mesa de ayuda para las instalaciones del campus</span>
+    </div></div>
   </header>
-  <main id="contenido" class="flex-1 w-full max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-12" tabindex="-1">
-
-  <div class="flex items-center gap-3 mb-8"><span class="w-2 h-2 rounded-full bg-emerald-700" aria-hidden="true"></span><p class="eyebrow">Mesa de ayuda del campus</p></div>
-  <section class="grid lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-16 items-center">
-    <div>
-      <h1 class="text-4xl sm:text-5xl lg:text-[64px] font-extrabold tracking-[-.055em] leading-[1.12] max-w-2xl">Tu campus.<br>Tu voz.<br><span class="text-emerald-700">Un cambio real.</span></h1>
-      <p class="text-sm sm:text-base leading-7 text-stone-600 max-w-md mt-6">¿Una lámpara fundida o un equipo que no funciona? Repórtalo y sigue su atención desde un solo lugar.</p>
-      <div class="flex flex-wrap gap-3 mt-8"><a class="btn-primary" href="reportar.html">Reportar una incidencia <span aria-hidden="true">↗</span></a><a class="btn-secondary" href="incidencias.html">Ver incidencias <span aria-hidden="true">→</span></a></div>
-      <p class="text-xs text-stone-500 mt-5">Mantenimiento, iluminación, cómputo y más.</p>
-    </div>
-    <div class="rounded-3xl bg-[#183e36] hero-grid p-6 sm:p-9 text-white relative">
-      <div class="flex items-center justify-between gap-3"><span class="text-[10px] tracking-[.15em] uppercase text-emerald-100">Cada reporte tiene un recorrido</span><span class="text-2xl text-[#e3ae75]" aria-hidden="true">✳</span></div>
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mt-7">Del problema<br>a la solución.</h2>
-      <ol class="mt-8 space-y-0">
-        <li class="flex gap-4 pb-7 border-l border-white/20 ml-4 pl-7 relative"><span class="absolute -left-4 top-0 bg-[#dceaca] text-[#183e36] rounded-full w-8 h-8 grid place-items-center text-xs font-extrabold">01</span><div><h3 class="text-sm font-bold">Cuéntanos qué sucede</h3><p class="text-xs text-emerald-100/80 mt-2 leading-5">Describe el problema y dónde se encuentra.</p></div></li>
-        <li class="flex gap-4 pb-7 border-l border-white/20 ml-4 pl-7 relative"><span class="absolute -left-4 top-0 bg-[#dceaca] text-[#183e36] rounded-full w-8 h-8 grid place-items-center text-xs font-extrabold">02</span><div><h3 class="text-sm font-bold">Damos seguimiento</h3><p class="text-xs text-emerald-100/80 mt-2 leading-5">Consulta el avance con el folio de tu reporte.</p></div></li>
-        <li class="flex gap-4 ml-4 pl-7 relative"><span class="absolute -left-4 top-0 bg-[#e3ae75] text-[#183e36] rounded-full w-8 h-8 grid place-items-center text-xs font-extrabold">03</span><div><h3 class="text-sm font-bold">Un espacio mejor para todos</h3><p class="text-xs text-emerald-100/80 mt-2 leading-5">Revisa la solución y el historial de atención.</p></div></li>
-      </ol>
-      <div class="mt-8 pt-5 border-t border-white/20 text-[11px] text-emerald-100">Pequeñas acciones. Un campus que mejora.</div>
+  <main id="contenido" class="flex-1 home-main w-full" tabindex="-1">
+  <section class="home-hero">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-[1.15fr_1fr] items-center gap-8 relative">
+      <div class="hero-copy">
+        <p class="hero-eyebrow"><span class="hex-dot" aria-hidden="true"></span> SOMOS ABEJAS. HACEMOS COMUNIDAD.</p>
+        <h1>Nuestra colmena,<br><span>un campus mejor.</span></h1>
+        <p class="hero-description">Cada espacio cuenta. Cada reporte también.<br class="hidden sm:block"> Ayúdanos a cuidar las instalaciones de nuestra universidad y sigue el avance de tu incidencia.</p>
+        <div class="flex flex-wrap gap-3 mt-8"><a class="btn-gold" href="reportar.html">Reportar una incidencia <span aria-hidden="true">↗</span></a><a class="btn-outline" href="incidencias.html">Consultar incidencias <span aria-hidden="true">→</span></a></div>
+        <p class="text-[11px] text-slate-300 mt-5">Iluminación · Cómputo · Limpieza · Mantenimiento</p>
+      </div>
+      <div class="hive-art" aria-hidden="true">
+        <div class="hive-hex hive-hex-outer"></div><div class="hive-hex hive-hex-inner"></div>
+        <img class="hero-bee" src="assets/abeja.svg" alt="" width="170" height="170">
+        <svg class="bee-flight" viewBox="0 0 430 300" fill="none"><path d="M46 160c-30 60 95 77 67 16-19-43-64 5-30 32 50 41 84-47 146-8 36 23 57 4 72-18" stroke="#ffd300" stroke-width="2" stroke-dasharray="5 7"/></svg>
+        <img class="campus-drawing" src="assets/campus-linea.svg" alt="" width="600" height="300">
+        <span class="hive-caption">EL BIENESTAR DE LA COLMENA<br><strong>se construye entre todas y todos.</strong></span>
+      </div>
     </div>
   </section>
-  <section class="mt-14 sm:mt-20" aria-labelledby="actividad-titulo">
-    <div class="flex flex-wrap justify-between gap-4 items-end mb-6"><div><p class="eyebrow mb-2">Un vistazo al seguimiento</p><h2 id="actividad-titulo" class="text-2xl font-extrabold tracking-tight">Así se ve un campus en movimiento</h2></div><span class="demo-label">Datos de muestra</span></div>
-    <div class="grid sm:grid-cols-3 gap-4">
-      <div class="panel p-6 flex gap-4 items-center"><span class="text-3xl font-extrabold">02</span><div><span class="badge badge-reported">Reportadas</span><p class="text-xs mt-2 text-stone-500">El primer paso para mejorar</p></div></div>
-      <div class="panel p-6 flex gap-4 items-center"><span class="text-3xl font-extrabold">02</span><div><span class="badge badge-progress">En proceso</span><p class="text-xs mt-2 text-stone-500">El equipo está trabajando</p></div></div>
-      <div class="panel p-6 flex gap-4 items-center"><span class="text-3xl font-extrabold">02</span><div><span class="badge badge-resolved">Resueltas</span><p class="text-xs mt-2 text-stone-500">Espacios listos para usarse</p></div></div>
-    </div>
-    <p class="text-xs text-stone-500 mt-4">Ejemplo de la interfaz. Los conteos no representan incidencias reales.</p>
-  </section>
-  <section class="mt-10 panel p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5"><div><h2 class="font-bold text-lg">¿Qué puedes reportar?</h2><p class="text-sm text-stone-500 leading-6 mt-2 max-w-2xl">Problemas de las instalaciones: iluminación, limpieza, mobiliario, mantenimiento y equipos de cómputo.</p><p class="text-xs text-stone-500 mt-2">Para una emergencia, contacta directamente al personal del campus.</p></div><a href="reportar.html" class="btn-secondary shrink-0">Crear un reporte <span aria-hidden="true">↗</span></a></section>
-
-  </main>
-  <footer class="border-t border-stone-200 mt-8">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-6 flex flex-col sm:flex-row gap-3 justify-between text-xs text-stone-500">
-      <p><strong class="text-stone-700">ReportaCampus</strong> · Un mejor campus empieza contigo.</p>
-      <p>Proyecto académico · Revisión 1 · 2026</p>
-    </div>
-  </footer>
+  <section class="steps-strip" aria-labelledby="pasos-titulo"><div class="max-w-7xl mx-auto px-5 sm:px-8 py-8"><h2 id="pasos-titulo" class="sr-only">Cómo reportar una incidencia</h2><ol class="grid md:grid-cols-3 gap-7"><li class="flex gap-4 items-start"><span class="step-number">01</span><div><h3 class="font-bold text-sm">Cuéntanos qué sucede</h3><p class="text-xs text-slate-500 leading-6 mt-1">Describe el problema y su ubicación.</p></div></li><li class="flex gap-4 items-start"><span class="step-number">02</span><div><h3 class="font-bold text-sm">Sigue el vuelo de tu reporte</h3><p class="text-xs text-slate-500 leading-6 mt-1">Consulta el estado con tu folio.</p></div></li><li class="flex gap-4 items-start"><span class="step-number">03</span><div><h3 class="font-bold text-sm">Mejoremos nuestro entorno</h3><p class="text-xs text-slate-500 leading-6 mt-1">Conoce la atención y la solución.</p></div></li></ol></div></section>
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-10 sm:py-14">
+    <section aria-labelledby="actividad-titulo"><div class="flex flex-wrap justify-between items-end gap-4 mb-6"><div><p class="eyebrow mb-3">EL PULSO DE NUESTRA COMUNIDAD</p><h2 id="actividad-titulo" class="text-2xl sm:text-3xl font-extrabold tracking-tight">Así avanza la colmena</h2></div><span class="demo-label">Datos de muestra</span></div>
+      <div class="grid sm:grid-cols-3 gap-5">
+        <article class="stat-panel"><span class="stat-count">02</span><div><span class="badge badge-reported">Reportadas</span><p>El primer paso para mejorar.</p></div><span class="stat-hex" aria-hidden="true">⬡</span></article>
+        <article class="stat-panel"><span class="stat-count">02</span><div><span class="badge badge-progress">En proceso</span><p>El equipo está trabajando.</p></div><span class="stat-hex" aria-hidden="true">⬡</span></article>
+        <article class="stat-panel"><span class="stat-count">02</span><div><span class="badge badge-resolved">Resueltas</span><p>Espacios listos para usarse.</p></div><span class="stat-hex" aria-hidden="true">⬡</span></article>
+      </div><p class="text-[11px] text-slate-500 mt-4">Vista de demostración. Los conteos corresponden a seis ejemplos ficticios.</p>
+    </section>
+    <section class="hive-callout mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-6"><img src="assets/abeja.svg" width="66" height="66" alt="" class="shrink-0"><div class="flex-1"><p class="eyebrow mb-2">PEQUEÑAS ACCIONES, GRANDES CAMBIOS</p><h2 class="text-xl sm:text-2xl font-extrabold">Nuestra universidad se cuida en equipo.</h2><p class="text-sm text-slate-600 leading-6 mt-2">Una lámpara, un aula o un equipo: si algo necesita atención, tu reporte puede hacer la diferencia.</p></div><a href="reportar.html" class="btn-primary shrink-0">Crear un reporte ↗</a></section>
+    <p class="text-xs text-slate-500 mt-5 leading-6">Este sistema atiende mantenimiento de las instalaciones. Para una emergencia, contacta directamente al personal del campus.</p>
+  </div>
+</main>
+  <footer class="university-footer mt-12"><div class="max-w-7xl mx-auto px-5 sm:px-8 py-9 grid md:grid-cols-[230px_1fr_auto] gap-7 items-center"><a href="https://www.ugto.mx/" target="_blank" rel="noopener noreferrer" aria-label="Universidad de Guanajuato, sitio oficial"><img src="assets/escudo-ug-horizontal.png" alt="Universidad de Guanajuato" width="190" height="73"></a><div><p class="font-bold text-lg text-white">Cuidar el campus también es hacer comunidad.</p><p class="text-xs text-slate-300 mt-3 leading-6">ReportaCampus · Proyecto académico de Aplicaciones de Internet.<br>Revisión 1 · 2026 · Datos de demostración.</p></div><p class="text-[#ffd300] font-bold text-sm">#SomosAbejasUG</p></div><div class="border-t border-white/15"><div class="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex flex-wrap gap-3 justify-between text-[10px] text-slate-300"><span>ReportaCampus · Un proyecto de nuestra comunidad estudiantil.</span><span>Diseño inspirado en la identidad universitaria.</span></div></div></footer>
   <script type="module" src="js/ui.js"></script>
 
 </body>
