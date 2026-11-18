@@ -4,7 +4,8 @@
 **Fecha de revisión:** jueves 19 de noviembre de 2026
 **Issue:** [#5](https://github.com/N3crates/Reporta_Campus/issues/5)
 **Rama:** `feature/docs-estados` → `develop`
-**Estado:** preparación local; PR, revisión de otro integrante y fusión pendientes.
+**Pull Request:** [#10: estados, prioridades y Seguridad/QA](https://github.com/N3crates/Reporta_Campus/pull/10)
+**Estado:** rama publicada y PR abierto; revisión de otro integrante y fusión pendientes.
 
 ## Reglas iniciales
 

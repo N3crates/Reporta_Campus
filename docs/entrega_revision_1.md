@@ -21,7 +21,7 @@ funcionalidad real (formulario validado que genera un folio de incidencia).
 | HU-02 | Listado responsivo con búsqueda y filtros de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Implementado; revisión/fusión pendientes |
 | HU-03 | Detalle e historial de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Implementado; revisión/fusión pendientes |
 | Modelo | Colecciones de Firestore documentadas | [C] | feature/modelo-datos | #[ ] | [ ] |
-| Estados / Seguridad | Estados, prioridades, permisos previstos, reglas iniciales cerradas y pruebas de datos de muestra | David Zapien Sabedra | feature/docs-estados | Pendiente | Preparado en rama; PR, revisión y fusión pendientes |
+| Estados / Seguridad | Estados, prioridades, permisos previstos, reglas iniciales cerradas y pruebas de datos de muestra | David Zapien Sabedra | feature/docs-estados | [#10](https://github.com/N3crates/Reporta_Campus/pull/10) | PR abierto; revisión y fusión pendientes |
 
 ## 3. Instrucciones para ejecutar (paso a paso)
 1. **Requisitos:** navegador moderno, Git, VS Code con la extensión Live Server (o Node.js para `npx serve`).
@@ -80,7 +80,7 @@ no sustituye la prueba T-01 ni la validación de reglas en el emulador.
 | Juan Manuel Razo Gayosso | Cuatro pantallas, navegación, bocetos, capturas y pruebas de UI | [PR #8](https://github.com/N3crates/Reporta_Campus/pull/8) | [Entrega frontend](frontend-revision-1.md), [capturas](capturas/revision-1/README.md) |
 | Javier Guillermo Cú Rangel | Modelo de datos en Firestore | [enlace] | [documento] |
 | Juan Carlos Zuñiga Alfaro | Formulario y generación de folio | [enlace] | [demo] |
-| David Zapien Sabedra | Completar estados y permisos previstos, reglas iniciales cerradas, plan T-01 a T-03 y pruebas de datos de muestra; revisión externa de PR pendiente | `7da09f8`, `b23eb77`, `88422a6`; PR pendiente | [Estados](estados_prioridades.md), [Seguridad/QA](seguridad-revision-1.md), [4 pruebas](pruebas/resultados-datos-muestra.tap) |
+| David Zapien Sabedra | Completar estados y permisos previstos, reglas iniciales cerradas, plan T-01 a T-03 y pruebas de datos de muestra; revisión externa de PR pendiente | [PR #10](https://github.com/N3crates/Reporta_Campus/pull/10); `7da09f8`, `b23eb77`, `88422a6` | [Estados](estados_prioridades.md), [Seguridad/QA](seguridad-revision-1.md), [4 pruebas](pruebas/resultados-datos-muestra.tap) |
 
 ## 9. Guion de demostración (Revisión 1)
 1. Nestor Isaac Hernandez Duran: Presenta el repo, las ramas, el README y las historias de usuario.
