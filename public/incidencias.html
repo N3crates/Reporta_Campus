@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ReportaCampus: reporta y da seguimiento a las incidencias de mantenimiento de tu campus.">
+  <meta name="theme-color" content="#123f37">
+  <title>Incidencias · ReportaCampus</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="border-b border-stone-200 bg-white">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-wrap min-h-22 items-center justify-between gap-4 py-4">
+      <a href="index.html" class="flex items-center gap-3 font-extrabold tracking-tight text-lg" aria-label="ReportaCampus, inicio">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-5h6v5M9 9h1m4 0h1M9 12h1m4 0h1"/></svg></span>
+        <span>Reporta<span class="text-emerald-700">Campus</span><small class="hidden sm:block text-[10px] font-semibold tracking-[.18em] uppercase text-stone-500">Cuidamos nuestro espacio</small></span>
+      </a>
+      <button id="menu-toggle" class="md:hidden rounded-lg border border-stone-300 p-2.5 text-sm font-bold flex items-center gap-2" aria-expanded="false" aria-controls="navegacion">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span class="sr-only sm:not-sr-only">Menú</span>
+      </button>
+      <nav id="navegacion" aria-label="Navegación principal" class="hidden w-full flex-col gap-1 md:flex md:w-auto md:flex-row md:items-center md:gap-3"><a href="index.html" class="nav-link">Inicio</a><a href="incidencias.html" aria-current="page" class="nav-link">Incidencias</a><a href="reportar.html" class="nav-link">Reportar</a></nav>
+    </div>
+  </header>
+  <main id="contenido" class="flex-1 w-full max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-12" tabindex="-1">
+
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5"><div><p class="eyebrow mb-3">Cada reporte cuenta</p><h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Incidencias del campus</h1><p class="text-sm text-stone-500 mt-3 leading-6">Consulta los reportes y encuentra el seguimiento que buscas.</p></div><a href="reportar.html" class="btn-primary shrink-0">Nuevo reporte <span aria-hidden="true">＋</span></a></div>
+  <div class="flex flex-wrap items-center gap-3 mt-7 mb-6"><span class="demo-label">Datos de muestra</span><p class="text-xs text-stone-500">Explora la interfaz con reportes ficticios.</p></div>
+  <section class="panel p-5 sm:p-6" aria-labelledby="filtros-titulo">
+    <div class="flex items-center justify-between gap-4 mb-5"><h2 id="filtros-titulo" class="font-bold text-sm">Encuentra una incidencia</h2><button id="limpiar-filtros" type="button" class="text-xs font-bold text-emerald-800 underline underline-offset-4 min-h-10">Limpiar filtros</button></div>
+    <form id="filtros" role="search" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="sm:col-span-2 lg:col-span-4"><label for="buscar" class="field-label">Buscar por título o folio</label><input id="buscar" type="search" class="field" placeholder="Ej. Lámpara o RC-2026-0001" autocomplete="off"></div>
+      <div><label class="field-label" for="estado">Estado</label><select id="estado" class="field"><option value="">Todos los estados</option><option value="reportado">Reportado</option><option value="en_proceso">En proceso</option><option value="resuelto">Resuelto</option></select></div>
+      <div><label class="field-label" for="prioridad">Prioridad</label><select id="prioridad" class="field"><option value="">Todas las prioridades</option><option value="alta">Alta</option><option value="media">Media</option><option value="baja">Baja</option></select></div>
+      <div><label class="field-label" for="categoria">Categoría</label><select id="categoria" class="field"><option value="">Todas las categorías</option><option value="iluminacion">Iluminación</option><option value="computo">Cómputo</option><option value="limpieza">Limpieza</option><option value="mantenimiento">Mantenimiento general</option><option value="mobiliario">Mobiliario</option></select></div>
+      <div><label class="field-label" for="edificio">Edificio</label><select id="edificio" class="field"><option value="">Todos los edificios</option><option value="edificio-a">Edificio A</option><option value="edificio-b">Edificio B</option><option value="biblioteca">Biblioteca</option><option value="lab-computo">Laboratorio de Cómputo</option></select></div>
+    </form>
+  </section>
+  <div class="flex flex-wrap justify-between gap-3 items-center mt-8 mb-5"><p id="resultados-conteo" role="status" aria-live="polite" class="text-xs text-stone-600">Cargando incidencias…</p><span class="text-[11px] text-stone-500">Más recientes primero</span></div>
+  <section id="lista-incidencias" aria-label="Resultados de incidencias" class="grid md:grid-cols-2 xl:grid-cols-3 gap-5"></section>
+  <section id="estado-vacio" class="hidden panel p-8 sm:p-14 text-center"><span aria-hidden="true" class="text-4xl text-stone-400">⌕</span><h2 class="font-bold text-lg mt-4">No encontramos incidencias</h2><p class="text-sm text-stone-500 mt-3">Prueba con otra búsqueda o cambia los filtros.</p><button id="limpiar-vacio" class="btn-secondary mt-6" type="button">Ver todas las incidencias</button></section>
+  <noscript><p class="panel p-6 mt-5">Activa JavaScript para consultar y filtrar las incidencias de muestra.</p></noscript>
+
+  </main>
+  <footer class="border-t border-stone-200 mt-8">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-6 flex flex-col sm:flex-row gap-3 justify-between text-xs text-stone-500">
+      <p><strong class="text-stone-700">ReportaCampus</strong> · Un mejor campus empieza contigo.</p>
+      <p>Proyecto académico · Revisión 1 · 2026</p>
+    </div>
+  </footer>
+  <script type="module" src="js/ui.js"></script>
+  <script type="module" src="js/pages/incidencias.js"></script>
+</body>
+</html>

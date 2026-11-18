@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ReportaCampus: reporta y da seguimiento a las incidencias de mantenimiento de tu campus.">
+  <meta name="theme-color" content="#123f37">
+  <title>Detalle de incidencia · ReportaCampus</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="border-b border-stone-200 bg-white">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-wrap min-h-22 items-center justify-between gap-4 py-4">
+      <a href="index.html" class="flex items-center gap-3 font-extrabold tracking-tight text-lg" aria-label="ReportaCampus, inicio">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-5h6v5M9 9h1m4 0h1M9 12h1m4 0h1"/></svg></span>
+        <span>Reporta<span class="text-emerald-700">Campus</span><small class="hidden sm:block text-[10px] font-semibold tracking-[.18em] uppercase text-stone-500">Cuidamos nuestro espacio</small></span>
+      </a>
+      <button id="menu-toggle" class="md:hidden rounded-lg border border-stone-300 p-2.5 text-sm font-bold flex items-center gap-2" aria-expanded="false" aria-controls="navegacion">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span class="sr-only sm:not-sr-only">Menú</span>
+      </button>
+      <nav id="navegacion" aria-label="Navegación principal" class="hidden w-full flex-col gap-1 md:flex md:w-auto md:flex-row md:items-center md:gap-3"><a href="index.html" class="nav-link">Inicio</a><a href="incidencias.html" class="nav-link">Incidencias</a><a href="reportar.html" class="nav-link">Reportar</a></nav>
+    </div>
+  </header>
+  <main id="contenido" class="flex-1 w-full max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-12" tabindex="-1">
+
+  <nav aria-label="Ruta de navegación" class="flex flex-wrap gap-2 text-xs text-stone-500 mb-7"><a href="incidencias.html" class="hover:underline">Incidencias</a><span aria-hidden="true">/</span><span>Detalle del reporte</span></nav>
+  <div id="detalle-contenido"><p role="status" class="text-sm text-stone-500">Cargando el reporte…</p></div>
+  <noscript><p class="panel p-6">Activa JavaScript para consultar el detalle de muestra. <a class="underline" href="incidencias.html">Volver al listado</a>.</p></noscript>
+
+  </main>
+  <footer class="border-t border-stone-200 mt-8">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-6 flex flex-col sm:flex-row gap-3 justify-between text-xs text-stone-500">
+      <p><strong class="text-stone-700">ReportaCampus</strong> · Un mejor campus empieza contigo.</p>
+      <p>Proyecto académico · Revisión 1 · 2026</p>
+    </div>
+  </footer>
+  <script type="module" src="js/ui.js"></script>
+  <script type="module" src="js/pages/detalle.js"></script>
+</body>
+</html>

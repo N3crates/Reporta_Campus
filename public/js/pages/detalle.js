@@ -1,0 +1,21 @@
+import { getDemoReports, categorias, edificios } from '../demo-data.js'
+import { escapeHTML as esc, stateBadge, formatDate, categoryIcon, estados } from '../ui.js'
+
+const id = new URLSearchParams(window.location.search).get('id')
+const item = getDemoReports().find(report => report.id === id)
+const target = document.getElementById('detalle-contenido')
+
+if (!item) {
+  document.title = 'Incidencia no encontrada · ReportaCampus'
+  target.innerHTML = `<section class="panel py-16 px-6 text-center"><p class="eyebrow">No pudimos encontrar ese reporte</p><h1 class="text-3xl font-extrabold mt-4">Incidencia no encontrada</h1><p class="text-sm text-stone-500 mt-4">El enlace no corresponde a una incidencia de muestra disponible.</p><a href="incidencias.html" class="btn-primary mt-7">Volver al listado →</a></section>`
+} else {
+  document.title = `${item.folio} · ReportaCampus`
+  const field = (label, value) => `<div class="min-w-0"><dt class="text-[10px] uppercase tracking-wider font-bold text-stone-500">${esc(label)}</dt><dd class="text-sm font-semibold mt-2 [overflow-wrap:anywhere]">${esc(value)}</dd></div>`
+  target.innerHTML = `<div class="flex flex-wrap gap-3 items-center mb-5"><span class="demo-label">Datos de muestra</span><span class="text-xs font-bold tracking-wider text-stone-500 [overflow-wrap:anywhere]">${esc(item.folio)}</span></div>
+    <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-8"><div class="min-w-0"><h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight [overflow-wrap:anywhere]">${esc(item.titulo)}</h1><p class="text-xs text-stone-500 mt-4">Reportado el <time datetime="${esc(item.fechaCreacion)}">${formatDate(item.fechaCreacion, true)}</time></p></div><div class="shrink-0">${stateBadge(item.estado)}</div></div>
+    <div class="grid lg:grid-cols-[1.1fr_1fr] gap-6 lg:gap-8 items-start">
+      <div class="space-y-5 min-w-0"><section class="panel p-6 sm:p-8"><div class="flex gap-3 items-center border-b border-stone-100 pb-5"><span class="text-emerald-800">${categoryIcon(item.categoriaId)}</span><h2 class="font-bold">Información de la incidencia</h2></div><dl class="grid sm:grid-cols-2 gap-7 mt-6">${field('Categoría', categorias[item.categoriaId])}${field('Prioridad', item.prioridad[0].toUpperCase() + item.prioridad.slice(1))}${field('Edificio', edificios[item.edificioId])}${field('Aula o espacio', item.aula)}</dl><div class="border-t border-stone-100 pt-6 mt-7"><h3 class="text-[10px] uppercase tracking-wider font-bold text-stone-500">Descripción</h3><p class="text-sm leading-7 mt-3 text-stone-600 whitespace-pre-line [overflow-wrap:anywhere]">${esc(item.descripcion)}</p></div></section><section class="rounded-xl border border-[#dce6d2] bg-[#eaf0e2] p-5"><h2 class="text-sm font-bold">Siempre puedes conocer el avance</h2><p class="text-xs text-stone-600 leading-6 mt-2">El historial muestra cuándo se reportó la incidencia, quién la atendió y qué solución se realizó. Este reporte es ficticio.</p></section></div>
+      <section class="panel p-6 sm:p-8"><div class="flex flex-wrap justify-between items-center gap-3 mb-8"><h2 class="font-bold">Historial de atención</h2><span class="text-[10px] text-stone-500">Del inicio a la solución</span></div><ol class="space-y-0">${[...item.historial].sort((a,b) => new Date(a.fecha)-new Date(b.fecha)).map((entry,index) => `<li class="relative ml-2 pl-7 ${index < item.historial.length-1 ? 'border-l border-stone-200 pb-8' : ''}"><span class="absolute -left-[6px] top-1 w-3 h-3 rounded-full border-2 border-white ${entry.estadoNuevo === 'resuelto' ? 'bg-emerald-600' : 'bg-[#97ad8d]'}" aria-hidden="true"></span><p class="text-sm font-bold">${estados[entry.estadoNuevo].label}</p><time class="text-[10px] text-stone-500 block mt-1" datetime="${esc(entry.fecha)}">${formatDate(entry.fecha,true)}</time><p class="text-xs leading-6 text-stone-600 mt-3 [overflow-wrap:anywhere]">${esc(entry.comentario)}</p><p class="text-[10px] font-semibold text-stone-500 mt-2 [overflow-wrap:anywhere]">${esc(entry.responsable)}</p></li>`).join('')}</ol></section>
+    </div>
+    <div class="mt-8 flex flex-wrap gap-3"><a href="incidencias.html" class="btn-secondary">← Volver al listado</a><a href="reportar.html" class="btn-primary">Reportar otra incidencia ↗</a></div>`
+}
