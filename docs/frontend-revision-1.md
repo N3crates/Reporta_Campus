@@ -16,7 +16,8 @@
 | `public/incidencias.html` | Tarjetas, búsqueda por título/folio y filtros combinados por estado, prioridad, categoría y edificio |
 | `public/detalle.html` | Información completa, estado, historial cronológico y regreso al listado |
 
-Todas las pantallas usan Tailwind por CDN, Google Fonts (Plus Jakarta Sans),
+Todas las pantallas usan la paleta azul, amarillo y dorado inspirada en la UG,
+abejas y motivos de panal, Tailwind por CDN, Google Fonts (Raleway),
 HTML y módulos JavaScript, sin frameworks de aplicación. La navegación móvil
 incluye `aria-expanded`, cierre con Escape y devolución de foco al botón.
 Los títulos largos se parten sin provocar desplazamiento horizontal.
@@ -114,3 +115,16 @@ El login, los roles y el dashboard real quedan para las revisiones correspondien
 
 La revisión humana y la integración deben registrarse en GitHub; no se sustituyen
 con las pruebas automáticas ni con una autoaprobación del autor.
+
+
+## Actualización visual: Universidad de Guanajuato
+
+Se rediseñaron las cuatro páginas a petición de Juan Manuel: encabezado
+institucional, navegación azul con acento amarillo, escudos originales UG,
+tipografía Raleway y motivos de colmena. La portada incorpora una abeja y una
+ilustración vectorial de arquitectura y escalinata creadas para este proyecto.
+
+Las capturas y los bocetos fueron regenerados para representar este diseño.
+La funcionalidad, los IDs del formulario y la transacción del compañero se conservan.
+Consultar [investigación visual y fuentes](referencias-diseno-ug.md) y
+[procedencia de los recursos](../public/assets/README.md).

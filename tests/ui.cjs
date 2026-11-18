@@ -64,7 +64,7 @@ async function fillReport(page, title = 'Lámpara de prueba de interfaz') {
   }
   await check('Tailwind y Google Fonts cargan desde CDN', async () => {
     assert.equal(await page.locator('header').evaluate(el => getComputedStyle(el).backgroundColor),'rgb(255, 255, 255)')
-    assert(await page.evaluate(() => document.fonts.check('700 16px "Plus Jakarta Sans"')))
+    assert(await page.evaluate(() => document.fonts.check('700 16px "Raleway"')))
     assert.equal(await page.locator('#navegacion').evaluate(el => getComputedStyle(el).display),'flex')
   })
   await page.setViewportSize({width:390,height:844})

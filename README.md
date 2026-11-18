@@ -160,7 +160,7 @@ Después se abre un Pull Request hacia `develop`, con evidencia y revisión de u
 ## Interfaz de la revisión 1 (Juan Manuel Razo Gayosso)
 
 Las pantallas `public/index.html`, `reportar.html`, `incidencias.html` y `detalle.html`
-están enlazadas y usan Tailwind por CDN, Plus Jakarta Sans y navegación móvil.
+están enlazadas y usan Tailwind por CDN, Raleway y navegación móvil.
 El listado y el detalle muestran incidencias ficticias de `public/js/demo-data.js`.
 Los filtros combinados funcionan sobre esos ejemplos; todavía no consultan Firestore.
 
@@ -199,3 +199,12 @@ Playwright es una dependencia de desarrollo para las pruebas, no un framework de
 la aplicación. La app sigue siendo HTML, utilidades Tailwind y módulos JavaScript.
 Si se usa Edge instalado en Windows, se puede definir `PLAYWRIGHT_EXECUTABLE_PATH`
 con la ruta de `msedge.exe` antes de ejecutar las pruebas, sin instalar Chromium.
+
+
+### Identidad visual de la comunidad UG
+
+La interfaz usa azul `#0A263D`, amarillo `#FFD300`, dorado `#8C6E39` y Raleway,
+con abejas, panales y una ilustración de arquitectura universitaria.
+La investigación se documenta en [referencias de diseño UG](docs/referencias-diseno-ug.md).
+La procedencia de los escudos y los gráficos propios está en
+[recursos visuales](public/assets/README.md).
