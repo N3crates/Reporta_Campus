@@ -87,6 +87,11 @@ reportacampus/
 4. Publicar las reglas de `firestore.rules` desde la consola de Firebase (pestaña *Reglas*).
 5. Crear los datos iniciales (categorías y edificios) según `docs/modelo-datos.md`.
 
+La base inicial de `firestore.rules` rechaza todas las lecturas y escrituras del
+cliente. Antes del envío real o de cargar datos desde el navegador, el equipo
+debe integrar y verificar las reglas funcionales según el
+[plan de Seguridad/QA de la Revisión 1](docs/seguridad-revision-1.md).
+
 > **Seguridad:** nunca se debe subir al repositorio una cuenta de servicio, archivos `.env`, contraseñas ni datos personales reales. Las reglas de Firestore no deben usar `allow read, write: if true`.
 
 ### Usuarios demo
@@ -140,6 +145,7 @@ Después se abre un Pull Request hacia `develop`, con evidencia y revisión de u
 - [Modelo de datos](docs/modelo-datos.md)
 - [Estados y prioridades](docs/estados_prioridades.md)
 - [Entrega de la Revisión 1](docs/entrega_revision_1.md)
+- [Seguridad y pruebas de la Revisión 1](docs/seguridad-revision-1.md)
 
 ## Equipo
 
@@ -208,3 +214,22 @@ con abejas, panales y una ilustración de arquitectura universitaria.
 La investigación se documenta en [referencias de diseño UG](docs/referencias-diseno-ug.md).
 La procedencia de los escudos y los gráficos propios está en
 [recursos visuales](public/assets/README.md).
+
+## Seguridad y pruebas de la revisión 1 (David Zapien Sabedra)
+
+La rama `feature/docs-estados` completa la documentación de estados y prioridades,
+la matriz de permisos prevista y los casos de prueba del flujo. Incluye reglas
+iniciales cerradas y un plan para T-01 a T-03. La autenticación y los permisos
+funcionales quedan para la integración correspondiente; la base inicial no
+habilita el guardado real.
+
+Los seis ejemplos existentes del frontend se verifican sin Firebase:
+
+```powershell
+npm run test:datos
+```
+
+Se necesita Node.js 18 o posterior, sin instalar paquetes adicionales. Las cuatro
+pruebas comprueban estados, prioridades, campos, folios, catálogos e historiales.
+Ver [entrega de Seguridad/QA](docs/seguridad-revision-1.md) y
+[resultados de las pruebas](docs/pruebas/resultados-datos-muestra.tap).

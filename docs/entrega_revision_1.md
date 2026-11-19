@@ -21,7 +21,7 @@ funcionalidad real (formulario validado que genera un folio de incidencia).
 | HU-02 | Listado responsivo con búsqueda y filtros de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Implementado; revisión/fusión pendientes |
 | HU-03 | Detalle e historial de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Implementado; revisión/fusión pendientes |
 | Modelo | Colecciones de Firestore documentadas | [C] | feature/modelo-datos | #[ ] | [ ] |
-| Estados | Diagrama de estados y prioridades | [E] | feature/docs-estados | #[ ] | [ ] |
+| Estados / Seguridad | Estados, prioridades, permisos previstos, reglas iniciales cerradas y pruebas de datos de muestra | David Zapien Sabedra | feature/docs-estados | [#10](https://github.com/N3crates/Reporta_Campus/pull/10) | PR abierto; revisión y fusión pendientes |
 
 ## 3. Instrucciones para ejecutar (paso a paso)
 1. **Requisitos:** navegador moderno, Git, VS Code con la extensión Live Server (o Node.js para `npx serve`).
@@ -53,6 +53,12 @@ Cambios en esta revisión: modelo creado desde cero.
 | T-02 | Enviar el formulario vacío | Mensaje de error, no se genera folio | Cinco campos obligatorios indicados; no se carga el adaptador de guardado | [Captura](capturas/revision-1/formulario-validacion.png) | Correcto en UI |
 | T-03 | Abrir la app en móvil y en escritorio | Navegación responsiva sin desbordes | Cuatro páginas comprobadas a 320, 390, 768 y 1440 px; menú móvil y enlaces correctos | [Capturas](capturas/revision-1/README.md), [28 comprobaciones](pruebas/resultados-ui.json) | Correcto |
 
+El [plan de Seguridad/QA](seguridad-revision-1.md) detalla los pasos de T-01 a
+T-03 y sus límites. T-02 y T-03 conservan la evidencia de frontend de Juan Manuel.
+David verificó los seis ejemplos mediante cuatro pruebas automatizadas de
+estados, prioridades, folios e historiales; el [registro TAP](pruebas/resultados-datos-muestra.tap)
+no sustituye la prueba T-01 ni la validación de reglas en el emulador.
+
 ## 6. GitHub: enlaces de commits, PR, issues y release
 - Repositorio: https://github.com/N3crates/Reporta_Campus
 - Ramas: master, develop, feature/estructura-inicial, [otras]
@@ -62,7 +68,8 @@ Cambios en esta revisión: modelo creado desde cero.
 
 ## 7. Problemas conocidos, pendientes y riesgos
 - El login y los roles se implementan en la Revisión 2.
-- El archivo local `firestore.rules` está vacío y la configuración web contiene valores de ejemplo; el equipo debe completar y verificar ambos antes de acreditar el guardado real.
+- `firestore.rules` contiene una base cerrada que rechaza lecturas y escrituras del cliente. Las reglas funcionales por rol y su prueba en el emulador siguen pendientes; este archivo no se ha publicado en Firebase.
+- La configuración web contiene valores de ejemplo y `folio.js` usa `demo-estudiante`. El equipo debe integrar la configuración, la identidad y los permisos antes de acreditar el guardado real.
 - [Agregar lo que surja durante la semana.]
 
 ## 8. Participación por integrante
@@ -73,7 +80,7 @@ Cambios en esta revisión: modelo creado desde cero.
 | Juan Manuel Razo Gayosso | Cuatro pantallas, navegación, bocetos, capturas y pruebas de UI | [PR #8](https://github.com/N3crates/Reporta_Campus/pull/8) | [Entrega frontend](frontend-revision-1.md), [capturas](capturas/revision-1/README.md) |
 | Javier Guillermo Cú Rangel | Modelo de datos en Firestore | [enlace] | [documento] |
 | Juan Carlos Zuñiga Alfaro | Formulario y generación de folio | [enlace] | [demo] |
-| David Zapien Sabedra | Diagrama de estados y revisión de PR | [enlace] | [documento] |
+| David Zapien Sabedra | Completar estados y permisos previstos, reglas iniciales cerradas, plan T-01 a T-03 y pruebas de datos de muestra; revisión externa de PR pendiente | [PR #10](https://github.com/N3crates/Reporta_Campus/pull/10); `7da09f8`, `b23eb77`, `88422a6` | [Estados](estados_prioridades.md), [Seguridad/QA](seguridad-revision-1.md), [4 pruebas](pruebas/resultados-datos-muestra.tap) |
 
 ## 9. Guion de demostración (Revisión 1)
 1. Nestor Isaac Hernandez Duran: Presenta el repo, las ramas, el README y las historias de usuario.

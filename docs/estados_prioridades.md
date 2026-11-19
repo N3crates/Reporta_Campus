@@ -23,7 +23,7 @@ stateDiagram-v2
 | Desde | Hacia | Quién puede | Condición |
 |---|---|---|---|
 | (nuevo) | `reportado` | Reportante | Formulario válido; se genera el folio |
-| `reportado` | `en_proceso` | Personal responsable, administrador | Ninguna adicional |
+| `reportado` | `en_proceso` | Personal responsable, administrador | Se asigna `responsableId` y se registra el movimiento |
 | `en_proceso` | `resuelto` | Personal responsable, administrador | **Comentario de resolución obligatorio** |
 
 ### Transiciones no permitidas
@@ -61,7 +61,7 @@ Cada transición crea un documento en `incidencias/{id}/historial_estados` con:
 
 - **HU-01:** toda incidencia nueva nace en `reportado`.
 - **HU-04:** solo el personal autorizado cambia el estado, y solo en el orden permitido.
-- **HU-04 / HU-05:** nunca se pasa a `resuelto` sin comentario.
+- **HU-04:** nunca se pasa a `resuelto` sin comentario.
 - **HU-05:** el panel cuenta las incidencias por estado y calcula la antigüedad de las que siguen abiertas (`reportado` y `en_proceso`).
 
 ## 5. Antigüedad de las incidencias abiertas
@@ -73,3 +73,60 @@ Cada transición crea un documento en `incidencias/{id}/historial_estados` con:
 | Más de 7 días | Rezagada |
 
 La antigüedad se calcula como la diferencia entre la fecha actual y `fechaCreacion`.
+
+## 6. Permisos previstos por rol
+
+Esta matriz describe el comportamiento esperado del MVP según las historias de
+usuario. La autenticación y la autorización real se integran en la Revisión 2.
+No acredita que estos permisos ya estén implementados.
+
+| Operación | Reportante | Responsable | Admin |
+|---|---|---|---|
+| Crear una incidencia en `reportado` | Propia | Según el flujo de reporte | Según el flujo de reporte |
+| Consultar listado, detalle e historial | Solo incidencias propias | Todas | Todas |
+| Cambiar estado o ajustar prioridad | No | Sí | Sí |
+| Modificar categorías, edificios o roles | No | No | Sí |
+| Consultar el dashboard (Revisión 3) | No | Sí | Sí |
+
+Al iniciar la atención se guarda `responsableId`. Cada cambio actualiza
+`fechaActualizacion` y registra el movimiento en `historial_estados`.
+Al resolver también se guarda `fechaResolucion`. El cambio y su historial deben
+confirmarse juntos: si falla la operación, se conserva el estado anterior.
+Las fechas reales deben usar marcas de tiempo del servidor.
+
+## 7. Casos de prueba del flujo
+
+| Caso | Acción | Resultado esperado |
+|---|---|---|
+| E-01 | Crear un reporte válido | Estado `reportado`, prioridad inicial `media` y folio único |
+| E-02 | Un responsable toma un reporte | Pasa a `en_proceso`, con responsable e historial |
+| E-03 | Resolver desde `en_proceso` con comentario | Pasa a `resuelto`, con fecha de resolución e historial |
+| E-04 | Intentar pasar de `reportado` a `resuelto` | Se rechaza y no se modifica la incidencia |
+| E-05 | Intentar retroceder o cambiar una incidencia resuelta | Se rechaza y no se agrega un movimiento |
+| E-06 | Un reportante intenta cambiar estado o prioridad | Se rechaza también desde Firestore |
+| E-07 | Resolver con comentario vacío o solo espacios | Se rechaza y permanece `en_proceso` |
+| E-08 | Falla el guardado de estado e historial | No queda un cambio parcial |
+
+Estos casos quedan como plan para la integración real; no se han ejecutado contra
+Firestore. La Revisión 1 permite mostrar el diagrama y los historiales ficticios.
+
+## 8. Datos de muestra de la Revisión 1
+
+Se reutilizan los ejemplos que Juan Manuel incorporó en
+[`public/js/demo-data.js`](../public/js/demo-data.js). Se evita duplicar el
+catálogo que ya consumen el listado y el detalle.
+
+| Folio | Estado | Prioridad | Ubicación |
+|---|---|---|---|
+| RC-2026-0006 | `reportado` | `media` | Edificio A |
+| RC-2026-0005 | `en_proceso` | `alta` | Laboratorio de Cómputo |
+| RC-2026-0004 | `reportado` | `baja` | Biblioteca |
+| RC-2026-0003 | `en_proceso` | `alta` | Edificio B |
+| RC-2026-0002 | `resuelto` | `media` | Biblioteca |
+| RC-2026-0001 | `resuelto` | `media` | Edificio A |
+
+Los ejemplos cubren los tres estados y las tres prioridades. Su historial usa
+`responsable` como etiqueta de presentación y fechas ISO; no equivale a la
+subcolección real, que requiere `responsableId`, `estadoAnterior` y timestamps
+según [`modelo-datos.md`](modelo-datos.md). No deben cargarse directamente en
+Firestore como si fueran documentos completos del modelo.
