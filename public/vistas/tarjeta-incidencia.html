@@ -1,0 +1,54 @@
+<article class="panel p-6 flex flex-col min-w-0 hover:border-[#8c6e39] transition-colors">
+    <div class="flex justify-between items-center gap-3">
+        <span class="w-11 h-11 rounded-xl bg-[#fff5cd] text-[#0a263d] grid place-items-center">
+            <svg
+                width="23"
+                height="23"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <use data-icono></use>
+            </svg>
+        </span>
+        <span data-estado></span>
+    </div>
+    <p
+        data-folio
+        class="text-[10px] font-bold tracking-wider text-stone-500 mt-6 [overflow-wrap:anywhere]"
+    ></p>
+    <h2 class="text-base font-bold leading-6 mt-2 [overflow-wrap:anywhere]">
+        <a
+            data-titulo
+            class="hover:underline"
+        ></a>
+    </h2>
+    <p
+        data-categoria
+        class="text-xs text-stone-500 mt-2"
+    ></p>
+    <div class="border-t border-stone-100 mt-5 pt-4 space-y-2 text-xs text-stone-500">
+        <p
+            data-ubicacion
+            class="[overflow-wrap:anywhere]"
+        ></p>
+        <div class="flex flex-wrap justify-between gap-2">
+            <p>
+                Prioridad
+                <strong data-prioridad></strong>
+            </p>
+            <time data-fecha></time>
+        </div>
+    </div>
+    <a
+        data-detalle
+        class="flex justify-between items-center text-xs font-bold text-[#0a263d] pt-5 mt-auto min-h-12"
+    >
+        Ver detalle
+        <span aria-hidden="true">↗</span>
+    </a>
+</article>

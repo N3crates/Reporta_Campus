@@ -1,67 +1,342 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ReportaCampus: reporta y da seguimiento a las incidencias de mantenimiento de tu campus.">
-  <meta name="theme-color" content="#0a263d">
-  <title>Reportar una incidencia · ReportaCampus</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body class="min-h-screen flex flex-col">
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <div class="university-strip"><div class="max-w-7xl mx-auto px-5 sm:px-8 flex justify-between gap-3"><span>UNIVERSIDAD DE GUANAJUATO</span><span class="academic-label">Proyecto académico · 2026</span></div></div>
-  <header class="university-header bg-white">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 masthead">
-      <a href="https://www.ugto.mx/" target="_blank" rel="noopener noreferrer" class="university-seal" aria-label="Universidad de Guanajuato, sitio oficial (abre en otra pestaña)"><img src="assets/escudo-ug.png" alt="Universidad de Guanajuato" width="150" height="128"></a>
-      <a href="index.html" class="project-brand" aria-label="ReportaCampus, inicio"><span class="brand-kicker">COMUNIDAD UNIVERSITARIA</span><span class="brand-title">Reporta<span>Campus</span></span><span class="brand-caption">Cuidemos nuestra colmena.</span></a>
-      <div class="community-brand hidden md:flex"><img src="assets/abeja.svg" alt="" width="40" height="40"><div><strong>#SomosAbejasUG</strong><span>Cada acción hace comunidad.</span></div></div>
-    </div>
-    <div class="navigation-bar"><div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-wrap items-center justify-between">
-      <button id="menu-toggle" class="md:hidden flex items-center gap-3 py-4 font-bold text-sm" aria-expanded="false" aria-controls="navegacion"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menú</span></button>
-      <span class="md:hidden text-[10px] text-[#ffd300] font-bold tracking-wider">#SomosAbejasUG</span>
-      <nav id="navegacion" aria-label="Navegación principal" class="hidden w-full flex-col md:flex md:w-auto md:flex-row"><a href="index.html" class="nav-link">Inicio</a><a href="incidencias.html" class="nav-link">Incidencias</a><a href="reportar.html" aria-current="page" class="nav-link">Reportar</a></nav>
-      <span class="hidden md:block text-[11px] text-slate-300">Mesa de ayuda para las instalaciones del campus</span>
-    </div></div>
-  </header>
-  <main id="contenido" class="flex-1 w-full max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-12" tabindex="-1">
-
-  <a href="index.html" class="text-xs font-semibold text-stone-500 hover:text-[#0a263d]">← Volver al inicio</a>
-  <div class="mt-7 mb-8"><p class="eyebrow mb-3">AL SERVICIO DE NUESTRA COLMENA</p><h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Reportar una incidencia</h1><p class="text-sm text-stone-500 mt-3 leading-6">Tu voz ayuda a cuidar los espacios que compartimos. Cuéntanos qué necesita atención.</p></div>
-  <div class="grid lg:grid-cols-[1fr_320px] gap-6 lg:gap-8 items-start">
-    <section class="panel p-5 sm:p-8" aria-labelledby="form-titulo">
-      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-5 mb-6"><h2 id="form-titulo" class="font-bold">Información del reporte</h2><p class="text-[11px] text-stone-500">Los campos con * son obligatorios</p></div>
-      <div id="error-alert" role="alert" tabindex="-1" class="hidden mb-6 p-4 text-sm text-red-800 bg-red-50 rounded-lg border border-red-200"></div>
-      <div id="success-alert" role="status" tabindex="-1" class="hidden mb-6 p-5 text-sm text-[#0a263d] bg-[#eef3f8] rounded-lg border border-[#c8d6e4]">
-        <h3 class="font-bold" id="success-title">¡Incidencia registrada con éxito!</h3><p class="mt-2">Tu folio de seguimiento:</p><p class="font-extrabold text-xl sm:text-2xl [overflow-wrap:anywhere] mt-2" id="folio-generado"></p><p class="text-xs mt-2" id="success-note">Guarda tu folio para consultar el avance.</p><a id="success-detail" href="incidencias.html" class="inline-block mt-4 font-bold underline">Consultar incidencias →</a>
-      </div>
-      <form id="form-reporte" novalidate class="space-y-6">
-        <div><label for="titulo" class="field-label">Título de la incidencia *</label><input id="titulo" name="titulo" class="field" required maxlength="100" placeholder="Ej. Lámpara fundida en el pasillo" aria-describedby="titulo-ayuda"><p id="titulo-ayuda" class="text-[11px] text-stone-500 mt-2">Una frase breve que describa el problema. Máximo 100 caracteres.</p></div>
-        <div class="grid sm:grid-cols-2 gap-5">
-          <div><label for="categoriaId" class="field-label">Categoría *</label><select id="categoriaId" name="categoriaId" class="field" required><option value="">Selecciona una categoría</option><option value="iluminacion">Iluminación</option><option value="computo">Cómputo</option><option value="limpieza">Limpieza</option><option value="mantenimiento">Mantenimiento general</option><option value="mobiliario">Mobiliario</option></select></div>
-          <div><label for="edificioId" class="field-label">Edificio *</label><select id="edificioId" name="edificioId" class="field" required><option value="">Selecciona un edificio</option><option value="edificio-a">Edificio A</option><option value="edificio-b">Edificio B</option><option value="biblioteca">Biblioteca</option><option value="lab-computo">Laboratorio de Cómputo</option></select></div>
-        </div>
-        <div><label for="aula" class="field-label">Aula o espacio específico *</label><input id="aula" name="aula" class="field" required placeholder="Ej. Aula A-102, pasillo de planta alta" aria-describedby="aula-ayuda"><p id="aula-ayuda" class="text-[11px] text-stone-500 mt-2">Indica el espacio de la instalación, sin compartir tu ubicación personal.</p></div>
-        <div><label for="descripcion" class="field-label">Descripción del problema *</label><textarea id="descripcion" name="descripcion" class="field resize-y min-h-32" rows="5" required maxlength="500" placeholder="Describe qué ocurre y cómo afecta el uso del espacio…" aria-describedby="descripcion-ayuda"></textarea><div class="flex justify-between gap-3 text-[11px] text-stone-500 mt-2"><p id="descripcion-ayuda">No incluyas nombres, teléfonos ni datos personales.</p><span id="descripcion-contador" class="shrink-0">0 / 500</span></div></div>
-        <div class="rounded-lg bg-stone-50 border border-stone-200 p-4"><label for="modo-demo" class="flex items-start gap-3 cursor-pointer"><input type="checkbox" id="modo-demo" class="mt-1 accent-[#0a263d] w-4 h-4 shrink-0"><span><span class="text-xs font-bold block">Probar sin enviar</span><span class="text-[11px] text-stone-500 block mt-1 leading-5">Genera un folio de muestra. No registra una incidencia real.</span></span></label></div>
-        <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1"><a href="incidencias.html" class="btn-secondary">Ver incidencias</a><button type="submit" id="btn-submit" class="btn-primary">Enviar reporte <span aria-hidden="true">↗</span></button></div>
-      </form>
-    </section>
-    <aside class="space-y-5">
-      <section class="bg-[#fff8da] rounded-2xl p-6 border border-[#eee0a9]"><img src="assets/abeja.svg" width="52" height="52" alt=""><h2 class="text-lg font-bold mt-3">Entre abejas,<br>nos cuidamos.</h2><ul class="text-xs leading-6 text-stone-600 mt-4 space-y-3"><li><strong class="text-[#0a263d]">01 · Ubica el problema.</strong><br>Edificio y aula ayudan al equipo a encontrarlo.</li><li><strong class="text-[#0a263d]">02 · Agrega detalles útiles.</strong><br>Explica qué dejó de funcionar y desde cuándo.</li><li><strong class="text-[#0a263d]">03 · Conserva el folio.</strong><br>Será tu referencia para dar seguimiento.</li></ul></section>
-      <section class="panel p-6"><h2 class="text-sm font-bold">¿Qué pasa después?</h2><p class="text-xs text-stone-500 leading-6 mt-3">Tu incidencia inicia como <strong class="text-stone-700">reportada</strong>. El personal revisa su prioridad y actualiza el estado conforme avanza la atención.</p></section>
-      <p class="text-xs text-stone-500 leading-6 px-2">Este espacio es para mantenimiento. Si hay un riesgo inmediato, avisa directamente al personal del campus.</p>
-    </aside>
-  </div>
-
-  </main>
-  <footer class="university-footer mt-12"><div class="max-w-7xl mx-auto px-5 sm:px-8 py-9 grid md:grid-cols-[230px_1fr_auto] gap-7 items-center"><a href="https://www.ugto.mx/" target="_blank" rel="noopener noreferrer" aria-label="Universidad de Guanajuato, sitio oficial"><img src="assets/escudo-ug-horizontal.png" alt="Universidad de Guanajuato" width="190" height="73"></a><div><p class="font-bold text-lg text-white">Cuidar el campus también es hacer comunidad.</p><p class="text-xs text-slate-300 mt-3 leading-6">ReportaCampus · Proyecto académico de Aplicaciones de Internet.<br>Revisión 1 · 2026 · Datos de demostración.</p></div><p class="text-[#ffd300] font-bold text-sm">#SomosAbejasUG</p></div><div class="border-t border-white/15"><div class="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex flex-wrap gap-3 justify-between text-[10px] text-slate-300"><span>ReportaCampus · Un proyecto de nuestra comunidad estudiantil.</span><span>Diseño inspirado en la identidad universitaria.</span></div></div></footer>
-  <script type="module" src="js/ui.js"></script>
-  <script type="module" src="js/pages/reportar.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <meta
+            name="description"
+            content="ReportaCampus: reporta y da seguimiento a las incidencias de mantenimiento de tu campus."
+        />
+        <meta
+            name="theme-color"
+            content="#0a263d"
+        />
+        <title>Reportar una incidencia · ReportaCampus</title>
+        <link
+            rel="icon"
+            href="assets/favicon.svg"
+            type="image/svg+xml"
+        />
+        <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com"
+        />
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link
+            rel="stylesheet"
+            href="css/styles.css"
+        />
+    </head>
+    <body class="min-h-screen flex flex-col">
+        <a
+            class="skip-link"
+            href="#contenido"
+        >
+            Saltar al contenido
+        </a>
+        <div id="encabezado"></div>
+        <main
+            id="contenido"
+            class="flex-1 w-full max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-12"
+            tabindex="-1"
+        >
+            <a
+                href="index.html"
+                class="text-xs font-semibold text-stone-500 hover:text-[#0a263d]"
+            >
+                ← Volver al inicio
+            </a>
+            <div class="mt-7 mb-8">
+                <p class="eyebrow mb-3">AL SERVICIO DE NUESTRA COLMENA</p>
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                    Reportar una incidencia
+                </h1>
+                <p class="text-sm text-stone-500 mt-3 leading-6">
+                    Tu voz ayuda a cuidar los espacios que compartimos. Cuéntanos qué necesita
+                    atención.
+                </p>
+            </div>
+            <div class="grid lg:grid-cols-[1fr_320px] gap-6 lg:gap-8 items-start">
+                <section
+                    class="panel p-5 sm:p-8"
+                    aria-labelledby="form-titulo"
+                >
+                    <div
+                        class="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-5 mb-6"
+                    >
+                        <h2
+                            id="form-titulo"
+                            class="font-bold"
+                        >
+                            Información del reporte
+                        </h2>
+                        <p class="text-[11px] text-stone-500">Los campos con * son obligatorios</p>
+                    </div>
+                    <div
+                        id="error-alert"
+                        role="alert"
+                        tabindex="-1"
+                        class="hidden mb-6 p-4 text-sm text-red-800 bg-red-50 rounded-lg border border-red-200"
+                    ></div>
+                    <div
+                        id="success-alert"
+                        role="status"
+                        tabindex="-1"
+                        class="hidden mb-6 p-5 text-sm text-[#0a263d] bg-[#eef3f8] rounded-lg border border-[#c8d6e4]"
+                    >
+                        <h3
+                            class="font-bold"
+                            id="success-title"
+                        >
+                            ¡Incidencia registrada con éxito!
+                        </h3>
+                        <p class="mt-2">Tu folio de seguimiento:</p>
+                        <p
+                            class="font-extrabold text-xl sm:text-2xl [overflow-wrap:anywhere] mt-2"
+                            id="folio-generado"
+                        ></p>
+                        <p
+                            class="text-xs mt-2"
+                            id="success-note"
+                        >
+                            Guarda tu folio para consultar el avance.
+                        </p>
+                        <a
+                            id="success-detail"
+                            href="incidencias.html"
+                            class="inline-block mt-4 font-bold underline"
+                        >
+                            Consultar incidencias →
+                        </a>
+                    </div>
+                    <form
+                        id="form-reporte"
+                        novalidate
+                        class="space-y-6"
+                    >
+                        <div>
+                            <label
+                                for="titulo"
+                                class="field-label"
+                            >
+                                Título de la incidencia *
+                            </label>
+                            <input
+                                id="titulo"
+                                name="titulo"
+                                class="field"
+                                required
+                                maxlength="100"
+                                placeholder="Ej. Lámpara fundida en el pasillo"
+                                aria-describedby="titulo-ayuda"
+                            />
+                            <p
+                                id="titulo-ayuda"
+                                class="text-[11px] text-stone-500 mt-2"
+                            >
+                                Una frase breve que describa el problema. Máximo 100 caracteres.
+                            </p>
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-5">
+                            <div>
+                                <label
+                                    for="categoriaId"
+                                    class="field-label"
+                                >
+                                    Categoría *
+                                </label>
+                                <select
+                                    id="categoriaId"
+                                    name="categoriaId"
+                                    class="field"
+                                    required
+                                >
+                                    <option value="">Selecciona una categoría</option>
+                                    <option value="iluminacion">Iluminación</option>
+                                    <option value="computo">Cómputo</option>
+                                    <option value="limpieza">Limpieza</option>
+                                    <option value="mantenimiento">Mantenimiento general</option>
+                                    <option value="mobiliario">Mobiliario</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    for="edificioId"
+                                    class="field-label"
+                                >
+                                    Edificio *
+                                </label>
+                                <select
+                                    id="edificioId"
+                                    name="edificioId"
+                                    class="field"
+                                    required
+                                >
+                                    <option value="">Selecciona un edificio</option>
+                                    <option value="edificio-a">Edificio A</option>
+                                    <option value="edificio-b">Edificio B</option>
+                                    <option value="biblioteca">Biblioteca</option>
+                                    <option value="lab-computo">Laboratorio de Cómputo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                for="aula"
+                                class="field-label"
+                            >
+                                Aula o espacio específico *
+                            </label>
+                            <input
+                                id="aula"
+                                name="aula"
+                                class="field"
+                                required
+                                placeholder="Ej. Aula A-102, pasillo de planta alta"
+                                aria-describedby="aula-ayuda"
+                            />
+                            <p
+                                id="aula-ayuda"
+                                class="text-[11px] text-stone-500 mt-2"
+                            >
+                                Indica el espacio de la instalación, sin compartir tu ubicación
+                                personal.
+                            </p>
+                        </div>
+                        <div>
+                            <label
+                                for="descripcion"
+                                class="field-label"
+                            >
+                                Descripción del problema *
+                            </label>
+                            <textarea
+                                id="descripcion"
+                                name="descripcion"
+                                class="field resize-y min-h-32"
+                                rows="5"
+                                required
+                                maxlength="500"
+                                placeholder="Describe qué ocurre y cómo afecta el uso del espacio…"
+                                aria-describedby="descripcion-ayuda"
+                            ></textarea>
+                            <div class="flex justify-between gap-3 text-[11px] text-stone-500 mt-2">
+                                <p id="descripcion-ayuda">
+                                    No incluyas nombres, teléfonos ni datos personales.
+                                </p>
+                                <span
+                                    id="descripcion-contador"
+                                    class="shrink-0"
+                                >
+                                    0 / 500
+                                </span>
+                            </div>
+                        </div>
+                        <div class="rounded-lg bg-stone-50 border border-stone-200 p-4">
+                            <label
+                                for="modo-demo"
+                                class="flex items-start gap-3 cursor-pointer"
+                            >
+                                <input
+                                    type="checkbox"
+                                    id="modo-demo"
+                                    class="mt-1 accent-[#0a263d] w-4 h-4 shrink-0"
+                                />
+                                <span>
+                                    <span class="text-xs font-bold block">Probar sin enviar</span>
+                                    <span class="text-[11px] text-stone-500 block mt-1 leading-5">
+                                        Genera un folio de muestra. No registra una incidencia real.
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                        <div
+                            class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1"
+                        >
+                            <a
+                                href="incidencias.html"
+                                class="btn-secondary"
+                            >
+                                Ver incidencias
+                            </a>
+                            <button
+                                type="submit"
+                                id="btn-submit"
+                                class="btn-primary"
+                            >
+                                Enviar reporte
+                                <span aria-hidden="true">↗</span>
+                            </button>
+                        </div>
+                    </form>
+                </section>
+                <aside class="space-y-5">
+                    <section class="bg-[#fff8da] rounded-2xl p-6 border border-[#eee0a9]">
+                        <img
+                            src="assets/abeja.svg"
+                            width="52"
+                            height="52"
+                            alt=""
+                        />
+                        <h2 class="text-lg font-bold mt-3">
+                            Entre abejas,
+                            <br />
+                            nos cuidamos.
+                        </h2>
+                        <ul class="text-xs leading-6 text-stone-600 mt-4 space-y-3">
+                            <li>
+                                <strong class="text-[#0a263d]">01 · Ubica el problema.</strong>
+                                <br />
+                                Edificio y aula ayudan al equipo a encontrarlo.
+                            </li>
+                            <li>
+                                <strong class="text-[#0a263d]">02 · Agrega detalles útiles.</strong>
+                                <br />
+                                Explica qué dejó de funcionar y desde cuándo.
+                            </li>
+                            <li>
+                                <strong class="text-[#0a263d]">03 · Conserva el folio.</strong>
+                                <br />
+                                Será tu referencia para dar seguimiento.
+                            </li>
+                        </ul>
+                    </section>
+                    <section class="panel p-6">
+                        <h2 class="text-sm font-bold">¿Qué pasa después?</h2>
+                        <p class="text-xs text-stone-500 leading-6 mt-3">
+                            Tu incidencia inicia como
+                            <strong class="text-stone-700">reportada</strong>
+                            . El personal revisa su prioridad y actualiza el estado conforme avanza
+                            la atención.
+                        </p>
+                    </section>
+                    <p class="text-xs text-stone-500 leading-6 px-2">
+                        Este espacio es para mantenimiento. Si hay un riesgo inmediato, avisa
+                        directamente al personal del campus.
+                    </p>
+                </aside>
+            </div>
+        </main>
+        <div id="pie-pagina"></div>
+        <script
+            type="module"
+            src="js/ui.js"
+        ></script>
+        <script
+            type="module"
+            src="js/pages/reportar.js"
+        ></script>
+    </body>
 </html>

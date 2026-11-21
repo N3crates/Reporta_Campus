@@ -1,254 +1,239 @@
 {
-  "_nota": "Datos ficticios para ReportaCampus. Los IDs de documento son fijos para que cargar la semilla sea repetible. Las fechas son ISO 8601 y seed.js las convierte a Timestamp.",
-  "categorias": {
-    "iluminacion": {
-      "nombre": "Iluminación",
-      "descripcion": "Lámparas fundidas o con falla",
-      "activa": true
+    "_nota": "Datos ficticios para ReportaCampus. Los IDs de documento son fijos para que cargar la semilla sea repetible. Las fechas son ISO 8601 y seed.js las convierte a Timestamp.",
+    "categorias": {
+        "iluminacion": {
+            "nombre": "Iluminación",
+            "descripcion": "Lámparas fundidas o con falla",
+            "activa": true
+        },
+        "computo": {
+            "nombre": "Cómputo",
+            "descripcion": "Equipos de cómputo, proyectores y periféricos",
+            "activa": true
+        },
+        "limpieza": {
+            "nombre": "Limpieza",
+            "descripcion": "Áreas sucias o falta de insumos",
+            "activa": true
+        },
+        "mantenimiento": {
+            "nombre": "Mantenimiento general",
+            "descripcion": "Puertas, plomería y reparaciones generales",
+            "activa": true
+        },
+        "mobiliario": {
+            "nombre": "Mobiliario",
+            "descripcion": "Mesas, sillas y pupitres dañados",
+            "activa": true
+        }
     },
-    "computo": {
-      "nombre": "Cómputo",
-      "descripcion": "Equipos de cómputo, proyectores y periféricos",
-      "activa": true
+    "edificios": {
+        "edificio-a": {
+            "nombre": "Edificio A",
+            "aulas": ["A101", "A102", "A201", "Pasillo de planta alta"],
+            "activo": true
+        },
+        "edificio-b": {
+            "nombre": "Edificio B",
+            "aulas": ["B101", "B102", "Sanitarios · Planta baja"],
+            "activo": true
+        },
+        "biblioteca": {
+            "nombre": "Biblioteca",
+            "aulas": ["Sala de lectura", "Zona de estudio grupal"],
+            "activo": true
+        },
+        "lab-computo": {
+            "nombre": "Laboratorio de Cómputo",
+            "aulas": ["Laboratorio 1", "Laboratorio 2"],
+            "activo": true
+        }
     },
-    "limpieza": {
-      "nombre": "Limpieza",
-      "descripcion": "Áreas sucias o falta de insumos",
-      "activa": true
+    "contadores": {
+        "folios-2026": {
+            "ultimoFolio": 6
+        }
     },
-    "mantenimiento": {
-      "nombre": "Mantenimiento general",
-      "descripcion": "Puertas, plomería y reparaciones generales",
-      "activa": true
-    },
-    "mobiliario": {
-      "nombre": "Mobiliario",
-      "descripcion": "Mesas, sillas y pupitres dañados",
-      "activa": true
+    "incidencias": {
+        "seed-001": {
+            "folio": "RC-2026-0001",
+            "titulo": "Proyector sin señal en el aula",
+            "descripcion": "El proyector del aula no mostraba imagen al conectar el equipo. Se solicitó la revisión del cable de video y de la entrada seleccionada.",
+            "categoriaId": "computo",
+            "edificioId": "edificio-a",
+            "aula": "Aula A-102",
+            "prioridad": "media",
+            "estado": "resuelto",
+            "reportanteId": "demo-estudiante",
+            "fechaCreacion": "2026-11-14T16:00:00Z",
+            "fechaActualizacion": "2026-11-15T17:00:00Z",
+            "responsableId": "demo-responsable",
+            "fechaResolucion": "2026-11-15T17:00:00Z",
+            "historial": [
+                {
+                    "estadoAnterior": null,
+                    "estadoNuevo": "reportado",
+                    "responsableId": "demo-estudiante",
+                    "comentario": "Se registró el reporte y se generó su folio.",
+                    "fecha": "2026-11-14T16:00:00Z"
+                },
+                {
+                    "estadoAnterior": "reportado",
+                    "estadoNuevo": "en_proceso",
+                    "responsableId": "demo-responsable",
+                    "comentario": "Se revisó la conexión y el cable HDMI.",
+                    "fecha": "2026-11-15T14:00:00Z"
+                },
+                {
+                    "estadoAnterior": "en_proceso",
+                    "estadoNuevo": "resuelto",
+                    "responsableId": "demo-responsable",
+                    "comentario": "Se reemplazó el cable dañado y se verificó la proyección.",
+                    "fecha": "2026-11-15T17:00:00Z"
+                }
+            ]
+        },
+        "seed-002": {
+            "folio": "RC-2026-0002",
+            "titulo": "Limpieza de la zona de estudio",
+            "descripcion": "Se solicitó limpieza de las mesas y del piso en el área de estudio después de una actividad académica.",
+            "categoriaId": "limpieza",
+            "edificioId": "biblioteca",
+            "aula": "Zona de estudio grupal",
+            "prioridad": "media",
+            "estado": "resuelto",
+            "reportanteId": "demo-estudiante",
+            "fechaCreacion": "2026-11-15T18:10:00Z",
+            "fechaActualizacion": "2026-11-16T16:30:00Z",
+            "responsableId": "demo-responsable",
+            "fechaResolucion": "2026-11-16T16:30:00Z",
+            "historial": [
+                {
+                    "estadoAnterior": null,
+                    "estadoNuevo": "reportado",
+                    "responsableId": "demo-estudiante",
+                    "comentario": "Se registró el reporte y se generó su folio.",
+                    "fecha": "2026-11-15T18:10:00Z"
+                },
+                {
+                    "estadoAnterior": "reportado",
+                    "estadoNuevo": "en_proceso",
+                    "responsableId": "demo-responsable",
+                    "comentario": "Personal asignado para atender el área.",
+                    "fecha": "2026-11-16T14:00:00Z"
+                },
+                {
+                    "estadoAnterior": "en_proceso",
+                    "estadoNuevo": "resuelto",
+                    "responsableId": "demo-responsable",
+                    "comentario": "Se realizó limpieza de mesas y piso. El área está lista para usarse.",
+                    "fecha": "2026-11-16T16:30:00Z"
+                }
+            ]
+        },
+        "seed-003": {
+            "folio": "RC-2026-0003",
+            "titulo": "Fuga de agua en el lavabo",
+            "descripcion": "La llave del lavabo no cierra por completo y deja caer agua de manera continua. El espacio se encuentra señalizado para su revisión.",
+            "categoriaId": "mantenimiento",
+            "edificioId": "edificio-b",
+            "aula": "Sanitarios · Planta baja",
+            "prioridad": "alta",
+            "estado": "en_proceso",
+            "reportanteId": "demo-estudiante",
+            "fechaCreacion": "2026-11-16T17:00:00Z",
+            "fechaActualizacion": "2026-11-17T15:00:00Z",
+            "responsableId": "demo-responsable",
+            "historial": [
+                {
+                    "estadoAnterior": null,
+                    "estadoNuevo": "reportado",
+                    "responsableId": "demo-estudiante",
+                    "comentario": "Se registró el reporte y se generó su folio.",
+                    "fecha": "2026-11-16T17:00:00Z"
+                },
+                {
+                    "estadoAnterior": "reportado",
+                    "estadoNuevo": "en_proceso",
+                    "responsableId": "demo-responsable",
+                    "comentario": "Se identificó desgaste en la llave. Se prepara el repuesto.",
+                    "fecha": "2026-11-17T15:00:00Z"
+                }
+            ]
+        },
+        "seed-004": {
+            "folio": "RC-2026-0004",
+            "titulo": "Mesa de lectura con una pata floja",
+            "descripcion": "Una mesa de la zona de lectura se mueve al apoyar materiales. Se requiere ajustar la unión de una de las patas.",
+            "categoriaId": "mobiliario",
+            "edificioId": "biblioteca",
+            "aula": "Sala de lectura · Mesa 4",
+            "prioridad": "baja",
+            "estado": "reportado",
+            "reportanteId": "demo-estudiante",
+            "fechaCreacion": "2026-11-17T14:20:00Z",
+            "fechaActualizacion": "2026-11-17T14:20:00Z",
+            "historial": [
+                {
+                    "estadoAnterior": null,
+                    "estadoNuevo": "reportado",
+                    "responsableId": "demo-estudiante",
+                    "comentario": "Se registró el reporte y se generó su folio.",
+                    "fecha": "2026-11-17T14:20:00Z"
+                }
+            ]
+        },
+        "seed-005": {
+            "folio": "RC-2026-0005",
+            "titulo": "Computadora del laboratorio no enciende",
+            "descripcion": "El equipo número 12 no enciende al presionar el botón. Se revisó que el cable de alimentación estuviera conectado. Las prácticas se realizan en otro equipo.",
+            "categoriaId": "computo",
+            "edificioId": "lab-computo",
+            "aula": "Laboratorio 1 · Equipo 12",
+            "prioridad": "alta",
+            "estado": "en_proceso",
+            "reportanteId": "demo-estudiante",
+            "fechaCreacion": "2026-11-17T16:15:00Z",
+            "fechaActualizacion": "2026-11-18T14:00:00Z",
+            "responsableId": "demo-responsable",
+            "historial": [
+                {
+                    "estadoAnterior": null,
+                    "estadoNuevo": "reportado",
+                    "responsableId": "demo-estudiante",
+                    "comentario": "Se registró el reporte y se generó su folio.",
+                    "fecha": "2026-11-17T16:15:00Z"
+                },
+                {
+                    "estadoAnterior": "reportado",
+                    "estadoNuevo": "en_proceso",
+                    "responsableId": "demo-responsable",
+                    "comentario": "Equipo en revisión. Se verificará la fuente de alimentación.",
+                    "fecha": "2026-11-18T14:00:00Z"
+                }
+            ]
+        },
+        "seed-006": {
+            "folio": "RC-2026-0006",
+            "titulo": "Lámpara fundida en el pasillo",
+            "descripcion": "La luminaria del pasillo de planta alta no enciende. El área queda con poca iluminación durante las clases de la tarde.",
+            "categoriaId": "iluminacion",
+            "edificioId": "edificio-a",
+            "aula": "Pasillo de planta alta",
+            "prioridad": "media",
+            "estado": "reportado",
+            "reportanteId": "demo-estudiante",
+            "fechaCreacion": "2026-11-18T15:30:00Z",
+            "fechaActualizacion": "2026-11-18T15:30:00Z",
+            "historial": [
+                {
+                    "estadoAnterior": null,
+                    "estadoNuevo": "reportado",
+                    "responsableId": "demo-estudiante",
+                    "comentario": "Se registró el reporte y se generó su folio.",
+                    "fecha": "2026-11-18T15:30:00Z"
+                }
+            ]
+        }
     }
-  },
-  "edificios": {
-    "edificio-a": {
-      "nombre": "Edificio A",
-      "aulas": [
-        "A101",
-        "A102",
-        "A201",
-        "Pasillo de planta alta"
-      ],
-      "activo": true
-    },
-    "edificio-b": {
-      "nombre": "Edificio B",
-      "aulas": [
-        "B101",
-        "B102",
-        "Sanitarios · Planta baja"
-      ],
-      "activo": true
-    },
-    "biblioteca": {
-      "nombre": "Biblioteca",
-      "aulas": [
-        "Sala de lectura",
-        "Zona de estudio grupal"
-      ],
-      "activo": true
-    },
-    "lab-computo": {
-      "nombre": "Laboratorio de Cómputo",
-      "aulas": [
-        "Laboratorio 1",
-        "Laboratorio 2"
-      ],
-      "activo": true
-    }
-  },
-  "contadores": {
-    "folios-2026": {
-      "ultimoFolio": 6
-    }
-  },
-  "incidencias": {
-    "seed-001": {
-      "folio": "RC-2026-0001",
-      "titulo": "Proyector sin señal en el aula",
-      "descripcion": "El proyector del aula no mostraba imagen al conectar el equipo. Se solicitó la revisión del cable de video y de la entrada seleccionada.",
-      "categoriaId": "computo",
-      "edificioId": "edificio-a",
-      "aula": "Aula A-102",
-      "prioridad": "media",
-      "estado": "resuelto",
-      "reportanteId": "demo-estudiante",
-      "fechaCreacion": "2026-11-14T16:00:00Z",
-      "fechaActualizacion": "2026-11-15T17:00:00Z",
-      "responsableId": "demo-responsable",
-      "fechaResolucion": "2026-11-15T17:00:00Z",
-      "historial": [
-        {
-          "estadoAnterior": null,
-          "estadoNuevo": "reportado",
-          "responsableId": "demo-estudiante",
-          "comentario": "Se registró el reporte y se generó su folio.",
-          "fecha": "2026-11-14T16:00:00Z"
-        },
-        {
-          "estadoAnterior": "reportado",
-          "estadoNuevo": "en_proceso",
-          "responsableId": "demo-responsable",
-          "comentario": "Se revisó la conexión y el cable HDMI.",
-          "fecha": "2026-11-15T14:00:00Z"
-        },
-        {
-          "estadoAnterior": "en_proceso",
-          "estadoNuevo": "resuelto",
-          "responsableId": "demo-responsable",
-          "comentario": "Se reemplazó el cable dañado y se verificó la proyección.",
-          "fecha": "2026-11-15T17:00:00Z"
-        }
-      ]
-    },
-    "seed-002": {
-      "folio": "RC-2026-0002",
-      "titulo": "Limpieza de la zona de estudio",
-      "descripcion": "Se solicitó limpieza de las mesas y del piso en el área de estudio después de una actividad académica.",
-      "categoriaId": "limpieza",
-      "edificioId": "biblioteca",
-      "aula": "Zona de estudio grupal",
-      "prioridad": "media",
-      "estado": "resuelto",
-      "reportanteId": "demo-estudiante",
-      "fechaCreacion": "2026-11-15T18:10:00Z",
-      "fechaActualizacion": "2026-11-16T16:30:00Z",
-      "responsableId": "demo-responsable",
-      "fechaResolucion": "2026-11-16T16:30:00Z",
-      "historial": [
-        {
-          "estadoAnterior": null,
-          "estadoNuevo": "reportado",
-          "responsableId": "demo-estudiante",
-          "comentario": "Se registró el reporte y se generó su folio.",
-          "fecha": "2026-11-15T18:10:00Z"
-        },
-        {
-          "estadoAnterior": "reportado",
-          "estadoNuevo": "en_proceso",
-          "responsableId": "demo-responsable",
-          "comentario": "Personal asignado para atender el área.",
-          "fecha": "2026-11-16T14:00:00Z"
-        },
-        {
-          "estadoAnterior": "en_proceso",
-          "estadoNuevo": "resuelto",
-          "responsableId": "demo-responsable",
-          "comentario": "Se realizó limpieza de mesas y piso. El área está lista para usarse.",
-          "fecha": "2026-11-16T16:30:00Z"
-        }
-      ]
-    },
-    "seed-003": {
-      "folio": "RC-2026-0003",
-      "titulo": "Fuga de agua en el lavabo",
-      "descripcion": "La llave del lavabo no cierra por completo y deja caer agua de manera continua. El espacio se encuentra señalizado para su revisión.",
-      "categoriaId": "mantenimiento",
-      "edificioId": "edificio-b",
-      "aula": "Sanitarios · Planta baja",
-      "prioridad": "alta",
-      "estado": "en_proceso",
-      "reportanteId": "demo-estudiante",
-      "fechaCreacion": "2026-11-16T17:00:00Z",
-      "fechaActualizacion": "2026-11-17T15:00:00Z",
-      "responsableId": "demo-responsable",
-      "historial": [
-        {
-          "estadoAnterior": null,
-          "estadoNuevo": "reportado",
-          "responsableId": "demo-estudiante",
-          "comentario": "Se registró el reporte y se generó su folio.",
-          "fecha": "2026-11-16T17:00:00Z"
-        },
-        {
-          "estadoAnterior": "reportado",
-          "estadoNuevo": "en_proceso",
-          "responsableId": "demo-responsable",
-          "comentario": "Se identificó desgaste en la llave. Se prepara el repuesto.",
-          "fecha": "2026-11-17T15:00:00Z"
-        }
-      ]
-    },
-    "seed-004": {
-      "folio": "RC-2026-0004",
-      "titulo": "Mesa de lectura con una pata floja",
-      "descripcion": "Una mesa de la zona de lectura se mueve al apoyar materiales. Se requiere ajustar la unión de una de las patas.",
-      "categoriaId": "mobiliario",
-      "edificioId": "biblioteca",
-      "aula": "Sala de lectura · Mesa 4",
-      "prioridad": "baja",
-      "estado": "reportado",
-      "reportanteId": "demo-estudiante",
-      "fechaCreacion": "2026-11-17T14:20:00Z",
-      "fechaActualizacion": "2026-11-17T14:20:00Z",
-      "historial": [
-        {
-          "estadoAnterior": null,
-          "estadoNuevo": "reportado",
-          "responsableId": "demo-estudiante",
-          "comentario": "Se registró el reporte y se generó su folio.",
-          "fecha": "2026-11-17T14:20:00Z"
-        }
-      ]
-    },
-    "seed-005": {
-      "folio": "RC-2026-0005",
-      "titulo": "Computadora del laboratorio no enciende",
-      "descripcion": "El equipo número 12 no enciende al presionar el botón. Se revisó que el cable de alimentación estuviera conectado. Las prácticas se realizan en otro equipo.",
-      "categoriaId": "computo",
-      "edificioId": "lab-computo",
-      "aula": "Laboratorio 1 · Equipo 12",
-      "prioridad": "alta",
-      "estado": "en_proceso",
-      "reportanteId": "demo-estudiante",
-      "fechaCreacion": "2026-11-17T16:15:00Z",
-      "fechaActualizacion": "2026-11-18T14:00:00Z",
-      "responsableId": "demo-responsable",
-      "historial": [
-        {
-          "estadoAnterior": null,
-          "estadoNuevo": "reportado",
-          "responsableId": "demo-estudiante",
-          "comentario": "Se registró el reporte y se generó su folio.",
-          "fecha": "2026-11-17T16:15:00Z"
-        },
-        {
-          "estadoAnterior": "reportado",
-          "estadoNuevo": "en_proceso",
-          "responsableId": "demo-responsable",
-          "comentario": "Equipo en revisión. Se verificará la fuente de alimentación.",
-          "fecha": "2026-11-18T14:00:00Z"
-        }
-      ]
-    },
-    "seed-006": {
-      "folio": "RC-2026-0006",
-      "titulo": "Lámpara fundida en el pasillo",
-      "descripcion": "La luminaria del pasillo de planta alta no enciende. El área queda con poca iluminación durante las clases de la tarde.",
-      "categoriaId": "iluminacion",
-      "edificioId": "edificio-a",
-      "aula": "Pasillo de planta alta",
-      "prioridad": "media",
-      "estado": "reportado",
-      "reportanteId": "demo-estudiante",
-      "fechaCreacion": "2026-11-18T15:30:00Z",
-      "fechaActualizacion": "2026-11-18T15:30:00Z",
-      "historial": [
-        {
-          "estadoAnterior": null,
-          "estadoNuevo": "reportado",
-          "responsableId": "demo-estudiante",
-          "comentario": "Se registró el reporte y se generó su folio.",
-          "fecha": "2026-11-18T15:30:00Z"
-        }
-      ]
-    }
-  }
 }
