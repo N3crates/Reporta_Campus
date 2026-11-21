@@ -1,9 +1,4 @@
-import {
-    doc,
-    runTransaction,
-    collection,
-    serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { doc, runTransaction, collection, serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { db } from './firebase.js';
 
 function normalizeText(value) {
@@ -13,11 +8,9 @@ function normalizeText(value) {
 // Genera un folio unico correlativo mediante transaccion y guarda la incidencia
 export async function registrarIncidencia(payload) {
     const anioActual = new Date().getFullYear();
-
     const contadorRef = doc(db, 'contadores', `folios-${anioActual}`);
     const incidenciasColRef = collection(db, 'incidencias');
     const nuevaIncidenciaRef = doc(incidenciasColRef);
-
     const resultado = await runTransaction(db, async (transaction) => {
         const contadorDoc = await transaction.get(contadorRef);
         let nuevoNumero = 1;

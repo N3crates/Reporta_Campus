@@ -1,22 +1,18 @@
 <div class="flex flex-wrap gap-3 items-center mb-5">
     <span class="demo-label">Datos de muestra</span>
-    <span
-        data-folio
-        class="text-xs font-bold tracking-wider text-stone-500 [overflow-wrap:anywhere]"
-    ></span>
+    <span data-folio class="text-xs font-bold tracking-wider text-stone-500 [overflow-wrap:anywhere]"></span>
 </div>
 <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-8">
     <div class="min-w-0">
-        <h1
-            data-titulo
-            class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight [overflow-wrap:anywhere]"
-        ></h1>
+        <h1 data-titulo class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight [overflow-wrap:anywhere]"></h1>
         <p class="text-xs text-stone-500 mt-4">
             Reportado el
             <time data-fecha></time>
         </p>
     </div>
-    <div class="shrink-0"><span data-estado></span></div>
+    <div class="shrink-0">
+        <span data-estado></span>
+    </div>
 </div>
 <div class="grid lg:grid-cols-[1.1fr_1fr] gap-6 lg:gap-8 items-start">
     <div class="space-y-5 min-w-0">
@@ -33,89 +29,70 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     aria-hidden="true"
-                >
+                    >
                     <use data-icono></use>
                 </svg>
-                <h2 class="font-bold">Información de la incidencia</h2>
+                <h2 class="font-bold">
+                    Información de la incidencia
+                </h2>
             </div>
             <dl class="grid sm:grid-cols-2 gap-7 mt-6">
                 <div class="min-w-0">
                     <dt class="text-[10px] uppercase tracking-wider font-bold text-stone-500">
                         Categoría
                     </dt>
-                    <dd
-                        data-categoria
-                        class="text-sm font-semibold mt-2 [overflow-wrap:anywhere]"
-                    ></dd>
+                    <dd data-categoria class="text-sm font-semibold mt-2 [overflow-wrap:anywhere]"></dd>
                 </div>
                 <div class="min-w-0">
                     <dt class="text-[10px] uppercase tracking-wider font-bold text-stone-500">
                         Prioridad
                     </dt>
-                    <dd
-                        data-prioridad
-                        class="text-sm font-semibold mt-2 [overflow-wrap:anywhere]"
-                    ></dd>
+                    <dd data-prioridad class="text-sm font-semibold mt-2 [overflow-wrap:anywhere]"></dd>
                 </div>
                 <div class="min-w-0">
                     <dt class="text-[10px] uppercase tracking-wider font-bold text-stone-500">
                         Edificio
                     </dt>
-                    <dd
-                        data-edificio
-                        class="text-sm font-semibold mt-2 [overflow-wrap:anywhere]"
-                    ></dd>
+                    <dd data-edificio class="text-sm font-semibold mt-2 [overflow-wrap:anywhere]"></dd>
                 </div>
                 <div class="min-w-0">
                     <dt class="text-[10px] uppercase tracking-wider font-bold text-stone-500">
                         Aula o espacio
                     </dt>
-                    <dd
-                        data-aula
-                        class="text-sm font-semibold mt-2 [overflow-wrap:anywhere]"
-                    ></dd>
+                    <dd data-aula class="text-sm font-semibold mt-2 [overflow-wrap:anywhere]"></dd>
                 </div>
             </dl>
             <div class="border-t border-stone-100 pt-6 mt-7">
                 <h3 class="text-[10px] uppercase tracking-wider font-bold text-stone-500">
                     Descripción
                 </h3>
-                <p
-                    data-descripcion
-                    class="text-sm leading-7 mt-3 text-stone-600 whitespace-pre-line [overflow-wrap:anywhere]"
-                ></p>
+                <p data-descripcion class="text-sm leading-7 mt-3 text-stone-600 whitespace-pre-line [overflow-wrap:anywhere]"></p>
             </div>
         </section>
         <section class="rounded-xl border border-[#eee0a9] bg-[#fff8da] p-5">
             <h2 class="text-sm font-bold">Siempre puedes conocer el avance</h2>
             <p class="text-xs text-stone-600 leading-6 mt-2">
-                El historial muestra cuándo se reportó la incidencia, quién la atendió y qué
-                solución se realizó. Este reporte es ficticio.
+                El historial muestra cuándo se reportó la incidencia, quién la atendió y qué solución se realizó. Este reporte es ficticio.
             </p>
         </section>
     </div>
     <section class="panel p-6 sm:p-8">
         <div class="flex flex-wrap justify-between items-center gap-3 mb-8">
-            <h2 class="font-bold">Historial de atención</h2>
-            <span class="text-[10px] text-stone-500">Del inicio a la solución</span>
+            <h2 class="font-bold">
+                Historial de atención
+            </h2>
+            <span class="text-[10px] text-stone-500">
+                Del inicio a la solución
+            </span>
         </div>
-        <ol
-            data-historial
-            class="space-y-0"
-        ></ol>
+        <ol data-historial class="space-y-0"></ol>
     </section>
 </div>
 <div class="mt-8 flex flex-wrap gap-3">
-    <a
-        href="incidencias.html"
-        class="btn-secondary"
-    >
+    <a href="incidencias.html" class="btn-secondary">
         ← Volver al listado
     </a>
-    <a
-        href="reportar.html"
-        class="btn-primary"
-    >
+    <a href="reportar.html" class="btn-primary">
         Reportar otra incidencia ↗
     </a>
 </div>

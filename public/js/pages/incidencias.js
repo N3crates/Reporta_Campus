@@ -1,16 +1,14 @@
-import { getDemoReports, categorias, edificios } from '../demo-data.js';
-import {
-    cargarVista,
-    asignarTexto,
-    mostrarEstado,
-    asignarFecha,
-    asignarIcono,
-    normalizarTexto
-} from '../funciones.js';
+import { categorias, edificios } from '../demo-data.js';
+import { obtenerIncidencias } from '../incidencias.js';
+import { cargarVista, asignarTexto, mostrarEstado, asignarFecha, asignarIcono, normalizarTexto } from '../funciones.js';
 
 const formulario = document.getElementById('filtros');
 const lista = document.getElementById('lista-incidencias');
 let plantilla;
+let todas = [];
+
+const nombreCategoria = id => categorias[id] ?? id ?? 'Sin categoría';
+const nombreEdificio = id => edificios[id] ?? id ?? 'Sin edificio';
 
 function leerFiltros() {
     return {
@@ -23,7 +21,7 @@ function leerFiltros() {
 }
 
 function coincideConFiltros(incidencia, filtros) {
-    const texto = normalizarTexto(incidencia.titulo + ' ' + incidencia.folio);
+    const texto = normalizarTexto((incidencia.titulo ?? '') + ' ' + (incidencia.folio ?? ''));
     const porTexto = filtros.busqueda === '' || texto.includes(filtros.busqueda);
     const porEstado = filtros.estado === '' || incidencia.estado === filtros.estado;
     const porPrioridad = filtros.prioridad === '' || incidencia.prioridad === filtros.prioridad;
@@ -40,12 +38,12 @@ function crearTarjeta(incidencia) {
     asignarIcono(vista.querySelector('[data-icono]'), incidencia.categoriaId);
     mostrarEstado(vista.querySelector('[data-estado]'), incidencia.estado);
     asignarTexto(vista, '[data-folio]', incidencia.folio);
-    asignarTexto(vista, '[data-categoria]', categorias[incidencia.categoriaId]);
+    asignarTexto(vista, '[data-categoria]', nombreCategoria(incidencia.categoriaId));
 
     const titulo = asignarTexto(vista, '[data-titulo]', incidencia.titulo);
     titulo.href = enlace;
 
-    const ubicacion = edificios[incidencia.edificioId] + ' · ' + incidencia.aula;
+    const ubicacion = nombreEdificio(incidencia.edificioId) + ' · ' + (incidencia.aula ?? '');
     asignarTexto(vista, '[data-ubicacion]', ubicacion);
 
     const prioridad = asignarTexto(vista, '[data-prioridad]', incidencia.prioridad);
@@ -66,7 +64,7 @@ function crearTarjeta(incidencia) {
 
 function mostrarIncidencias() {
     const filtros = leerFiltros();
-    const incidencias = getDemoReports().filter(function (incidencia) {
+    const incidencias = todas.filter(function (incidencia) {
         return coincideConFiltros(incidencia, filtros);
     });
 
@@ -93,7 +91,10 @@ function limpiarFiltros() {
 
 async function iniciarListado() {
     try {
+        document.getElementById('resultados-conteo').textContent = 'Cargando incidencias…';
         plantilla = await cargarVista('vistas/tarjeta-incidencia.html');
+        todas = await obtenerIncidencias();
+
         formulario.addEventListener('input', mostrarIncidencias);
         formulario.addEventListener('change', mostrarIncidencias);
         formulario.addEventListener('submit', function (evento) {

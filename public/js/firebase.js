@@ -6,3 +6,5 @@ import { firebaseConfig } from './firebase-config.js';
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export default app;
+
+export {collection, getDocs, query, orderBy, doc, getDoc, addDoc, runTransaction, serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'

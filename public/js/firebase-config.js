@@ -1,9 +1,9 @@
 // Pega aqui abajo las credenciales de Firebase
-export const firebaseConfig = {
-    apiKey: 'AQUI_VA_LA_API_KEY',
-    authDomain: 'AQUI_VA_EL_AUTH_DOMAIN',
-    projectId: 'AQUI_VA_EL_PROJECT_ID',
-    storageBucket: 'AQUI_VA_EL_STORAGE_BUCKET',
-    messagingSenderId: 'AQUI_VA_EL_MESSAGING_SENDER_ID',
-    appId: 'AQUI_VA_EL_APP_ID'
+ export const firebaseConfig = {
+  apiKey: "AIzaSyAl7tJseBXePWtNkVNIfR8I7LDxTUGh3xQ",
+  authDomain: "reportecampus-8ba16.firebaseapp.com",
+  projectId: "reportecampus-8ba16",
+  storageBucket: "reportecampus-8ba16.firebasestorage.app",
+  messagingSenderId: "1047637104790",
+  appId: "1:1047637104790:web:c71fea9a9f486f8d184ab7"
 };
