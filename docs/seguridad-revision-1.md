@@ -5,7 +5,7 @@
 **Issue:** [#5](https://github.com/N3crates/Reporta_Campus/issues/5)
 **Rama:** `feature/docs-estados` → `develop`
 **Pull Request:** [#10: estados, prioridades y Seguridad/QA](https://github.com/N3crates/Reporta_Campus/pull/10)
-**Estado:** rama publicada y PR abierto; revisión de otro integrante y fusión pendientes.
+**Estado:** PR #10 integrado en develop. Este documento conserva los límites de las pruebas de Revisión 1.
 
 ## Reglas iniciales
 
@@ -58,13 +58,10 @@ como una nueva ejecución de David. El modo de muestra no acredita T-01.
 
 ## Comprobación de datos de muestra
 
-Se agregó `tests/datos-muestra.cjs` para comprobar los seis ejemplos ya existentes,
-sin cambiar su autoría ni escribir en Firebase. Usa el ejecutor de pruebas de
-Node.js (18 o posterior), sin dependencias adicionales.
-
-```powershell
-npm run test:datos
-```
+En Revisión 1 se ejecutó una herramienta de verificación de los seis ejemplos
+de frontend, sin escribir en Firebase. Durante la reorganización del 21 de noviembre
+esa herramienta de desarrollo se retiró del repositorio académico junto con las
+dependencias Node. Se conserva el registro TAP y los resultados históricos.
 
 Resultado local del 18 de noviembre de 2026, Node.js v24.11.0: **4 pruebas
 correctas**, sin fallos. Registro: [resultados en formato TAP](pruebas/resultados-datos-muestra.tap).

@@ -5,7 +5,7 @@
 **Revisión / fecha:** Revisión 1 — jueves 19 de noviembre de 2026
 **Repositorio GitHub:** https://github.com/N3crates/Reporta_Campus
 **Rama de integración:** develop
-**URL de demostración:** Ejecución local (`npm start`, http://127.0.0.1:4173)
+**URL de demostración:** Ejecución local (Live Server, según la URL local que indique)
 
 ## 1. Objetivo de esta entrega
 Dejar una base navegable y responsiva de ReportaCampus: documentación inicial,
@@ -16,19 +16,19 @@ funcionalidad real (formulario validado que genera un folio de incidencia).
 
 | Historia/Issue | Qué hace | Responsable | Rama feature | PR | Estado |
 |---|---|---|---|---|---|
-| Estructura | Repo, ramas, README, carpetas y documentación | [A] | feature/estructura-inicial | #[ ] | Integrado |
-| HU-01 | Formulario validado que genera folio | [D] | feature/formulario-reporte | #[ ] | [ ] |
-| HU-02 | Listado responsivo con búsqueda y filtros de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Implementado; revisión/fusión pendientes |
-| HU-03 | Detalle e historial de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Implementado; revisión/fusión pendientes |
-| Modelo | Colecciones de Firestore documentadas | [C] | feature/modelo-datos | #[ ] | [ ] |
-| Estados / Seguridad | Estados, prioridades, permisos previstos, reglas iniciales cerradas y pruebas de datos de muestra | David Zapien Sabedra | feature/docs-estados | [#10](https://github.com/N3crates/Reporta_Campus/pull/10) | PR abierto; revisión y fusión pendientes |
+| Estructura | Repo, ramas, README, carpetas y documentación | Nestor Isaac Hernandez Duran | feature/estructura-inicial | [#6](https://github.com/N3crates/Reporta_Campus/pull/6) | Integrado |
+| HU-01 | Formulario validado y transacción de folio | Juan Carlos Zuñiga Alfaro | feature/formulario-reporte | [#7](https://github.com/N3crates/Reporta_Campus/pull/7) | Código integrado; guardado real pendiente de configuración y prueba |
+| HU-02 | Listado responsivo con búsqueda y filtros de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Integrado mediante PR #8; conservar la distinción entre mocks y datos reales |
+| HU-03 | Detalle e historial de muestra | Juan Manuel Razo Gayosso | feature/pantallas-ui | [#8](https://github.com/N3crates/Reporta_Campus/pull/8) | Integrado mediante PR #8; conservar la distinción entre mocks y datos reales |
+| Modelo | Modelo y herramienta de semilla | Javier Guillermo Cú Rangel | feature/esquema-bd | [#9](https://github.com/N3crates/Reporta_Campus/pull/9) | Integrado; carga real no acreditada |
+| Estados / Seguridad | Estados, prioridades, permisos previstos, reglas iniciales cerradas y pruebas de datos de muestra | David Zapien Sabedra | feature/docs-estados | [#10](https://github.com/N3crates/Reporta_Campus/pull/10) | Integrado mediante PR #10; pruebas de Firebase pendientes |
 
 ## 3. Instrucciones para ejecutar (paso a paso)
-1. **Requisitos:** navegador moderno, Git, VS Code con la extensión Live Server (o Node.js para `npx serve`).
+1. **Requisitos:** navegador moderno, Git, VS Code con la extensión Live Server.
 2. **Clonar:** `git clone https://github.com/N3crates/Reporta_Campus.git`, `cd Reporta_Campus` y seleccionar la rama que se va a demostrar.
 3. **Configuración:** para el envío real, completar `public/js/firebase-config.js` con la configuración web del proyecto Firebase del equipo (sin cuentas de servicio ni secretos). Para explorar las pantallas y usar «Probar sin enviar» no se necesita configurar Firebase.
 4. **Firebase:** crear el proyecto en Firebase Console, registrar la app web, activar Firestore y Authentication. Publicar las reglas de `firestore.rules`.
-5. **Ejecutar:** correr `npm start` y abrir http://127.0.0.1:4173; también se puede usar Live Server o `npx serve public`.
+5. **Ejecutar:** abrir `public/index.html` con Live Server y usar la dirección que indique.
 6. **Credenciales demo:** [pendiente hasta que E implemente el login; en la Revisión 1 no aplica].
 
 ## 4. Modelo de datos y cambios en esta revisión
@@ -61,8 +61,8 @@ no sustituye la prueba T-01 ni la validación de reglas en el emulador.
 
 ## 6. GitHub: enlaces de commits, PR, issues y release
 - Repositorio: https://github.com/N3crates/Reporta_Campus
-- Ramas: master, develop, feature/estructura-inicial, [otras]
-- Pull Requests: [#1 URL], [#2 URL], ...
+- Ramas: master, develop y features de estructura, formulario, pantallas, semilla y estados; reorganización posterior en develop-organizado.
+- Pull Requests integrados: [#6](https://github.com/N3crates/Reporta_Campus/pull/6), [#7](https://github.com/N3crates/Reporta_Campus/pull/7), [#8](https://github.com/N3crates/Reporta_Campus/pull/8), [#9](https://github.com/N3crates/Reporta_Campus/pull/9) y [#10](https://github.com/N3crates/Reporta_Campus/pull/10). La aprobación formal debe comprobarse por separado.
 - Issues (backlog): https://github.com/N3crates/Reporta_Campus/issues
 - Release: no aplica en esta revisión.
 
@@ -70,16 +70,16 @@ no sustituye la prueba T-01 ni la validación de reglas en el emulador.
 - El login y los roles se implementan en la Revisión 2.
 - `firestore.rules` contiene una base cerrada que rechaza lecturas y escrituras del cliente. Las reglas funcionales por rol y su prueba en el emulador siguen pendientes; este archivo no se ha publicado en Firebase.
 - La configuración web contiene valores de ejemplo y `folio.js` usa `demo-estudiante`. El equipo debe integrar la configuración, la identidad y los permisos antes de acreditar el guardado real.
-- [Agregar lo que surja durante la semana.]
+- Esta plantilla conserva el alcance de Revisión 1; las mejoras posteriores se registran en la revisión correspondiente.
 
 ## 8. Participación por integrante
 
 | Integrante | Tarea | Commit/PR | Evidencia |
 |---|---|---|---|
-| Nestor Isaac Hernandez Duran | Repo, README, historias, issues | [enlace] | [enlace] |
+| Nestor Isaac Hernandez Duran | Repo, README, historias, issues | [PR #6](https://github.com/N3crates/Reporta_Campus/pull/6) | README, historias y modelo versionados |
 | Juan Manuel Razo Gayosso | Cuatro pantallas, navegación, bocetos, capturas y pruebas de UI | [PR #8](https://github.com/N3crates/Reporta_Campus/pull/8) | [Entrega frontend](frontend-revision-1.md), [capturas](capturas/revision-1/README.md) |
-| Javier Guillermo Cú Rangel | Modelo de datos en Firestore | [enlace] | [documento] |
-| Juan Carlos Zuñiga Alfaro | Formulario y generación de folio | [enlace] | [demo] |
+| Javier Guillermo Cú Rangel | Modelo y semilla Firestore | [PR #9](https://github.com/N3crates/Reporta_Campus/pull/9) | [Modelo](modelo-datos.md), [semilla](datos-semilla.md) |
+| Juan Carlos Zuñiga Alfaro | Formulario y transacción de folio | [PR #7](https://github.com/N3crates/Reporta_Campus/pull/7) | Código integrado; ver estado de T-01 antes de afirmar guardado real |
 | David Zapien Sabedra | Completar estados y permisos previstos, reglas iniciales cerradas, plan T-01 a T-03 y pruebas de datos de muestra; revisión externa de PR pendiente | [PR #10](https://github.com/N3crates/Reporta_Campus/pull/10); `7da09f8`, `b23eb77`, `88422a6` | [Estados](estados_prioridades.md), [Seguridad/QA](seguridad-revision-1.md), [4 pruebas](pruebas/resultados-datos-muestra.tap) |
 
 ## 9. Guion de demostración (Revisión 1)

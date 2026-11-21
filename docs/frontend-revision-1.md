@@ -5,7 +5,7 @@
 **Issue:** [#2](https://github.com/N3crates/Reporta_Campus/issues/2)
 **Rama:** `feature/pantallas-ui` → `develop`
 **Pull Request:** [#8: pantallas responsivas y evidencias de frontend](https://github.com/N3crates/Reporta_Campus/pull/8)
-**Estado:** implementación y evidencia terminadas; revisión de otro integrante y fusión pendientes.
+**Estado:** PR #8 integrado en develop. GitHub no registra una revisión formal APPROVED para ese PR.
 
 ## Qué se entrega
 
@@ -36,14 +36,9 @@ no fotografías de un teléfono físico.
 
 ## Ejecutar
 
-```powershell
-git switch feature/pantallas-ui
-npm start
-```
-
-Abrir `http://127.0.0.1:4173`. El servidor estático no necesita instalar paquetes.
-Alternativa: abrir `public/index.html` mediante Live Server.
-Se requiere Internet para cargar Tailwind y la fuente.
+Seleccionar la rama que se va a demostrar y abrir `public/index.html` con
+Live Server. Usar la URL que indique la extensión. No hace falta instalar
+paquetes de la aplicación. Se necesita Internet para Tailwind y Google Fonts.
 
 ## Recorrido para presentar tu parte
 
@@ -87,14 +82,9 @@ el recorrido de muestra, el escape de texto y un título largo sin espacios.
 El manejo de fallo de envío se comprobó mediante un adaptador simulado;
 no se intentó guardar en una base real durante las pruebas.
 
-Para repetir:
-
-```powershell
-npm ci
-npx playwright install chromium
-npm run test:ui
-npm run evidence
-```
+Para repetir el recorrido, seguir la [guía manual](pruebas/manuales.md).
+Las herramientas Node/Playwright se retiraron de esta rama académica durante
+la reorganización; se conservan los resultados y las capturas originales.
 
 La configuración Firebase del repositorio todavía contiene valores de ejemplo.
 El guardado real y la prueba T-01 del equipo siguen pendientes de esa configuración
@@ -110,8 +100,8 @@ El login, los roles y el dashboard real quedan para las revisiones correspondien
 - [x] Menú móvil funcional.
 - [x] Sin desbordes horizontales en los anchos comprobados.
 - [x] Capturas en móvil y escritorio guardadas dentro del repo.
-- [ ] PR revisado por un integrante diferente del autor.
-- [ ] PR fusionado en `develop` después de la revisión.
+- [ ] Evidencia de aprobación formal de otra persona en GitHub (no consta como APPROVED en #8).
+- [x] PR fusionado en `develop` (#8).
 
 La revisión humana y la integración deben registrarse en GitHub; no se sustituyen
 con las pruebas automáticas ni con una autoaprobación del autor.
