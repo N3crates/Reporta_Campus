@@ -1,0 +1,77 @@
+rules_version = '2
+service cloud.firestore{
+    match /databases/{database}/document {
+        function estaAuenticado(){
+            return request.auth != null
+        }
+
+        function obtenerRol(){
+            return get(/database/$(database)/documents/usuarios/$(request.auth.uid)).data.rol
+        }
+
+        function esAdmin(){
+            return estaAuenticado() && obtenerRol() == 'admin'
+        }
+
+        function esResponsableAdmin(){
+            return estaAuenticado() && obtenerRol() in ['responsable', 'admin']
+        }
+
+        // Coleccion: usuarios
+        match /usuarios/{userId}{
+            // cada usuario lee su documento
+            allow read: if estaAuenticado() && (request.auth.uid === userId || esAdmin())
+
+            // Al hacer el registro se crea solo con el rol reportante
+            allow create : if estaAuenticado() && request.auth.uid == userId && request.resource.data.rol == 'reportante'
+
+            // Puede editar su perfil pero no su rol
+            allow update: if estaAuenticado() 
+                            && request.auth.uid == userId 
+                            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['rol])
+            
+            // Solo un admin puede cambiar roles y eliminar usuarios
+            allow delete: if esAdmin()
+        }
+
+        // Coleccion: incidencias
+        match /incidencias/{incidenciaId} {
+            // Crear: autenticado, dueño del reporte y estado inical
+            allow create: if estaAuenticado() 
+                            && request.resource.data.reportanteId == request.auth.uid 
+                            && request.resource.data.estado == 'reportado'
+            
+            // Leer: dueño de la incidencia, responsable o admin
+            allow read: if estaAuenticado() && (resource.data.reportanteId == request.auth.uid || esResponsableAdmin())
+
+            // Actualizar: solo responsable o admin
+            allow update: if esResponsableAdmin()
+
+            // Eliminar: solo admin
+            allow delete: if esAdmin()
+        }
+
+        // Coleccion: historial_estados
+        match /historial_estados/{historialId} {
+            allow read: if estaAuenticado()
+            allow create, update, delete: if esResponsableAdmin()
+        }
+
+        // Coleccion: contadores
+        match /contadores/{contadorId} {
+            allow read: if estaAuenticado()
+            allow write: if estaAuenticado()
+        }
+
+        // Catalogo: categorias y edificios
+        match /categorias/{categoriaId} {
+            allow read: if request.auth != null || request.auth == null
+            allow write: if esAdmin()
+        }
+
+        match /edificios/{edificioId} {
+            allow read: if request.auth != null || request.auth == null
+            allow write: if esAdmin()
+        }
+    }
+}
