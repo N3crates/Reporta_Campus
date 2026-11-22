@@ -75,7 +75,8 @@ async function iniciarDetalle() {
     try {
         const parametros = new URLSearchParams(window.location.search);
         const id = parametros.get('id');
-        //console.log('id:', id);
+        console.log('URL:', window.location.href);
+        console.log('id:', id);
         const incidencia = id ? await obtenerIncidencia(id) : null;
         console.log('incidencia:', incidencia);
 

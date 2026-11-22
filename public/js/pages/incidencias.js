@@ -33,7 +33,7 @@ function coincideConFiltros(incidencia, filtros) {
 
 function crearTarjeta(incidencia) {
     const vista = plantilla.content.cloneNode(true);
-    const enlace = 'detalle.html?id=' + encodeURIComponent(incidencia.id);
+    const enlace = 'detalle?id=' + encodeURIComponent(incidencia.id);
 
     asignarIcono(vista.querySelector('[data-icono]'), incidencia.categoriaId);
     mostrarEstado(vista.querySelector('[data-estado]'), incidencia.estado);
