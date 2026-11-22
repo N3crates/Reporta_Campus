@@ -14,12 +14,12 @@
 **para** que mi problema quede registrado y pueda darle seguimiento.
 
 **Criterios de aceptación**
-- [ ] El formulario tiene los campos: título, edificio, aula, categoría y descripción.
-- [ ] Si algún campo obligatorio está vacío, se muestra un mensaje de error claro y no se guarda nada.
-- [ ] Al enviar un formulario válido, la incidencia se guarda en Firestore con estado inicial `reportado`.
-- [ ] El sistema genera un folio único y se lo muestra al reportante.
-- [ ] Dos reportes enviados casi al mismo tiempo nunca reciben el mismo folio.
-- [ ] El formulario no pide datos sensibles ni la ubicación exacta de la persona.
+- [ x ] El formulario tiene los campos: título, edificio, aula, categoría y descripción.
+- [ x ] Si algún campo obligatorio está vacío, se muestra un mensaje de error claro y no se guarda nada.
+- [ x ] Al enviar un formulario válido, la incidencia se guarda en Firestore con estado inicial `reportado`.
+- [ x ] El sistema genera un folio único y se lo muestra al reportante.
+- [ x ] Dos reportes enviados casi al mismo tiempo nunca reciben el mismo folio.
+- [ x ] El formulario no pide datos sensibles ni la ubicación exacta de la persona.
 
 **Prioridad:** Alta · **Revisión:** 1 · **Módulo:** Formulario y folios
 
