@@ -1,6 +1,5 @@
 import { doc, runTransaction, collection, serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { db, auth } from './firebase.js';
-import { error } from 'node:console';
 
 function normalizeText(value) {
     return String(value || '').trim();
