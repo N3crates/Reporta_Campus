@@ -1,0 +1,19 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}

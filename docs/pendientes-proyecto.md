@@ -1,5 +1,8 @@
 # Pendientes de ReportaCampus frente al PDF
 
+> Auditoría histórica del 21 de noviembre. La actualización de implementación y
+> pruebas del 24 de noviembre está en [Frontend R2](frontend-revision-2.md).
+
 Corte: 21 de noviembre de 2026. Rama examinada: `develop` en `633da1d`, más
 reorganización en `develop-organizado`. Fuente: guía del alumno, páginas 6-10 y
 28-29 (Proyecto 09). No es una calificación ni una certificación del docente.

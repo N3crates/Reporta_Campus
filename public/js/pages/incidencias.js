@@ -1,21 +1,36 @@
-import { categorias, edificios } from '../demo-data.js';
 import { obtenerIncidencias } from '../incidencias.js';
-import { cargarVista, asignarTexto, mostrarEstado, asignarFecha, asignarIcono, normalizarTexto } from '../funciones.js';
+import { protegerPagina } from '../auth.js';
+import { obtenerCatalogos, llenarOpciones, nombreCatalogo } from '../catalogos.js';
+import { mensajeError, mostrarMensaje } from '../mensajes.js';
+import {
+    cargarVista,
+    asignarTexto,
+    mostrarEstado,
+    asignarFecha,
+    asignarIcono,
+    normalizarTexto
+} from '../funciones.js';
 import { usuarioActual } from '../auth.js';
 
 usuarioActual().then((usuario) => {
-    if(!usuario){
-        window.location.href = 'login.html'
+    if (!usuario) {
+        window.location.href = 'login.html';
     }
-})
+});
 
 const formulario = document.getElementById('filtros');
 const lista = document.getElementById('lista-incidencias');
 let plantilla;
 let todas = [];
+let catalogos = { categorias: [], edificios: [] };
 
-const nombreCategoria = id => categorias[id] ?? id ?? 'Sin categoría';
-const nombreEdificio = id => edificios[id] ?? id ?? 'Sin edificio';
+function nombreCategoria(id) {
+    return nombreCatalogo(catalogos.categorias, id);
+}
+
+function nombreEdificio(id) {
+    return nombreCatalogo(catalogos.edificios, id);
+}
 
 function leerFiltros() {
     return {
@@ -40,7 +55,7 @@ function coincideConFiltros(incidencia, filtros) {
 
 function crearTarjeta(incidencia) {
     const vista = plantilla.content.cloneNode(true);
-    const enlace = 'detalle?id=' + encodeURIComponent(incidencia.id);
+    const enlace = 'detalle.html?id=' + encodeURIComponent(incidencia.id);
 
     asignarIcono(vista.querySelector('[data-icono]'), incidencia.categoriaId);
     mostrarEstado(vista.querySelector('[data-estado]'), incidencia.estado);
@@ -89,6 +104,20 @@ function mostrarIncidencias() {
     for (const incidencia of incidencias) {
         lista.append(crearTarjeta(incidencia));
     }
+
+    const parametros = new URLSearchParams();
+    for (const campo of ['buscar', 'estado', 'prioridad', 'categoria', 'edificio']) {
+        const valor = document.getElementById(campo).value;
+        if (valor) {
+            parametros.set(campo, valor);
+        }
+    }
+    const consulta = parametros.toString();
+    let direccion = 'incidencias.html';
+    if (consulta) {
+        direccion += '?' + consulta;
+    }
+    window.history.replaceState(null, '', direccion);
 }
 
 function limpiarFiltros() {
@@ -97,26 +126,58 @@ function limpiarFiltros() {
 }
 
 async function iniciarListado() {
+    const alerta = document.getElementById('error-listado');
+    const reintentar = document.getElementById('reintentar-listado');
+    formulario.inert = true;
+    alerta.classList.add('hidden');
+    reintentar.hidden = true;
+    document.getElementById('estado-vacio').classList.add('hidden');
     try {
+        const usuario = await protegerPagina();
+        if (!usuario) {
+            return;
+        }
         document.getElementById('resultados-conteo').textContent = 'Cargando incidencias…';
         plantilla = await cargarVista('vistas/tarjeta-incidencia.html');
-        todas = await obtenerIncidencias();
+        const resultados = await Promise.all([obtenerIncidencias(), obtenerCatalogos()]);
+        todas = resultados[0].filter(function (incidencia) {
+            return !incidencia.eliminado;
+        });
+        catalogos = resultados[1];
+        llenarOpciones(
+            document.getElementById('categoria'),
+            catalogos.categorias,
+            'Todas las categorías'
+        );
+        llenarOpciones(
+            document.getElementById('edificio'),
+            catalogos.edificios,
+            'Todos los edificios'
+        );
+        const parametros = new URLSearchParams(window.location.search);
+        for (const campo of ['buscar', 'estado', 'prioridad', 'categoria', 'edificio']) {
+            document.getElementById(campo).value = parametros.get(campo) || '';
+        }
 
-        formulario.addEventListener('input', mostrarIncidencias);
-        formulario.addEventListener('change', mostrarIncidencias);
-        formulario.addEventListener('submit', function (evento) {
+        formulario.oninput = mostrarIncidencias;
+        formulario.onchange = mostrarIncidencias;
+        formulario.onsubmit = function (evento) {
             evento.preventDefault();
             mostrarIncidencias();
-        });
+        };
 
-        document.getElementById('limpiar-filtros').addEventListener('click', limpiarFiltros);
-        document.getElementById('limpiar-vacio').addEventListener('click', limpiarFiltros);
+        document.getElementById('limpiar-filtros').onclick = limpiarFiltros;
+        document.getElementById('limpiar-vacio').onclick = limpiarFiltros;
         mostrarIncidencias();
     } catch (error) {
-        console.error('No se pudo cargar el listado:', error);
-        document.getElementById('resultados-conteo').textContent =
-            'No se pudo cargar el listado. Intenta recargar la página.';
+        lista.replaceChildren();
+        mostrarMensaje(alerta, mensajeError(error));
+        reintentar.hidden = false;
+        document.getElementById('resultados-conteo').textContent = 'No se pudo cargar el listado.';
+    } finally {
+        formulario.inert = false;
     }
 }
 
+document.getElementById('reintentar-listado').addEventListener('click', iniciarListado);
 iniciarListado();

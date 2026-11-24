@@ -1,0 +1,46 @@
+<div
+    data-sesion-publica
+    class="flex flex-wrap gap-3 items-center"
+>
+    <a
+        href="login.html"
+        class="nav-access"
+    >
+        Iniciar sesión
+    </a>
+    <a
+        href="registro.html"
+        class="nav-register"
+    >
+        Crear cuenta ↗
+    </a>
+</div>
+<div
+    data-sesion-privada
+    hidden
+    class="session-user"
+>
+    <div class="min-w-0">
+        <span
+            data-usuario
+            class="session-name"
+        ></span>
+        <span
+            data-rol
+            class="session-role"
+        ></span>
+    </div>
+    <button
+        id="btn-cerrar-sesion"
+        type="button"
+        class="nav-access"
+    >
+        Salir
+    </button>
+</div>
+<p
+    data-error-sesion
+    hidden
+    role="alert"
+    class="text-xs text-[#ffd300] max-w-xs"
+></p>

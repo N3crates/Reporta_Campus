@@ -1,60 +1,197 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesion</title>
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="css/styles.css"/>
-</head>
-<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
-    <main class="bg-white w-full max-w-md rounded-xl shadow-md p-8">
-        <h1 class="text-2xl font-bold text-slate-800 mb-2">
-            Inicia sesion con tu correo
-        </h1>
-        <div id="alert-error" class="hidden mb-4 p3 rounded-lg bg-red-50 text-red-700 text-sm border border-red-200"></div>
-        <form id="form-login" class="space-y-4">
-            <div>
-                <label for="correo" class="block text-sm font-medium text-slate-700 mb-1">
-                    Correo electronico
-                </label>
-                <input 
-                    type="email" 
-                    id="correo" 
-                    required placeholder="usuario@ugto.mx"
-                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline focus:ring-blue-600"
-                    />
-            </div>
-            <div>
-                <label for="password" class="block text-sm font-medium text-slate-700 mb-1">
-                    Password
-                </label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    required placeholder="........" 
-                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    />
-            </div>
-            <button 
-                type="submit" 
-                id="btn-submit" 
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 5 rounded-lg transition"
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <meta
+            name="theme-color"
+            content="#0a263d"
+        />
+        <title>Iniciar sesión · ReportaCampus</title>
+        <link
+            rel="icon"
+            href="assets/favicon.svg"
+            type="image/svg+xml"
+        />
+        <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com"
+        />
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link
+            rel="stylesheet"
+            href="css/styles.css"
+        />
+    </head>
+    <body class="min-h-screen flex flex-col">
+        <a
+            class="skip-link"
+            href="#contenido"
+        >
+            Saltar al contenido
+        </a>
+        <div id="encabezado"></div>
+
+        <main
+            id="contenido"
+            class="auth-main flex-1"
+            tabindex="-1"
+        >
+            <div class="auth-layout">
+                <aside
+                    class="auth-story"
+                    aria-label="Nuestra comunidad"
                 >
-                Ingresar
-            </button>
-        </form>
-        <p class="text-center text-sm text-slate-600 mt-6">
-            <a href="registro.html" class="text-blue-600 font-medium hover:underline">
-                Registrarte
-            </a>
-        </p>
-    </main>
-    <div id="pie-pagina"></div>
-    <script type="module" src="js/pages/login.js"></script>
-</body>
+                    <div class="auth-story-top">
+                        <span class="auth-kicker">COMUNIDAD UNIVERSITARIA</span>
+                        <img
+                            src="assets/abeja.svg"
+                            width="58"
+                            height="58"
+                            alt=""
+                        />
+                    </div>
+                    <h1>
+                        Tu campus.
+                        <br />
+                        Nuestra colmena.
+                    </h1>
+                    <p>
+                        Cada reporte es una forma de cuidar lo que compartimos. Hagamos de nuestra
+                        universidad un mejor lugar.
+                    </p>
+                    <div
+                        class="auth-campus"
+                        aria-hidden="true"
+                    >
+                        <img
+                            src="assets/campus-linea.svg"
+                            width="520"
+                            height="180"
+                            alt=""
+                        />
+                    </div>
+                    <div class="auth-story-bottom">
+                        <span>#SomosAbejasUG</span>
+                        <span>
+                            Pequeñas acciones.
+                            <br />
+                            Grandes cambios.
+                        </span>
+                    </div>
+                </aside>
+                <section
+                    class="auth-form"
+                    aria-labelledby="acceso-titulo"
+                >
+                    <p class="eyebrow">BIENVENIDA A TU ESPACIO</p>
+                    <h2 id="acceso-titulo">Qué gusto tenerte aquí</h2>
+                    <p class="auth-intro">
+                        Inicia sesión para reportar, consultar y dar seguimiento a tus incidencias.
+                    </p>
+                    <div
+                        id="alert-error"
+                        role="alert"
+                        tabindex="-1"
+                        class="hidden form-alert form-alert-error"
+                    ></div>
+                    <form
+                        id="form-login"
+                        novalidate
+                        class="space-y-5"
+                    >
+                        <div>
+                            <label
+                                for="correo"
+                                class="field-label"
+                            >
+                                Correo electrónico *
+                            </label>
+                            <input
+                                id="correo"
+                                name="correo"
+                                type="email"
+                                class="field"
+                                autocomplete="email"
+                                required
+                                maxlength="254"
+                                placeholder="tu.correo@ugto.mx"
+                            />
+                        </div>
+                        <div>
+                            <label
+                                for="password"
+                                class="field-label"
+                            >
+                                Contraseña *
+                            </label>
+                            <div class="password-control">
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    class="field"
+                                    autocomplete="current-password"
+                                    required
+                                    aria-describedby="password-ayuda"
+                                />
+                                <button
+                                    id="mostrar-password"
+                                    type="button"
+                                    aria-controls="password"
+                                    aria-pressed="false"
+                                >
+                                    Mostrar
+                                </button>
+                            </div>
+                            <p
+                                id="password-ayuda"
+                                class="field-help"
+                            >
+                                Usa la contraseña de tu cuenta de ReportaCampus.
+                            </p>
+                        </div>
+
+                        <button
+                            id="btn-submit"
+                            type="submit"
+                            class="btn-primary w-full"
+                        >
+                            Iniciar sesión
+                            <span aria-hidden="true">↗</span>
+                        </button>
+                    </form>
+                    <p class="auth-switch">
+                        ¿Es tu primera visita?
+                        <a href="registro.html">Crea tu cuenta</a>
+                    </p>
+                    <p class="auth-note">ReportaCampus · Proyecto académico de la comunidad UG.</p>
+                </section>
+            </div>
+            <noscript>
+                <p class="form-alert">Activa JavaScript para acceder a tu cuenta.</p>
+            </noscript>
+        </main>
+        <div id="pie-pagina"></div>
+        <script
+            type="module"
+            src="js/ui.js"
+        ></script>
+        <script
+            type="module"
+            src="js/pages/login.js"
+        ></script>
+    </body>
 </html>

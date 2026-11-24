@@ -64,6 +64,11 @@ export function formatDate(valor, incluirHora = false) {
 }
 
 export function asignarFecha(elemento, valor, incluirHora = false) {
+    if (!valor || !Number.isFinite(new Date(valor).getTime())) {
+        elemento.textContent = 'Fecha no disponible';
+        elemento.removeAttribute('datetime');
+        return;
+    }
     elemento.dateTime = valor;
     elemento.textContent = formatDate(valor, incluirHora);
 }

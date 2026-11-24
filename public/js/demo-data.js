@@ -157,7 +157,9 @@ try {
 } catch {
     /* almacenamiento no disponible */
 }
-if (!Array.isArray(sessionReports)) sessionReports = [];
+if (!Array.isArray(sessionReports)) {
+    sessionReports = [];
+}
 export function getDemoReports() {
     return [...sessionReports, ...incidenciasMuestra].sort(
         (a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion)
