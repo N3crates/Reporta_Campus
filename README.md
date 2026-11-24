@@ -1,235 +1,138 @@
 # ReportaCampus
 
-Mesa de ayuda para registrar, priorizar y dar seguimiento a incidencias en las instalaciones del campus.
+Mesa de ayuda para registrar y dar seguimiento a problemas de mantenimiento,
+iluminación, cómputo, mobiliario y limpieza de las instalaciones universitarias.
+Proyecto 09 de Aplicaciones de Internet 2026.
 
-> Proyecto final de Aplicaciones de Internet, curso 2026 (Proyecto 09).
+## Problema y objetivo
 
-## Problema
+Los reportes llegan por canales diferentes y se pierde su seguimiento. El objetivo
+es reunirlos en una aplicación con folio, ubicación, prioridad, estado e historial
+de atención hasta su resolución.
 
-Los reportes de luminarias, computadoras, limpieza o mantenimiento llegan por canales diferentes y se pierde el seguimiento.
+## Tecnologías y alcance
 
-## Objetivo
+- HTML5 y vistas HTML reutilizables.
+- Tailwind CSS por CDN, para desarrollo, y Google Fonts (Raleway).
+- JavaScript sin frameworks, organizado en módulos.
+- Firebase Authentication y Firestore como integración prevista; todavía pendiente
+  de configuración y permisos funcionales en el código actual.
 
-Registrar y priorizar solicitudes, asignar responsables y visualizar el avance hasta el cierre.
+El PDF permite la variante JavaScript + Firebase. El video de referencia usa
+PHP; en esta rama se adopta su organización legible, sin cambiar de backend.
+La aplicación no necesita instalar paquetes ni ejecutar npm.
 
-## Alcance del MVP
+Fuera de alcance: denuncias personales, emergencias y ubicación exacta de personas.
 
-- Formulario de reporte con título, lugar, categoría y descripción
-- Folio único por incidencia
-- Listado con filtros por estado, prioridad y ubicación
-- Cambio de estado: reportado → en proceso → resuelto
-- Historial de movimientos con fecha y responsable
-- Resumen (dashboard) de incidencias por estado y antigüedad
-- Roles: reportante y personal responsable/administrador
+## Cómo ejecutar
 
-## Fuera de alcance
+1. Clonar el repositorio y seleccionar esta rama:
 
-No se recopilan denuncias personales, ubicaciones exactas de usuarios ni incidentes de emergencia. Es solo para mantenimiento.
+   ```text
+   git clone https://github.com/N3crates/Reporta_Campus.git
+   cd Reporta_Campus
+   git switch develop-organizado
+   ```
 
-## Tecnologías
+2. Abrir la carpeta en Visual Studio Code.
+3. Con la extensión Live Server ya instalada, hacer clic derecho en
+   `public/index.html` y elegir **Open with Live Server**.
+4. Usar la dirección que abra Live Server. Si se sirve la raíz del repositorio,
+   la dirección incluye `/public/index.html`.
 
-- HTML5
-- Tailwind CSS (CDN, solo para desarrollo)
-- Google Fonts
-- JavaScript (módulos ES, sin frameworks)
-- Firebase: Firestore (datos) y Authentication (usuarios)
+Como alternativa, si ya se tiene Python instalado, se puede servir `public` con
+`python -m http.server 5500 --directory public` y abrir http://localhost:5500.
+Es un servidor de archivos para desarrollo, no un backend nuevo de la aplicación.
 
-## Estructura del proyecto
+Se necesita Internet para Tailwind y Google Fonts. No abrir el sitio mediante
+`file://`: los módulos y las vistas compartidas necesitan un servidor HTTP.
 
-```
-reportacampus/
-├── public/          # páginas HTML, CSS y JavaScript
-│   ├── css/
-│   └── js/
-│       ├── firebase-config.js
-│       ├── firebase.js
-│       ├── auth.js
-│       ├── incidencias.js
-│       ├── folio.js
-│       ├── ui.js
-│       └── pages/
-├── docs/            # historias de usuario, modelo de datos, estados, entregas
-├── firestore.rules  # reglas de seguridad de Firestore
-└── README.md
-```
+## Estructura
 
-## Cómo ejecutar el proyecto
-
-### Requisitos
-
-- Navegador moderno
-- Git
-- VS Code con la extensión **Live Server**, o Node.js para usar `npx serve`
-
-### Instalación
-
-1. Clonar el repositorio:
-
-       git clone https://github.com/N3crates/Reporta_Campus.git
-       cd Reporta_Campus
-
-2. Verificar que `public/js/firebase-config.js` apunte al proyecto Firebase del equipo.
-   Estos datos identifican el proyecto y no son secretos; la seguridad depende de las reglas de Firestore.
-
-3. Iniciar un servidor estático. Los módulos de JavaScript no funcionan abriendo el HTML con `file://`.
-   - Con Live Server: clic derecho en `public/index.html` → *Open with Live Server*.
-   - O con Node.js:
-
-         npx serve public
-
-4. Abrir la URL que indique el servidor (por ejemplo, `http://localhost:3000`).
-
-### Configuración de Firebase (para reproducir en otro proyecto)
-
-1. Crear un proyecto en [Firebase Console](https://console.firebase.google.com/) y registrar una app web.
-2. Activar **Firestore Database** y **Authentication** (método correo/contraseña).
-3. Copiar la configuración web de la app en `public/js/firebase-config.js`.
-4. Publicar las reglas de `firestore.rules` desde la consola de Firebase (pestaña *Reglas*).
-5. Crear los datos iniciales (categorías y edificios) según `docs/modelo-datos.md`.
-
-La base inicial de `firestore.rules` rechaza todas las lecturas y escrituras del
-cliente. Antes del envío real o de cargar datos desde el navegador, el equipo
-debe integrar y verificar las reglas funcionales según el
-[plan de Seguridad/QA de la Revisión 1](docs/seguridad-revision-1.md).
-
-> **Seguridad:** nunca se debe subir al repositorio una cuenta de servicio, archivos `.env`, contraseñas ni datos personales reales. Las reglas de Firestore no deben usar `allow read, write: if true`.
-
-### Usuarios demo
-
-[Se agregan en la Revisión 2, cuando exista el inicio de sesión.]
-
-## Modelo de datos (resumen)
-
-| Colección | Campos principales |
-|---|---|
-| `categorias` | nombre, descripcion |
-| `edificios` | nombre, aulas |
-| `incidencias` | folio, titulo, descripcion, categoriaId, edificioId, aula, prioridad, estado, reportanteId, fechaCreacion |
-| `incidencias/{id}/historial_estados` | estadoAnterior, estadoNuevo, responsableId, comentario, fecha |
-| `usuarios` | nombre, correo, rol |
-| `contadores` | ultimoFolio |
-
-Detalle completo en [`docs/modelo-datos.md`](docs/modelo-datos.md).
-
-## Estados y prioridades
-
-- **Estados:** reportado → en proceso → resuelto
-- **Prioridades:** baja, media, alta
-
-Diagrama en [`docs/estados_prioridades.md`](docs/estados_prioridades.md).
-
-## Flujo de trabajo en Git
-
-| Rama | Uso |
-|---|---|
-| `master` | Versión estable; solo recibe cambios por PR desde `release/*` |
-| `develop` | Integración de funcionalidades |
-| `feature/*` | Una por funcionalidad; nace de `develop` y regresa por Pull Request |
-| `release/1.0.0` | Cierre de la versión; se fusiona a `master` y luego a `develop` |
-
-Para cada funcionalidad:
-
-    git checkout develop
-    git pull origin develop
-    git checkout -b feature/nombre-funcionalidad
-    # programar y probar
-    git add .
-    git commit -m "feat: descripcion breve"
-    git push -u origin feature/nombre-funcionalidad
-
-Después se abre un Pull Request hacia `develop`, con evidencia y revisión de un integrante distinto del autor.
-
-## Documentación
-
-- [Historias de usuario](docs/historias-usuario.md)
-- [Modelo de datos](docs/modelo-datos.md)
-- [Estados y prioridades](docs/estados_prioridades.md)
-- [Entrega de la Revisión 1](docs/entrega_revision_1.md)
-- [Seguridad y pruebas de la Revisión 1](docs/seguridad-revision-1.md)
-
-## Equipo
-
-| Integrante | Responsabilidad Entrega 1 |
-|---|---|
-| Nestor Isaac Hernandez Duran | Git, documentación y coordinación |
-| Juan Manuel Razo Gayosso | Frontend (Tailwind, responsividad, UX) |
-| Javier Guillermo Cú Rangel | Firestore y capa de datos |
-| Juan Carlos Zuñiga Alfaro | Lógica de negocio (folios, estados, historial) |
-| David Zapien Sabedra | Seguridad, Authentication, reglas y pruebas |
-
-## Estado del proyecto
-
-- [ ] Revisión 1 (19 de noviembre): base navegable, historias, modelo de datos y primera funcionalidad
-- [ ] Revisión 2 (26 de noviembre): persistencia, flujo principal, validaciones y pruebas
-- [ ] Revisión 3 (3 de diciembre): MVP completo, release `v1.0.0` y demo
-
-## Interfaz de la revisión 1 (Juan Manuel Razo Gayosso)
-
-Las pantallas `public/index.html`, `reportar.html`, `incidencias.html` y `detalle.html`
-están enlazadas y usan Tailwind por CDN, Raleway y navegación móvil.
-El listado y el detalle muestran incidencias ficticias de `public/js/demo-data.js`.
-Los filtros combinados funcionan sobre esos ejemplos; todavía no consultan Firestore.
-
-### Probar la interfaz sin configurar Firebase
-
-Con Node.js, ejecutar `npm start` y abrir `http://127.0.0.1:4173`.
-No hace falta instalar dependencias para iniciar este servidor estático.
-También se puede usar Live Server, como se indica arriba.
-Se necesita Internet para Tailwind y Google Fonts.
-
-En el formulario, activar **Probar sin enviar** para generar un folio con prefijo
-`DEMO-`, abrir su detalle y encontrarlo en el listado de esa misma pestaña.
-Este modo usa memoria de sesión del navegador y **no guarda en Firebase**.
-No acredita las pruebas de persistencia de las revisiones 2 y 3.
-Sin activar esa opción, el envío conserva `registrarIncidencia()` y su transacción
-Firestore original; requiere la configuración y las reglas acordadas por el equipo.
-
-### Evidencia y pruebas de frontend
-
-- [Entrega de frontend y recorrido de demostración](docs/frontend-revision-1.md)
-- [Bocetos de las cuatro pantallas](docs/bocetos/pantallas-r1.svg)
-- [Capturas en móvil y escritorio](docs/capturas/revision-1/README.md)
-- [Resultados de pruebas de navegador](docs/pruebas/resultados-ui.json)
-
-Para repetir la comprobación de interfaz:
-
-```powershell
-npm ci
-npx playwright install chromium
-npm run test:ui
-# Para regenerar también las capturas y el registro de resultados:
-npm run evidence
+```text
+Reporta_Campus/
+    public/
+        index.html
+        reportar.html
+        incidencias.html
+        detalle.html
+        seed.html                 Herramienta de desarrollo para el equipo
+        assets/                   Escudos, ilustraciones e iconos SVG
+        css/styles.css            Identidad y estilos compartidos
+        data/seed.json            Semilla ficticia de Firestore
+        vistas/                   Encabezado, pie, tarjeta, detalle e historial
+        js/
+            funciones.js          Funciones de presentación
+            ui.js                 Vistas comunes y menú responsivo
+            demo-data.js          Ejemplos locales de Revisión 1
+            firebase-config.js    Configuración web, actualmente de ejemplo
+            firebase.js           Conexión con Firestore
+            folio.js              Transacción de alta y folio del equipo
+            seed.js               Carga controlada de semilla
+            pages/                Comportamiento de reporte, lista y detalle
+    docs/                         Modelo, historias, evidencia y organización
+    firestore.rules               Reglas iniciales cerradas
+    AGENTS.md                     Convenciones de código para siguientes cambios
+    README.md
 ```
 
-Playwright es una dependencia de desarrollo para las pruebas, no un framework de
-la aplicación. La app sigue siendo HTML, utilidades Tailwind y módulos JavaScript.
-Si se usa Edge instalado en Windows, se puede definir `PLAYWRIGHT_EXECUTABLE_PATH`
-con la ruta de `msedge.exe` antes de ejecutar las pruebas, sin instalar Chromium.
+## Qué funciona actualmente
 
+- Inicio, formulario, listado y detalle enlazados con diseño inspirado en la UG.
+- Menú móvil con apertura/cierre y navegación accesible.
+- Validación de campos y mensajes del formulario.
+- Búsqueda y filtros combinados sobre seis ejemplos locales.
+- Detalle con historial ficticio, lista vacía y caso no encontrado.
+- Opción **Probar sin enviar**: crea un folio `DEMO-...` para explorar la interfaz
+  en la pestaña actual. No guarda una incidencia real ni acredita persistencia.
 
-### Identidad visual de la comunidad UG
+La lógica transaccional de `folio.js` existe, pero su ejecución real no está
+verificada con la configuración actual. No se presenta como CRUD terminado.
 
-La interfaz usa azul `#0A263D`, amarillo `#FFD300`, dorado `#8C6E39` y Raleway,
-con abejas, panales y una ilustración de arquitectura universitaria.
-La investigación se documenta en [referencias de diseño UG](docs/referencias-diseno-ug.md).
-La procedencia de los escudos y los gráficos propios está en
-[recursos visuales](public/assets/README.md).
+## Integración Firebase pendiente
 
-## Seguridad y pruebas de la revisión 1 (David Zapien Sabedra)
+1. Completar la configuración web de `public/js/firebase-config.js` con C.
+2. Activar Authentication y crear usuarios de prueba con E.
+3. Implementar y probar reglas por rol; `firestore.rules` actualmente deniega todo.
+4. Completar la capa CRUD y las consultas reales con C.
+5. Reemplazar `demo-estudiante` por el UID autenticado en el alta con D/E.
+6. Conectar las pantallas, los cambios de estado y el historial reales.
 
-La rama `feature/docs-estados` completa la documentación de estados y prioridades,
-la matriz de permisos prevista y los casos de prueba del flujo. Incluye reglas
-iniciales cerradas y un plan para T-01 a T-03. La autenticación y los permisos
-funcionales quedan para la integración correspondiente; la base inicial no
-habilita el guardado real.
+No abrir globalmente las reglas para conseguir que el formulario guarde. No subir
+contraseñas, cuentas de servicio, tokens privados ni datos personales.
 
-Los seis ejemplos existentes del frontend se verifican sin Firebase:
+## Equipo y Revisión 2
 
-```powershell
-npm run test:datos
-```
+| Rol | Integrante | Responsabilidad | Issue |
+|---|---|---|---|
+| A | Nestor Isaac Hernandez Duran | Coordinación y documentación | [#11](https://github.com/N3crates/Reporta_Campus/issues/11) |
+| B | Juan Manuel Razo Gayosso | Formularios, filtros y UI | [#12](https://github.com/N3crates/Reporta_Campus/issues/12) |
+| C | Javier Guillermo Cú Rangel | Datos, persistencia y CRUD | [#13](https://github.com/N3crates/Reporta_Campus/issues/13) |
+| D | Juan Carlos Zuñiga Alfaro | Folios, estados, historial y antigüedad | [#14](https://github.com/N3crates/Reporta_Campus/issues/14) |
+| E | David Zapien Sabedra | Authentication, permisos y pruebas | [#15](https://github.com/N3crates/Reporta_Campus/issues/15) |
 
-Se necesita Node.js 18 o posterior, sin instalar paquetes adicionales. Las cuatro
-pruebas comprueban estados, prioridades, campos, folios, catálogos e historiales.
-Ver [entrega de Seguridad/QA](docs/seguridad-revision-1.md) y
-[resultados de las pruebas](docs/pruebas/resultados-datos-muestra.tap).
+## Documentación y evidencia
+
+- [Organización y referencia del video](docs/organizacion.md).
+- [Auditoría de todos los archivos](docs/auditoria-archivos.md).
+- [Lista de pendientes frente al PDF](docs/pendientes-proyecto.md).
+- [Guía de pruebas manuales](docs/pruebas/manuales.md).
+- [Historias de usuario](docs/historias-usuario.md).
+- [Modelo de datos](docs/modelo-datos.md).
+- [Estados y prioridades](docs/estados_prioridades.md).
+- [Datos semilla](docs/datos-semilla.md).
+- [Entrega de Revisión 1](docs/entrega_revision_1.md).
+- [Bocetos](docs/bocetos/pantallas-r1.png) y [capturas](docs/capturas/revision-1/README.md).
+- [Fuentes del diseño UG](docs/referencias-diseno-ug.md).
+
+Los registros de 28 comprobaciones UI y cuatro pruebas de datos de muestra se
+conservan como evidencia histórica. Sus herramientas de automatización se retiraron
+de la distribución académica; los resultados no acreditan Firebase ni permisos reales.
+
+## Flujo Git
+
+`master` conserva la versión estable; `develop` integra el trabajo mediante PR.
+Las nuevas funcionalidades parten de `develop` actualizada. Esta reorganización
+se revisa en `develop-organizado`; no sustituye automáticamente a `develop`.
+Para el cierre final: `release/1.0.0` a `master`, sincronización a `develop` y
+etiqueta `v1.0.0`, conforme a la guía.

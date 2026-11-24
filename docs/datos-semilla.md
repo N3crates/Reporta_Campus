@@ -29,8 +29,8 @@ Usuarios demo previstos para la Revisión 2 (crearlos en Authentication y luego 
 ## Cómo cargarla
 
 1. Configurar `public/js/firebase-config.js` con el proyecto del equipo.
-2. Verificar que las reglas de Firestore permitan escribir (durante desarrollo, reglas temporales; ver `firestore.rules`).
-3. Iniciar el servidor estático (`npx serve public`) y abrir `http://localhost:3000/seed.html`.
+2. Preparar con E los permisos mínimos del entorno de pruebas. Las reglas actuales deniegan todo; no habilitar acceso global para cargar la semilla.
+3. Abrir `public/seed.html` con Live Server en el entorno de pruebas autorizado.
 4. Pulsar **Cargar datos semilla**; debe mostrar `Listo: 28 documentos escritos.`
 5. Comprobar en Firebase Console que existen las colecciones.
 

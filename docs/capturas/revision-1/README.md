@@ -30,8 +30,8 @@ Estados e interacciones adicionales, a 390 px:
 
 ![Detalle en escritorio](detalle-escritorio.png)
 
-## Regenerar
+## Repetir la comprobación
 
-Desde la raíz del repositorio, instalar las dependencias de desarrollo y el
-navegador según el README, y ejecutar `npm run evidence`. Se vuelven a generar
-estas imágenes y `docs/pruebas/resultados-ui.json` tras completar las pruebas.
+Seguir la [guía de pruebas manuales](../../pruebas/manuales.md) y tomar nuevas
+capturas en otra carpeta si cambia la interfaz. Estas imágenes conservan la
+evidencia original de Revisión 1. La distribución académica ya no requiere npm.

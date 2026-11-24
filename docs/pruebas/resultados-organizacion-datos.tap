@@ -1,0 +1,12 @@
+✔ Los ejemplos cubren todos los estados y prioridades acordados (0.9174ms)
+✔ Cada ejemplo tiene ID y folio unicos, campos validos y catalogos existentes (0.3191ms)
+✔ Los historiales comienzan en reportado, avanzan sin saltos y coinciden con el estado actual (0.1665ms)
+✔ Las incidencias resueltas tienen comentario de resolucion (0.1037ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 64.362
