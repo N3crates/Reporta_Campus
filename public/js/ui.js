@@ -69,12 +69,18 @@ async function prepararSesionUsuario(){
     const linkAdmin = document.getElementById('nav-link-admin')
     const navegacion = document.getElementById('navegacion')
     const user = await usuarioActual()
-    
+    const paginaActual = window.location.pathname.split('/').pop() || 'index.html'
+    const paginasPublicas = ['index.html', 'index', 'login.html', 'login', 'registro.html', 'registro']
+    const esPaginaPublica = paginasPublicas.includes(paginaActual)
+
+    if(!user && !esPaginaPublica){
+        window.location.href = 'login.html'
+        return
+    }
     if(!navUsuario) 
         return
 
     if(!user){
-        if(navegacion) navegacion.classList.add('hidden', 'md:hidden')
         navUsuario.innerHTML = `
             <a href="login.html" class="text-xs font-semibold text-white hover:text-[#ffd300] transition">
                 Iniciar sesion

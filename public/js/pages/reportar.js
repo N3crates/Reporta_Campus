@@ -1,4 +1,11 @@
 import { createDemoReport } from '../demo-data.js';
+import { usuarioActual } from '../auth.js'
+
+usuarioActual().then((usuario) => {
+    if(!usuario){
+        window.location.href = 'login.html'
+    }
+})
 
 // Validadores
 function required(value, fieldName) {
@@ -64,12 +71,21 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault();
     ocultarAlertas();
 
+    const usuario = await usuarioActual()
+    if(!usuario){
+        window.location.href = 'login.html'
+        return
+    }
+
     const payload = {
         titulo: document.getElementById('titulo').value,
         categoriaId: document.getElementById('categoriaId').value,
         edificioId: document.getElementById('edificioId').value,
         aula: document.getElementById('aula').value,
-        descripcion: document.getElementById('descripcion').value
+        descripcion: document.getElementById('descripcion').value,
+        reportanteId: usuario.id,
+        reportanteNombre: usuario.nombre || usuario.email,
+        correoReportante: usuario.correo || usuario.email
     };
 
     // Validaciones

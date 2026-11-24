@@ -1,5 +1,6 @@
 import { doc, runTransaction, collection, serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { db } from './firebase.js';
+import { db, auth } from './firebase.js';
+import { error } from 'node:console';
 
 function normalizeText(value) {
     return String(value || '').trim();
@@ -7,6 +8,11 @@ function normalizeText(value) {
 
 // Genera un folio unico correlativo mediante transaccion y guarda la incidencia
 export async function registrarIncidencia(payload) {
+    const uidActual = auth.currentUser?.uid || payload.reportanteId
+    if(!uidActual){
+        throw new Error('Debes iniciar sesion para registrar una incidencia.')
+    }
+
     const anioActual = new Date().getFullYear();
     const contadorRef = doc(db, 'contadores', `folios-${anioActual}`);
     const incidenciasColRef = collection(db, 'incidencias');
@@ -35,10 +41,9 @@ export async function registrarIncidencia(payload) {
             aula: normalizeText(payload.aula),
             prioridad: payload.prioridad || 'media',
             estado: 'reportado',
-
-            // Aqui ira el UID real de auth.currentUser.uid
-            reportanteId: 'demo-estudiante',
-
+            reportanteId: uidActual,
+            reportanteNombre: payload.reportanteNombre || auth.currentUser?.displayName || '',
+            correoReportante: payload.correoReportante || auth.currentUser?.email || '',
             fechaCreacion: serverTimestamp(),
             fechaActualizacion: serverTimestamp()
         });
