@@ -4,7 +4,7 @@ import {
     collection,
     serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
-import { db } from './firebase.js'
+import { db, auth } from './firebase.js'
 
 function normalizeText(value) {
     return String(value || '').trim()
@@ -22,7 +22,11 @@ export async function registrarIncidencia(payload, usuarioId = null) {
     const primerHistorialRef = doc(collection(db, 'incidencias', nuevaIncidenciaRef.id, 'historial_estados'))
 
     // UID del usuario autenticado
-    const reportanteFinal = usuarioId || payload.reportanteId || 'demo-estudiante'
+    const reportanteFinal = auth.currentUser?.uid
+
+    if (!reportanteFinal || (usuarioId && usuarioId !== reportanteFinal)) {
+        throw new Error('Debes iniciar sesión para registrar una incidencia.')
+    }
 
     const resultado = await runTransaction(db, async (transaction) => {
         const contadorDoc = await transaction.get(contadorRef)

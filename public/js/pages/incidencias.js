@@ -1,6 +1,13 @@
 import { categorias, edificios } from '../demo-data.js';
 import { obtenerIncidencias } from '../incidencias.js';
 import { cargarVista, asignarTexto, mostrarEstado, asignarFecha, asignarIcono, normalizarTexto } from '../funciones.js';
+import { usuarioActual } from '../auth.js';
+
+usuarioActual().then((usuario) => {
+    if(!usuario){
+        window.location.href = 'login.html'
+    }
+})
 
 const formulario = document.getElementById('filtros');
 const lista = document.getElementById('lista-incidencias');
