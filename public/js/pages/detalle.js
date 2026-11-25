@@ -1,23 +1,18 @@
-import { categorias, edificios } from '../demo-data.js';
-import { obtenerIncidencia } from '../incidencias.js';
+import { obtenerMapaCatalogos } from '../catalogos.js'
+import { obtenerIncidencia, actualizarIncidencia } from '../incidencias.js';
 import { cargarVista, asignarTexto, mostrarEstado, asignarFecha, asignarIcono, estados } from '../funciones.js';
 import { usuarioActual } from '../auth.js';
 import { db } from '../firebase.js';
-import { 
-    doc, 
-    updateDoc, 
-    arrayUnion, 
-    addDoc, 
-    collection, 
-    serverTimestamp 
-    } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
+import { addDoc, collection, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
 
 const contenido = document.getElementById('detalle-contenido');
-
 const nombreCategoria = id => categorias[id] ?? id ?? 'Sin categoría';
 const nombreEdificio = id => edificios[id] ?? id ?? 'Sin edificio';
 const capitalizar = texto => texto ? texto[0].toUpperCase() + texto.slice(1) : 'Sin definir';
 const etiquetaEstado = estado => estados?.[estado]?.label ?? estado ?? 'Sin estado';
+
+let categoriasMap = {}
+let edificiosMap = {}
 
 function crearMovimiento(movimiento, indice, cantidad, plantilla) {
     const vista = plantilla.content.cloneNode(true);
@@ -153,10 +148,10 @@ function panelGestion(incidencia, usuario){
             btn.textContent = 'Guardado...'
 
             const ahoraISO = new Date().toISOString()
-            await updateDoc(doc(db, 'incidencias', incidencia.id), {
+            await actualizarIncidencia(incidencia.id, {
                 estado: estadoNuevo,
                 prioridad: prioridadNueva,
-                fechaActualizacion: serverTimestamp()
+                responsableId: usuario.uid
             })
 
             const movimientoDoc = {
@@ -167,10 +162,12 @@ function panelGestion(incidencia, usuario){
                 responsable: usuario.nombre || usuario.email,
                 fecha: serverTimestamp()
             }
+
             await addDoc(collection(db, 'incidencias', incidencia.id, 'historial_estados'), movimientoDoc)
 
             incidencia.estado = estadoNuevo
             incidencia.prioridad = prioridadNueva
+            incidencia.responsableId = usuario.uid
             incidencia.historial = [...(incidencia.historial ?? []), {...movimientoDoc, fecha: ahoraISO}]
 
             await mostrarDetalle(incidencia, usuario)
@@ -240,7 +237,12 @@ async function iniciarDetalle() {
 
         const parametros = new URLSearchParams(window.location.search);
         const id = parametros.get('id');
-        const incidencia = id ? await obtenerIncidencia(id) : null;
+        const[incidencia, catalogos] = await Promise.all([
+            id ? obtenerIncidencia(id) : null,
+            obtenerMapaCatalogos()
+        ])
+        categoriasMap = catalogos.categoriasMap
+        edificiosMap = catalogos.edificiosMap
 
         if (!incidencia) {
             const plantilla = await cargarVista('vistas/no-encontrado.html');

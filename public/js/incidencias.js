@@ -1,6 +1,6 @@
 import { db, collection, getDocs, query, orderBy, doc, getDoc } from './firebase.js'
 import { usuarioActual } from './auth.js'
-import { where } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
+import { where, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
 
 function fechaAISO(valor) {
   if (!valor) 
@@ -11,17 +11,37 @@ function fechaAISO(valor) {
   return String(valor)
 }
 
-export async function obtenerIncidencias() {
+export async function obtenerIncidencias(filtros = {}) {
   const usuario = await usuarioActual()
   if(!usuario)
     return []
 
   const colRef = collection(db, 'incidencias')
   const esStaff = usuario.rol === 'responsable' || usuario.rol === 'admin'
-  const consulta = esStaff ? query(colRef, orderBy('fechaCreacion', 'desc')) : query(colRef, where('reportanteId', '==', usuario.uid), orderBy('fechaCreacion', 'desc'))
-  const snapshot = await getDocs(consulta)
+  const restricciones = []
   
-  const lista = snapshot.docs.map(d => {
+  if(!esStaff){
+    restricciones.push(where('reportanteId', '==', usuario.uid))
+  }
+  if(filtros.estado){
+    restricciones.push(where('estado', '==', filtros.estado))
+  }
+  if(filtros.prioridad){
+    restricciones.push(where('prioridad', '==', filtros.prioridad))
+  }
+  if(filtros.categoriaId){
+    restricciones.push(where('categoriaId', '==', filtros.categoriaId))
+  }
+  if(filtros.edificioId){
+    restricciones.push(where('edificioId', '==', filtros.edificioId))
+  }
+
+  restricciones.push(orderBy('fechaCreacion', 'desc'))
+
+  const consulta = query(colRef, ...restricciones)
+  const snapshot = await getDocs(consulta)
+
+  return snapshot.docs.map(d => {
     const datos = d.data()
     return{
       id: d.id,
@@ -29,11 +49,6 @@ export async function obtenerIncidencias() {
       fechaCreacion: fechaAISO(datos.fechaCreacion)
     }
   })
-  if(!esStaff){
-    lista.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
-  }
-
-  return lista
 }
 
 export async function obtenerIncidencia(id) {
@@ -47,7 +62,11 @@ export async function obtenerIncidencia(id) {
     const histSnap = await getDocs(query(collection(db, 'incidencias', id, 'historial_estados'), orderBy('fecha', 'asc')))
     historial = histSnap.docs.map(h => {
       const d = h.data()
-      return { id: h.id, ...d, fecha: fechaAISO(d.fecha) }
+      return { 
+        id: h.id, 
+        ...d, 
+        fecha: fechaAISO(d.fecha) 
+      }
     })
   } catch (error) {
     console.warn('No se pudo leer el historial:', error)
@@ -59,4 +78,20 @@ export async function obtenerIncidencia(id) {
     fechaCreacion: fechaAISO(datos.fechaCreacion),
     historial
   }
+}
+
+export async function actualizarIncidencia(id, { prioridad, responsableId, estado } = {}){
+  const cambios = { fechaActualizacion: serverTimestamp() }
+
+  if(prioridad !== undefined){
+    cambios.prioridad = prioridad
+  }
+  if(responsableId !== undefined){
+    cambios.responsableId = responsableId
+  }
+  if(estado !== undefined){
+    cambios.estado = estado
+  }
+
+  await updateDoc(doc(db, 'incidencias', id), cambios)
 }
