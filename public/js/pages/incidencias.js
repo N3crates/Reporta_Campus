@@ -1,6 +1,6 @@
-import { obtenerIncidencias } from '../incidencias.js';
+import { obtenerIncidencias } from '../incidencias-ui.js';
 import { protegerPagina } from '../auth.js';
-import { obtenerCatalogos, llenarOpciones, nombreCatalogo } from '../catalogos.js';
+import { obtenerCatalogos, llenarOpciones, nombreCatalogo } from '../catalogos-ui.js';
 import { mensajeError, mostrarMensaje } from '../mensajes.js';
 import {
     cargarVista,
@@ -22,6 +22,7 @@ const formulario = document.getElementById('filtros');
 const lista = document.getElementById('lista-incidencias');
 let plantilla;
 let todas = [];
+let numeroConsulta = 0;
 let catalogos = { categorias: [], edificios: [] };
 
 function nombreCategoria(id) {
@@ -120,9 +121,45 @@ function mostrarIncidencias() {
     window.history.replaceState(null, '', direccion);
 }
 
+async function consultarFiltros() {
+    const numero = ++numeroConsulta;
+    const filtros = leerFiltros();
+    const alerta = document.getElementById('error-listado');
+    alerta.classList.add('hidden');
+    document.getElementById('estado-vacio').classList.add('hidden');
+    document.getElementById('resultados-conteo').textContent = 'Consultando incidencias…';
+    lista.setAttribute('aria-busy', 'true');
+    try {
+        const incidencias = await obtenerIncidencias({
+            estado: filtros.estado,
+            prioridad: filtros.prioridad,
+            categoriaId: filtros.categoria,
+            edificioId: filtros.edificio
+        });
+        if (numero !== numeroConsulta) {
+            return;
+        }
+        todas = incidencias;
+        mostrarIncidencias();
+    } catch (error) {
+        if (numero !== numeroConsulta) {
+            return;
+        }
+        lista.replaceChildren();
+        mostrarMensaje(alerta, mensajeError(error));
+        document.getElementById('resultados-conteo').textContent =
+            'No se pudo consultar el listado.';
+        document.getElementById('reintentar-listado').hidden = false;
+    } finally {
+        if (numero === numeroConsulta) {
+            lista.removeAttribute('aria-busy');
+        }
+    }
+}
+
 function limpiarFiltros() {
     formulario.reset();
-    mostrarIncidencias();
+    consultarFiltros();
 }
 
 async function iniciarListado() {
@@ -139,11 +176,7 @@ async function iniciarListado() {
         }
         document.getElementById('resultados-conteo').textContent = 'Cargando incidencias…';
         plantilla = await cargarVista('vistas/tarjeta-incidencia.html');
-        const resultados = await Promise.all([obtenerIncidencias(), obtenerCatalogos()]);
-        todas = resultados[0].filter(function (incidencia) {
-            return !incidencia.eliminado;
-        });
-        catalogos = resultados[1];
+        catalogos = await obtenerCatalogos();
         llenarOpciones(
             document.getElementById('categoria'),
             catalogos.categorias,
@@ -159,16 +192,24 @@ async function iniciarListado() {
             document.getElementById(campo).value = parametros.get(campo) || '';
         }
 
-        formulario.oninput = mostrarIncidencias;
-        formulario.onchange = mostrarIncidencias;
+        formulario.oninput = function (evento) {
+            if (evento.target.id === 'buscar') {
+                mostrarIncidencias();
+            }
+        };
+        formulario.onchange = function (evento) {
+            if (evento.target.id !== 'buscar') {
+                consultarFiltros();
+            }
+        };
         formulario.onsubmit = function (evento) {
             evento.preventDefault();
-            mostrarIncidencias();
+            consultarFiltros();
         };
 
         document.getElementById('limpiar-filtros').onclick = limpiarFiltros;
         document.getElementById('limpiar-vacio').onclick = limpiarFiltros;
-        mostrarIncidencias();
+        await consultarFiltros();
     } catch (error) {
         lista.replaceChildren();
         mostrarMensaje(alerta, mensajeError(error));

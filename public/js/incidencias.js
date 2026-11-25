@@ -1,133 +1,100 @@
-import {
-    db,
-    collection,
-    getDocs,
-    query,
-    orderBy,
-    doc,
-    getDoc,
-    runTransaction,
-    serverTimestamp
-} from './firebase.js';
-import { where } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { protegerPagina } from './auth.js';
-import { esPersonal, puedeEditar } from './permisos.js';
-import { validarIncidencia } from './validaciones.js';
-import { crearError } from './mensajes.js';
+import { db, collection, getDocs, query, orderBy, doc, getDoc } from './firebase.js'
+import { usuarioActual } from './auth.js'
+import { where, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
 
 function fechaAISO(valor) {
-    if (!valor) {
-        return '';
-    }
-    if (typeof valor.toDate === 'function') {
-        return valor.toDate().toISOString();
-    }
-    return String(valor);
+  if (!valor) 
+    return ''
+  if (typeof valor.toDate === 'function') 
+    return valor.toDate().toISOString()
+  
+  return String(valor)
 }
 
-function normalizar(documento) {
-    const datos = documento.data();
-    return {
-        ...datos,
-        id: documento.id,
-        fechaCreacion: fechaAISO(datos.fechaCreacion),
-        fechaActualizacion: fechaAISO(datos.fechaActualizacion),
-        fechaResolucion: fechaAISO(datos.fechaResolucion)
-    };
-}
+export async function obtenerIncidencias(filtros = {}) {
+  const usuario = await usuarioActual()
+  if(!usuario)
+    return []
 
-export async function obtenerIncidencias() {
-    const usuario = await protegerPagina();
-    if (!usuario) {
-        return [];
+  const colRef = collection(db, 'incidencias')
+  const esStaff = usuario.rol === 'responsable' || usuario.rol === 'admin'
+  const restricciones = []
+  
+  if(!esStaff){
+    restricciones.push(where('reportanteId', '==', usuario.uid))
+  }
+  if(filtros.estado){
+    restricciones.push(where('estado', '==', filtros.estado))
+  }
+  if(filtros.prioridad){
+    restricciones.push(where('prioridad', '==', filtros.prioridad))
+  }
+  if(filtros.categoriaId){
+    restricciones.push(where('categoriaId', '==', filtros.categoriaId))
+  }
+  if(filtros.edificioId){
+    restricciones.push(where('edificioId', '==', filtros.edificioId))
+  }
+
+  restricciones.push(orderBy('fechaCreacion', 'desc'))
+
+  const consulta = query(colRef, ...restricciones)
+  const snapshot = await getDocs(consulta)
+
+  return snapshot.docs.map(d => {
+    const datos = d.data()
+    return{
+      id: d.id,
+      ...datos,
+      fechaCreacion: fechaAISO(datos.fechaCreacion)
     }
-    const restricciones = [orderBy('fechaCreacion', 'desc')];
-    if (!esPersonal(usuario)) {
-        restricciones.unshift(where('reportanteId', '==', usuario.uid));
-    }
-    const resultado = await getDocs(query(collection(db, 'incidencias'), ...restricciones));
-    return resultado.docs.map(normalizar);
+  })
 }
 
 export async function obtenerIncidencia(id) {
-    const documento = await getDoc(doc(db, 'incidencias', id));
-    if (!documento.exists()) {
-        return null;
-    }
-    const incidencia = normalizar(documento);
-    try {
-        const movimientos = await getDocs(
-            query(collection(db, 'incidencias', id, 'historial_estados'), orderBy('fecha', 'asc'))
-        );
-        incidencia.historial = movimientos.docs.map(function (movimiento) {
-            return {
-                ...movimiento.data(),
-                id: movimiento.id,
-                fecha: fechaAISO(movimiento.data().fecha)
-            };
-        });
-    } catch (error) {
-        incidencia.historial = [];
-        incidencia.errorHistorial = error;
-    }
-    return incidencia;
+  const snap = await getDoc(doc(db, 'incidencias', id))
+  if (!snap.exists()) 
+    return null
+
+  const datos = snap.data()
+  let historial = []
+  let errorHistorial = null
+  try {
+    const histSnap = await getDocs(query(collection(db, 'incidencias', id, 'historial_estados'), orderBy('fecha', 'asc')))
+    historial = histSnap.docs.map(h => {
+      const d = h.data()
+      return { 
+        id: h.id, 
+        ...d, 
+        fecha: fechaAISO(d.fecha) 
+      }
+    })
+  } catch (error) {
+    errorHistorial = error
+    console.warn('No se pudo leer el historial:', error)
+  }
+
+  return {
+    id: snap.id,
+    ...datos,
+    fechaCreacion: fechaAISO(datos.fechaCreacion),
+    historial,
+    errorHistorial
+  }
 }
 
-export async function actualizarIncidencia(id, datos, version) {
-    const usuario = await protegerPagina();
-    if (!usuario) {
-        throw crearError('unauthenticated');
-    }
-    const errores = validarIncidencia(datos);
-    if (errores.length > 0) {
-        throw crearError('validacion', errores[0].mensaje);
-    }
-    const referencia = doc(db, 'incidencias', id);
-    return runTransaction(db, async function (transaccion) {
-        const documento = await transaccion.get(referencia);
-        if (!documento.exists()) {
-            throw crearError('not-found');
-        }
-        const actual = normalizar(documento);
-        if (!puedeEditar(usuario, actual)) {
-            throw crearError('permission-denied');
-        }
-        if (actual.fechaActualizacion !== version) {
-            throw crearError('conflict');
-        }
-        transaccion.update(referencia, {
-            titulo: datos.titulo.trim(),
-            descripcion: datos.descripcion.trim(),
-            categoriaId: datos.categoriaId,
-            edificioId: datos.edificioId,
-            aula: datos.aula.trim(),
-            prioridad: datos.prioridad,
-            fechaActualizacion: serverTimestamp()
-        });
-        return { id, folio: actual.folio };
-    });
-}
+export async function actualizarIncidencia(id, { prioridad, responsableId, estado } = {}){
+  const cambios = { fechaActualizacion: serverTimestamp() }
 
-export async function eliminarIncidencia(id, version) {
-    const usuario = await protegerPagina(['admin']);
-    if (!usuario) {
-        throw crearError('unauthenticated');
-    }
-    // Se retira del listado conservando el historial para auditoría.
-    const referencia = doc(db, 'incidencias', id);
-    return runTransaction(db, async function (transaccion) {
-        const documento = await transaccion.get(referencia);
-        if (!documento.exists()) {
-            throw crearError('not-found');
-        }
-        if (fechaAISO(documento.data().fechaActualizacion) !== version) {
-            throw crearError('conflict');
-        }
-        transaccion.update(referencia, {
-            eliminado: true,
-            eliminadoPor: usuario.uid,
-            fechaEliminacion: serverTimestamp(),
-            fechaActualizacion: serverTimestamp()
-        });
-    });
+  if(prioridad !== undefined){
+    cambios.prioridad = prioridad
+  }
+  if(responsableId !== undefined){
+    cambios.responsableId = responsableId
+  }
+  if(estado !== undefined){
+    cambios.estado = estado
+  }
+
+  await updateDoc(doc(db, 'incidencias', id), cambios)
 }

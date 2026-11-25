@@ -1,4 +1,4 @@
-import { obtenerIncidencias } from '../incidencias.js';
+import { obtenerIncidencias } from '../incidencias-ui.js';
 import { usuarioActual } from '../auth.js';
 
 function formatearConteo(numero) {

@@ -34,8 +34,9 @@ privadas de servidor. El acceso a los datos depende de Authentication y las regl
 - Revisar y publicar las reglas de `firestore.rules` y el índice de
   `firestore.indexes.json` con la cuenta autorizada del equipo. `firebase.json`
   relaciona ambos archivos. Esta entrega no los despliega al proyecto remoto.
-- El índice combina `reportanteId ASC` y `fechaCreacion DESC` para consultar
-  los reportes propios. El personal puede consultar el conjunto de incidencias.
+- Los índices combinan propietario y filtros de estado, prioridad, categoría y
+  edificio con `fechaCreacion DESC`. El personal puede consultar el conjunto
+  de incidencias; un reportante consulta las propias.
 
 La semilla y su cargador se conservan como material de desarrollo de R1. No ejecutar
 el cargador sobre producción: sus propietarios ficticios no corresponden a cuentas
@@ -57,8 +58,10 @@ autenticadas. Las reglas de esta entrega no abren permisos para cargar esos ejem
 - Antigüedad calculada desde fechas reales del documento; se congela al resolver.
 - Retiro lógico de incidencias solo para admin y con confirmación. Conserva historial.
 
-Los filtros por texto, prioridad, categoría, estado y edificio se aplican en el
-navegador sobre los documentos que el servicio ya consultó con autorización.
+Los filtros por prioridad, categoría, estado y edificio se envían al servicio de
+Firestore integrado en develop mediante el PR #21. La búsqueda por título/folio
+se aplica en el navegador sobre esos resultados autorizados. El archivo de índices
+cubre las combinaciones de filtros, con y sin restricción de propietario.
 No hay paginación; el volumen previsto es el de la demostración académica.
 Los ejemplos locales de R1 no alimentan estas pantallas.
 
@@ -74,9 +77,11 @@ public/
     vistas/                       HTML reutilizable, incluidos los formularios
     js/
         auth.js, firebase.js      Integración de autenticación y datos
-        catalogos.js              Lectura de categorías y edificios
+        catalogos.js              Servicio de catálogos de develop (PR #21)
+        catalogos-ui.js           Opciones y etiquetas para los formularios
         folio.js, estados.js      Transacciones del equipo
-        incidencias.js            Lectura, edición y retiro lógico
+        incidencias.js            Servicio y consultas de develop (PR #21)
+        incidencias-ui.js         Adaptación de fechas, edición completa y retiro
         formulario-incidencia.js  Control común de alta y edición
         funciones.js, ui.js       Presentación y navegación
         validaciones.js           Validación compartida
@@ -114,8 +119,8 @@ remoto. Las herramientas de prueba se mantienen fuera de la entrega académica.
 | Juan Carlos Zuñiga Alfaro | D · Estados, historial y antigüedad | #14 |
 | David Zapien Sabedra | E · Autenticación y permisos | #15 |
 
-Esta rama integra como dependencia el trabajo de autenticación del PR #19 y el
-historial del PR #17; preserva su autoría. Requiere revisión humana antes de fusionar
+Esta rama incorpora develop con los PR #17, #19 y #21 y adapta la interfaz a sus
+servicios. Requiere revisión humana antes de fusionar
 en develop. El issue #12 se mantiene abierto hasta comprobar la entrega integrada.
 
 ## Diseño

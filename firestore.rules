@@ -36,7 +36,7 @@ service cloud.firestore {
                 && texto(datos.aula, 1, 100)
                 && texto(datos.categoriaId, 1, 100)
                 && texto(datos.edificioId, 1, 100)
-                && texto(datos.get('reportanteNombre', 'Reportante'), 1, 100)
+                && texto(datos.get('reportanteNombre', ''), 0, 100)
                 && datos.prioridad in ['baja', 'media', 'alta']
                 && datos.estado in ['reportado', 'en_proceso', 'resuelto']
                 && datos.fechaCreacion is timestamp
@@ -84,7 +84,7 @@ service cloud.firestore {
                 && request.resource.data.keys().hasOnly([
                     'folio', 'titulo', 'descripcion', 'categoriaId', 'edificioId',
                     'aula', 'prioridad', 'estado', 'reportanteId', 'fechaCreacion',
-                    'fechaActualizacion', 'ultimoMovimientoId', 'reportanteNombre'
+                    'fechaActualizacion', 'ultimoMovimientoId', 'reportanteNombre', 'correoReportante'
                 ])
                 && datosValidos(request.resource.data)
                 && catalogosValidos(request.resource.data)

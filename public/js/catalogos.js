@@ -1,49 +1,43 @@
-import { db, collection, getDocs } from './firebase.js';
+import { db, collection, getDocs, query, orderBy } from './firebase.js'
 
-async function leerCatalogo(nombre) {
-    const resultado = await getDocs(collection(db, nombre));
-    return resultado.docs
-        .map(function (documento) {
-            return { ...documento.data(), id: documento.id };
-        })
-        .sort(function (a, b) {
-            return String(a.nombre).localeCompare(String(b.nombre), 'es');
-        });
+let cacheCategorias = null
+let cacheEdificios = null
+
+export async function obtenerCategorias(forzar = false){
+    if(cacheCategorias && !forzar)
+        return cacheCategorias
+
+    const snap = await getDocs(query(collection(db, 'categorias'), orderBy('nombre', 'asc')))
+    cacheCategorias = snap.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+    }))
+
+    return cacheCategorias
 }
 
-export async function obtenerCatalogos() {
-    const [categorias, edificios] = await Promise.all([
-        leerCatalogo('categorias'),
-        leerCatalogo('edificios')
-    ]);
-    return { categorias, edificios };
+export async function obtenerEdificios(forzar = false){
+    if(cacheEdificios && !forzar)
+        return cacheEdificios
+
+    const snap = await getDocs(query(collection(db, 'edificios'), orderBy('nombre', 'asc')))
+    cacheEdificios = snap.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+    }))
+
+    return cacheEdificios
 }
 
-export function llenarOpciones(select, datos, titulo, valorActual = '') {
-    select.replaceChildren(new Option(titulo, ''));
-    for (const dato of datos) {
-        if ((dato.activa === false || dato.activo === false) && dato.id !== valorActual) {
-            continue;
-        }
-        select.add(new Option(dato.nombre || dato.id, dato.id));
+export async function obtenerMapaCatalogos(){
+    const[categorias, edificios] = await Promise.all([
+        obtenerCategorias(),
+        obtenerEdificios()
+    ])
+
+    return{
+        categoriasMap: Object.fromEntries(categorias.map(c => [c.id, c.nombre])),
+        edificiosMap: Object.fromEntries(edificios.map(e => [e.id, e.nombre])),
+        categorias, edificios
     }
-    if (
-        valorActual &&
-        !Array.from(select.options).some(function (opcion) {
-            return opcion.value === valorActual;
-        })
-    ) {
-        select.add(new Option(valorActual + ' (sin catálogo)', valorActual));
-    }
-    select.value = valorActual;
-}
-
-export function nombreCatalogo(datos, id) {
-    return (
-        datos.find(function (dato) {
-            return dato.id === id;
-        })?.nombre ||
-        id ||
-        'Sin definir'
-    );
 }

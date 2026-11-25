@@ -4,37 +4,26 @@ import {
     collection,
     serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { db, auth } from './firebase.js';
-import { validarIncidencia } from './validaciones.js';
-import { crearError } from './mensajes.js';
+import { db, auth } from './firebase.js'
 
 function normalizeText(value) {
-    return String(value || '').trim();
+    return String(value || '').trim()
 }
 
-// Genera un folio unico correlativo mediante transaccion y guarda la incidencia
+// Genera un folio único correlativo mediante transacción, guarda la incidencia y registra su primer historial
 export async function registrarIncidencia(payload, usuarioId = null) {
-    const errores = validarIncidencia(payload);
-    if (errores.length > 0) {
-        throw crearError('validacion', errores[0].mensaje);
+    const uidActual = usuarioId || auth.currentUser?.uid || payload.reportanteId
+    if (!uidActual) {
+        throw new Error('Debes iniciar sesión para registrar una incidencia.')
     }
-    const anioActual = new Date().getFullYear();
 
+    const anioActual = new Date().getFullYear();
     const contadorRef = doc(db, 'contadores', `folios-${anioActual}`);
     const incidenciasColRef = collection(db, 'incidencias');
     const nuevaIncidenciaRef = doc(incidenciasColRef);
 
     // Referencia para el primer movimiento de historial
-    const primerHistorialRef = doc(
-        collection(db, 'incidencias', nuevaIncidenciaRef.id, 'historial_estados')
-    );
-
-    // UID del usuario autenticado
-    const reportanteFinal = auth.currentUser?.uid;
-
-    if (!reportanteFinal || (usuarioId && usuarioId !== reportanteFinal)) {
-        throw crearError('unauthenticated', 'Debes iniciar sesión para registrar una incidencia.');
-    }
+    const primerHistorialRef = doc(collection(db, 'incidencias', nuevaIncidenciaRef.id, 'historial_estados'));
 
     const resultado = await runTransaction(db, async (transaction) => {
         const contadorDoc = await transaction.get(contadorRef);
@@ -48,15 +37,11 @@ export async function registrarIncidencia(payload, usuarioId = null) {
         const folioGenerado = `RC-${anioActual}-${consecutivo}`;
         const fechaServidor = serverTimestamp();
 
-        // 1. Actualizar el contador del anio
-        transaction.set(
-            contadorRef,
-            {
-                ultimoFolio: nuevoNumero,
-                ultimaIncidenciaId: nuevaIncidenciaRef.id
-            },
-            { merge: true }
-        );
+        // 1. Actualizar el contador del año
+        transaction.set(contadorRef, {
+            ultimoFolio: nuevoNumero,
+            ultimaIncidenciaId: nuevaIncidenciaRef.id
+        }, { merge: true });
 
         // 2. Guardar la incidencia en Firestore
         transaction.set(nuevaIncidenciaRef, {
@@ -68,28 +53,29 @@ export async function registrarIncidencia(payload, usuarioId = null) {
             aula: normalizeText(payload.aula),
             prioridad: payload.prioridad || 'media',
             estado: 'reportado',
-            reportanteId: reportanteFinal,
-            reportanteNombre: normalizeText(payload.reportanteNombre || 'Reportante'),
+            reportanteId: uidActual,
             ultimoMovimientoId: primerHistorialRef.id,
+            reportanteNombre: payload.reportanteNombre || auth.currentUser?.displayName || '',
+            correoReportante: payload.correoReportante || auth.currentUser?.email || '',
             fechaCreacion: fechaServidor,
             fechaActualizacion: fechaServidor
-        });
+        })
 
         // 3. Crear el primer movimiento del historial con estadoAnterior en null
         transaction.set(primerHistorialRef, {
             estadoAnterior: null,
             estadoNuevo: 'reportado',
-            responsableId: reportanteFinal,
-            responsable: normalizeText(payload.reportanteNombre || 'Reportante'),
+            responsableId: uidActual,
+            responsable: payload.reportanteNombre || auth.currentUser?.displayName || auth.currentUser?.email || '',
             comentario: 'Incidencia reportada en el sistema',
             fecha: fechaServidor
-        });
+        })
 
         return {
             id: nuevaIncidenciaRef.id,
             folio: folioGenerado
-        };
-    });
+        }
+    })
 
-    return resultado;
+    return resultado
 }

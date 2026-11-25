@@ -1,7 +1,7 @@
 import { cargarVista, asignarFecha } from './funciones.js';
 import { protegerPagina } from './auth.js';
-import { obtenerCatalogos, llenarOpciones } from './catalogos.js';
-import { obtenerIncidencia, actualizarIncidencia } from './incidencias.js';
+import { obtenerCatalogos, llenarOpciones } from './catalogos-ui.js';
+import { obtenerIncidencia, actualizarIncidencia } from './incidencias-ui.js';
 import { registrarIncidencia } from './folio.js';
 import { puedeEditar } from './permisos.js';
 import { mensajeError, mostrarMensaje, crearError } from './mensajes.js';

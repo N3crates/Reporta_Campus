@@ -1,5 +1,5 @@
-import { obtenerIncidencia, eliminarIncidencia } from '../incidencias.js';
-import { obtenerCatalogos, nombreCatalogo } from '../catalogos.js';
+import { obtenerIncidencia, eliminarIncidencia } from '../incidencias-ui.js';
+import { obtenerCatalogos, nombreCatalogo } from '../catalogos-ui.js';
 import {
     cargarVista,
     asignarTexto,

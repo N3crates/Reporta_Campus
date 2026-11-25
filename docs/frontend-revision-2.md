@@ -22,7 +22,8 @@ Rama: `feature/r2-ui-formularios-filtros`.
 | Evidencia | Capturas a 390/1440 px y comprobaciones a 320/390/768/1440 px |
 
 El recorrido principal ya no utiliza `demo-data.js` ni el checkbox «Probar sin enviar».
-El material R1 permanece en sus archivos/evidencias históricas; no se presenta como
+El material R1 permanece en sus evidencias históricas; develop retiró el módulo de muestras.
+No se presenta como
 persistencia real de esta revisión.
 
 ## Contratos de integración
@@ -31,12 +32,15 @@ persistencia real de esta revisión.
   Los errores de lectura del perfil no se convierten silenciosamente en «sin sesión».
 - `registrarIncidencia(datos)`: devuelve `{ id, folio }`. Usa UID de Auth y conserva
   la transacción incidencia/contador/historial del equipo.
-- `obtenerIncidencias()`: consulta ordenada; reportante limitado por `reportanteId`;
+- `obtenerIncidencias(filtros)`: consulta de develop, ordenada y con filtros Firestore;
+  reportante limitado por `reportanteId`;
   personal ve el conjunto. Las vistas excluyen retiradas.
 - `obtenerIncidencia(id)`: devuelve documento o null; fechas ISO, historial ordenado
   y `errorHistorial` si falla la subconsulta.
 - `actualizarIncidencia(id, datos, fechaActualizacion)`: valida, comprueba permisos
   y versión dentro de una transacción y modifica únicamente campos editables.
+  Esta variante de edición completa está en `incidencias-ui.js`; se conserva
+  la función de actualización parcial del servicio `incidencias.js` de develop.
 - `eliminarIncidencia(id, fechaActualizacion)`: retiro lógico en transacción, no
   borrado físico; conserva la subcolección de historial.
 - `cambiarEstado(id, estado, comentario, uid)`: reutiliza la transacción de D.
@@ -49,7 +53,9 @@ reportado y para personal mientras no esté resuelto. El retiro solo es de admin
 
 ## Cambios necesarios en la dependencia de autenticación
 
-Se integró la rama del PR #19 sin borrar su historial ni fusionar ese PR en develop.
+Se incorporó develop en `d75778c`, con autenticación #19 y catálogos/datos #21 ya integrados.
+Los servicios de catálogos y consultas proceden de develop; los adaptadores de
+presentación y edición se separaron en `catalogos-ui.js` e `incidencias-ui.js`.
 Se resolvió el conflicto de folio conservando el historial inicial del PR #17.
 Se corrigieron el import HTTP y el registro de contraseñas en consola. Las nuevas
 vistas de sesión/tabla evitan interpolar nombres y correos en HTML. El registro
@@ -64,7 +70,7 @@ David y Javier deben revisar estos contratos y reglas antes de integrar.
 ## Pruebas y evidencia
 
 Resultado: **44 comprobaciones de integración y 6 pruebas de límites correctas**,
-sin errores JavaScript del navegador. También se verificaron la sintaxis de 23
+sin errores JavaScript del navegador. También se verificaron la sintaxis de 24
 módulos y 69 referencias locales, sin enlaces rotos. Los límites de título,
 descripción y los rangos de antigüedad tienen resultados independientes en
 `pruebas/resultados-dominio-r2.tap`.
