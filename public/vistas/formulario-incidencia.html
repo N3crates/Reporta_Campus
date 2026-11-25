@@ -1,0 +1,156 @@
+<form
+    id="form-reporte"
+    novalidate
+    class="space-y-6"
+>
+    <div>
+        <label
+            for="titulo"
+            class="field-label"
+        >
+            Título de la incidencia *
+        </label>
+        <input
+            id="titulo"
+            name="titulo"
+            class="field"
+            required
+            maxlength="100"
+            placeholder="Ej. Lámpara fundida en el pasillo"
+            aria-describedby="titulo-ayuda"
+        />
+        <p
+            id="titulo-ayuda"
+            class="text-[11px] text-stone-500 mt-2"
+        >
+            Una frase breve que describa el problema. Máximo 100 caracteres.
+        </p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-5">
+        <div>
+            <label
+                for="categoriaId"
+                class="field-label"
+            >
+                Categoría *
+            </label>
+            <select
+                id="categoriaId"
+                name="categoriaId"
+                class="field"
+                required
+            >
+                <option value="">Selecciona una categoría</option>
+            </select>
+        </div>
+        <div>
+            <label
+                for="edificioId"
+                class="field-label"
+            >
+                Edificio *
+            </label>
+            <select
+                id="edificioId"
+                name="edificioId"
+                class="field"
+                required
+            >
+                <option value="">Selecciona un edificio</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <label
+            for="aula"
+            class="field-label"
+        >
+            Aula o espacio específico *
+        </label>
+        <input
+            id="aula"
+            maxlength="100"
+            name="aula"
+            class="field"
+            required
+            placeholder="Ej. Aula A-102, pasillo de planta alta"
+            aria-describedby="aula-ayuda"
+        />
+        <p
+            id="aula-ayuda"
+            class="text-[11px] text-stone-500 mt-2"
+        >
+            Indica el espacio de la instalación, sin compartir tu ubicación personal.
+        </p>
+    </div>
+    <div>
+        <label
+            for="descripcion"
+            class="field-label"
+        >
+            Descripción del problema *
+        </label>
+        <textarea
+            id="descripcion"
+            name="descripcion"
+            class="field resize-y min-h-32"
+            rows="5"
+            required
+            maxlength="500"
+            placeholder="Describe qué ocurre y cómo afecta el uso del espacio…"
+            aria-describedby="descripcion-ayuda"
+        ></textarea>
+        <div class="flex justify-between gap-3 text-[11px] text-stone-500 mt-2">
+            <p id="descripcion-ayuda">No incluyas nombres, teléfonos ni datos personales.</p>
+            <span
+                id="descripcion-contador"
+                class="shrink-0"
+            >
+                0 / 500
+            </span>
+        </div>
+    </div>
+
+    <div>
+        <label
+            for="prioridad"
+            class="field-label"
+        >
+            Prioridad *
+        </label>
+        <select
+            id="prioridad"
+            name="prioridad"
+            class="field"
+            required
+        >
+            <option value="baja">Baja</option>
+            <option
+                value="media"
+                selected
+            >
+                Media
+            </option>
+            <option value="alta">Alta</option>
+        </select>
+    </div>
+    <div
+        class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1"
+    >
+        <a
+            id="cancelar-edicion"
+            href="incidencias.html"
+            class="btn-secondary"
+        >
+            Cancelar
+        </a>
+        <button
+            type="submit"
+            id="btn-submit"
+            class="btn-primary"
+        >
+            Enviar reporte
+            <span aria-hidden="true">↗</span>
+        </button>
+    </div>
+</form>

@@ -38,7 +38,10 @@ export async function registrarIncidencia(payload, usuarioId = null) {
         const fechaServidor = serverTimestamp();
 
         // 1. Actualizar el contador del año
-        transaction.set(contadorRef, { ultimoFolio: nuevoNumero }, { merge: true });
+        transaction.set(contadorRef, {
+            ultimoFolio: nuevoNumero,
+            ultimaIncidenciaId: nuevaIncidenciaRef.id
+        }, { merge: true });
 
         // 2. Guardar la incidencia en Firestore
         transaction.set(nuevaIncidenciaRef, {
@@ -51,6 +54,7 @@ export async function registrarIncidencia(payload, usuarioId = null) {
             prioridad: payload.prioridad || 'media',
             estado: 'reportado',
             reportanteId: uidActual,
+            ultimoMovimientoId: primerHistorialRef.id,
             reportanteNombre: payload.reportanteNombre || auth.currentUser?.displayName || '',
             correoReportante: payload.correoReportante || auth.currentUser?.email || '',
             fechaCreacion: fechaServidor,

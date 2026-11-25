@@ -1,92 +1,89 @@
-import { auth, db, doc, getDoc, setDoc, serverTimestamp } from './firebase.js'
-import { 
-        createUserWithEmailAndPassword, 
-        signInWithEmailAndPassword, 
-        signOut, 
-        onAuthStateChanged 
-        } from 'http://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js'
+import { auth, db, doc, getDoc, setDoc, serverTimestamp } from './firebase.js';
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    deleteUser,
+    onAuthStateChanged
+} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
-// Registrar usuario con rol reportante
 export async function registrarUsuario(nombre, correo, password) {
-    const credencial = await createUserWithEmailAndPassword(auth, correo, password)
-    const uid = credencial.user.uid
-
-    await setDoc(doc(db, 'usuarios', uid), {
-        nombre: nombre.trim(),
-        correo: correo.trim().toLowerCase(),
-        rol: 'reportante',
-        fechaRegistro: serverTimestamp()
-    })
-
-    return credencial.user
+    const credencial = await createUserWithEmailAndPassword(auth, correo.trim(), password);
+    try {
+        await setDoc(doc(db, 'usuarios', credencial.user.uid), {
+            nombre: nombre.trim(),
+            correo: credencial.user.email,
+            rol: 'reportante',
+            fechaRegistro: serverTimestamp()
+        });
+    } catch (error) {
+        // Si el perfil no pudo guardarse, se revierte únicamente el alta recién creada.
+        try {
+            await deleteUser(credencial.user);
+        } catch {
+            const perfilIncompleto = new Error('No se pudo completar el perfil.');
+            perfilIncompleto.code = 'perfil-incompleto';
+            throw perfilIncompleto;
+        }
+        throw error;
+    }
+    return credencial.user;
 }
 
-// Inicia sesion
-export async function iniciarSesion(correo, password){
-    const credencial = await signInWithEmailAndPassword(auth, correo, password)
-    console.log('correo:', correo)
-    console.log('pass:', password)
-    return credencial.user 
+export async function iniciarSesion(correo, password) {
+    const credencial = await signInWithEmailAndPassword(auth, correo.trim(), password);
+    return credencial.user;
 }
 
-// Cerrar session
-export async function cerrarSesion(){
-    await signOut(auth)
-    window.location.href = 'login.html'
+export async function cerrarSesion() {
+    await signOut(auth);
+    window.location.href = 'login.html';
 }
 
-// Obtiene el usuario autenticado
-export function usuarioActual(){
-    return new Promise((resolve) => {
-        const usuario = onAuthStateChanged(auth, async(user) => {
-            usuario()
-            if(!user){
-                resolve(null)
-                return
-            }
-
-            try {
-                const snap = await getDoc(doc(db, 'usuarios', user.uid))
-                
-                if(snap.exists()){
-                    resolve({
-                        uid: user.uid,
-                        email: user.email,
-                        ...snap.data()
-                    })
-                }else{
-                    resolve({uid: user.uid, email: user.email, rol: 'reportante'})
+export function usuarioActual() {
+    return new Promise(function (resolve, reject) {
+        const cancelar = onAuthStateChanged(
+            auth,
+            async function (user) {
+                cancelar();
+                if (!user) {
+                    resolve(null);
+                    return;
                 }
-            } catch (error) {
-                console.error('Error al leer perfil de usuario:', error)
-                resolve(null)
-            }
-        })
-    })
+                try {
+                    const perfil = await getDoc(doc(db, 'usuarios', user.uid));
+                    if (!perfil.exists()) {
+                        const error = new Error('No se encontró el perfil de la cuenta.');
+                        error.code = 'perfil-incompleto';
+                        throw error;
+                    }
+                    resolve({ ...perfil.data(), uid: user.uid, email: user.email });
+                } catch (error) {
+                    reject(error);
+                }
+            },
+            reject
+        );
+    });
 }
 
-// Pide sesion activa y roles permitidos
-export async function protegerPagina(rolesPermitidos = []){
+export async function protegerPagina(rolesPermitidos = []) {
     const usuario = await usuarioActual();
-
-    if(!usuario){
-        window.location.href = 'login.html'
-        return null
+    if (!usuario) {
+        window.location.href = 'login.html';
+        return null;
     }
-    if(rolesPermitidos.length > 0 && !rolesPermitidos.includes(usuario.rol)){
-        alert('No tiene permisos para acceder a esta seccion.')
-        window.location.href = 'index.html'
-        return null
+    if (rolesPermitidos.length > 0 && !rolesPermitidos.includes(usuario.rol)) {
+        const error = new Error('No tienes permiso para realizar esta acción.');
+        error.code = 'permission-denied';
+        throw error;
     }
-
-    return usuario
+    return usuario;
 }
 
-// Si hay session iniciada redirige al inicio
-export async function redirigirSiAuntenticado(){
-    const usuario = await usuarioActual()
-    
-    if(usuario){
-        window.location.href = 'index.html'
+export async function redirigirSiAuntenticado() {
+    const usuario = await usuarioActual();
+    if (usuario) {
+        window.location.href = 'index.html';
     }
 }

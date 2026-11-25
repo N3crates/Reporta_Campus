@@ -3,11 +3,11 @@ import { usuarioActual } from './auth.js'
 import { where, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
 
 function fechaAISO(valor) {
-  if (!valor) 
+  if (!valor)
     return ''
-  if (typeof valor.toDate === 'function') 
+  if (typeof valor.toDate === 'function')
     return valor.toDate().toISOString()
-  
+
   return String(valor)
 }
 
@@ -19,7 +19,7 @@ export async function obtenerIncidencias(filtros = {}) {
   const colRef = collection(db, 'incidencias')
   const esStaff = usuario.rol === 'responsable' || usuario.rol === 'admin'
   const restricciones = []
-  
+
   if(!esStaff){
     restricciones.push(where('reportanteId', '==', usuario.uid))
   }
@@ -53,22 +53,24 @@ export async function obtenerIncidencias(filtros = {}) {
 
 export async function obtenerIncidencia(id) {
   const snap = await getDoc(doc(db, 'incidencias', id))
-  if (!snap.exists()) 
+  if (!snap.exists())
     return null
 
   const datos = snap.data()
   let historial = []
+  let errorHistorial = null
   try {
     const histSnap = await getDocs(query(collection(db, 'incidencias', id, 'historial_estados'), orderBy('fecha', 'asc')))
     historial = histSnap.docs.map(h => {
       const d = h.data()
-      return { 
-        id: h.id, 
-        ...d, 
-        fecha: fechaAISO(d.fecha) 
+      return {
+        id: h.id,
+        ...d,
+        fecha: fechaAISO(d.fecha)
       }
     })
   } catch (error) {
+    errorHistorial = error
     console.warn('No se pudo leer el historial:', error)
   }
 
@@ -76,7 +78,8 @@ export async function obtenerIncidencia(id) {
     id: snap.id,
     ...datos,
     fechaCreacion: fechaAISO(datos.fechaCreacion),
-    historial
+    historial,
+    errorHistorial
   }
 }
 

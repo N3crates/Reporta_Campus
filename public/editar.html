@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <meta
+            name="theme-color"
+            content="#0a263d"
+        />
+        <title>Editar incidencia · ReportaCampus</title>
+        <link
+            rel="icon"
+            href="assets/favicon.svg"
+            type="image/svg+xml"
+        />
+        <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com"
+        />
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link
+            rel="stylesheet"
+            href="css/styles.css"
+        />
+    </head>
+    <body class="min-h-screen flex flex-col">
+        <a
+            class="skip-link"
+            href="#contenido"
+        >
+            Saltar al contenido
+        </a>
+        <div id="encabezado"></div>
+
+        <main
+            id="contenido"
+            class="flex-1 w-full max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-12"
+            tabindex="-1"
+        >
+            <a
+                id="volver-detalle"
+                href="incidencias.html"
+                class="text-xs font-semibold text-stone-500 hover:underline"
+            >
+                ← Volver al listado
+            </a>
+            <div class="mt-7 mb-8">
+                <p class="eyebrow mb-3">AL SERVICIO DE NUESTRA COLMENA</p>
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                    Editar incidencia
+                </h1>
+                <p class="text-sm text-stone-500 mt-3 leading-6">
+                    Actualiza los datos del reporte. Su folio y su historial se conservan.
+                </p>
+            </div>
+            <div class="grid lg:grid-cols-[1fr_300px] gap-6 lg:gap-8 items-start">
+                <section
+                    class="panel p-5 sm:p-8 min-w-0"
+                    aria-labelledby="form-titulo"
+                >
+                    <div class="border-b border-stone-100 pb-5 mb-6">
+                        <h2
+                            id="form-titulo"
+                            class="font-bold"
+                        >
+                            Información del reporte
+                        </h2>
+                        <p class="text-xs text-stone-500 mt-2">
+                            Los campos con * son obligatorios.
+                        </p>
+                    </div>
+                    <p
+                        id="cargando-formulario"
+                        role="status"
+                        class="text-sm text-stone-500"
+                    >
+                        Cargando formulario…
+                    </p>
+                    <div
+                        id="error-alert"
+                        role="alert"
+                        tabindex="-1"
+                        class="hidden form-alert form-alert-error"
+                    ></div>
+                    <div
+                        id="success-alert"
+                        role="status"
+                        tabindex="-1"
+                        class="hidden form-alert form-alert-success"
+                    >
+                        <h3
+                            id="success-title"
+                            class="font-bold"
+                        >
+                            Cambios guardados
+                        </h3>
+                        <p class="mt-2">
+                            Folio de seguimiento:
+                            <strong id="folio-generado"></strong>
+                        </p>
+                        <p class="text-xs mt-2">
+                            Puedes consultar el reporte y su avance en el detalle.
+                        </p>
+                        <a
+                            id="success-detail"
+                            href="incidencias.html"
+                            class="inline-block mt-4 font-bold underline"
+                        >
+                            Ver detalle →
+                        </a>
+                    </div>
+                    <div id="formulario-contenido"></div>
+                </section>
+                <aside class="space-y-5 min-w-0">
+                    <section class="hive-callout p-6">
+                        <img
+                            src="assets/abeja.svg"
+                            width="52"
+                            height="52"
+                            alt=""
+                        />
+                        <h2 class="text-lg font-bold mt-4">
+                            Entre abejas,
+                            <br />
+                            nos cuidamos.
+                        </h2>
+                        <p class="text-sm leading-7 mt-3">
+                            Ubica el problema, describe qué ocurre y conserva tu folio. Cada detalle
+                            ayuda al equipo a atenderlo.
+                        </p>
+                    </section>
+                    <section class="panel p-6">
+                        <h2 class="font-bold text-sm">Datos que se conservan</h2>
+                        <dl class="text-xs mt-4 space-y-3">
+                            <div>
+                                <dt>Folio</dt>
+                                <dd
+                                    id="edicion-folio"
+                                    class="font-bold break-words"
+                                ></dd>
+                            </div>
+                            <div>
+                                <dt>Reportante</dt>
+                                <dd
+                                    id="edicion-autor"
+                                    class="break-words"
+                                ></dd>
+                            </div>
+                            <div>
+                                <dt>Fecha de creación</dt>
+                                <dd id="edicion-fecha"></dd>
+                            </div>
+                        </dl>
+                    </section>
+                </aside>
+            </div>
+            <noscript>
+                <p class="form-alert">Activa JavaScript para utilizar el formulario.</p>
+            </noscript>
+        </main>
+        <div id="pie-pagina"></div>
+        <script
+            type="module"
+            src="js/ui.js"
+        ></script>
+        <script
+            type="module"
+            src="js/pages/editar.js"
+        ></script>
+    </body>
+</html>

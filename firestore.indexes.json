@@ -1,0 +1,635 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "incidencias",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "reportanteId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "estado",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "prioridad",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "categoriaId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "edificioId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "fechaCreacion",
+                    "order": "DESCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}

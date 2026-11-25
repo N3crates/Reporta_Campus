@@ -1,0 +1,190 @@
+rules_version = '2';
+service cloud.firestore {
+    match /databases/{database}/documents {
+        function autenticado() {
+            return request.auth != null;
+        }
+
+        function rol() {
+            return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol;
+        }
+
+        function personal() {
+            return autenticado() && rol() in ['responsable', 'admin'];
+        }
+
+        function administrador() {
+            return autenticado() && rol() == 'admin';
+        }
+
+        function puedeLeer(datos) {
+            return autenticado() && (datos.reportanteId == request.auth.uid || personal());
+        }
+
+        function texto(valor, minimo, maximo) {
+            return valor is string && valor.size() >= minimo && valor.size() <= maximo;
+        }
+
+        function datosValidos(datos) {
+            return datos.keys().hasAll([
+                    'folio', 'titulo', 'descripcion', 'categoriaId', 'edificioId',
+                    'aula', 'prioridad', 'estado', 'reportanteId', 'fechaCreacion',
+                    'fechaActualizacion'
+                ])
+                && texto(datos.titulo, 1, 100)
+                && texto(datos.descripcion, 1, 500)
+                && texto(datos.aula, 1, 100)
+                && texto(datos.categoriaId, 1, 100)
+                && texto(datos.edificioId, 1, 100)
+                && texto(datos.get('reportanteNombre', ''), 0, 100)
+                && datos.prioridad in ['baja', 'media', 'alta']
+                && datos.estado in ['reportado', 'en_proceso', 'resuelto']
+                && datos.fechaCreacion is timestamp
+                && datos.fechaActualizacion == request.time;
+        }
+
+        function catalogosValidos(datos) {
+            return exists(/databases/$(database)/documents/categorias/$(datos.categoriaId))
+                && exists(/databases/$(database)/documents/edificios/$(datos.edificioId));
+        }
+
+        function historialVinculado(id, datos) {
+            let movimiento = getAfter(/databases/$(database)/documents/incidencias/$(id)/historial_estados/$(datos.ultimoMovimientoId)).data;
+            return !exists(/databases/$(database)/documents/incidencias/$(id)/historial_estados/$(datos.ultimoMovimientoId))
+                && movimiento.estadoNuevo == datos.estado
+                && movimiento.responsableId == request.auth.uid
+                && movimiento.fecha == request.time;
+        }
+
+        match /usuarios/{uid} {
+            allow read: if autenticado() && (request.auth.uid == uid || administrador());
+            allow create: if autenticado()
+                && request.auth.uid == uid
+                && request.resource.data.keys().hasOnly(['nombre', 'correo', 'rol', 'fechaRegistro'])
+                && texto(request.resource.data.nombre, 1, 100)
+                && request.resource.data.correo == request.auth.token.email
+                && request.resource.data.rol == 'reportante'
+                && request.resource.data.fechaRegistro == request.time;
+            allow update: if autenticado()
+                && texto(request.resource.data.nombre, 1, 100)
+                && (
+                    (request.auth.uid == uid
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['nombre']))
+                    || (administrador() && request.auth.uid != uid
+                        && request.resource.data.rol in ['reportante', 'responsable', 'admin']
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['nombre', 'rol']))
+                );
+            allow delete: if administrador() && request.auth.uid != uid;
+        }
+
+        match /incidencias/{id} {
+            allow read: if puedeLeer(resource.data);
+            allow create: if autenticado()
+                && rol() in ['reportante', 'responsable', 'admin']
+                && request.resource.data.keys().hasOnly([
+                    'folio', 'titulo', 'descripcion', 'categoriaId', 'edificioId',
+                    'aula', 'prioridad', 'estado', 'reportanteId', 'fechaCreacion',
+                    'fechaActualizacion', 'ultimoMovimientoId', 'reportanteNombre', 'correoReportante'
+                ])
+                && datosValidos(request.resource.data)
+                && catalogosValidos(request.resource.data)
+                && request.resource.data.reportanteId == request.auth.uid
+                && request.resource.data.estado == 'reportado'
+                && request.resource.data.fechaCreacion == request.time
+                && request.resource.data.folio.matches('RC-[0-9]{4}-[0-9]{4,}')
+                && historialVinculado(id, request.resource.data);
+
+            function edicionPermitida() {
+                return !resource.data.get('eliminado', false)
+                    && resource.data.estado != 'resuelto'
+                    && (personal() || (puedeLeer(resource.data) && resource.data.estado == 'reportado'))
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                        'titulo', 'descripcion', 'categoriaId', 'edificioId', 'aula',
+                        'prioridad', 'fechaActualizacion'
+                    ])
+                    && catalogosValidos(request.resource.data);
+            }
+
+            function seguimientoPermitido() {
+                return personal()
+                    && !resource.data.get('eliminado', false)
+                    && ((resource.data.estado == 'reportado' && request.resource.data.estado == 'en_proceso')
+                        || (resource.data.estado == 'en_proceso' && request.resource.data.estado == 'resuelto'))
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                        'estado', 'responsableId', 'fechaActualizacion', 'fechaResolucion', 'ultimoMovimientoId'
+                    ])
+                    && request.resource.data.responsableId == request.auth.uid
+                    && (request.resource.data.estado != 'resuelto' || request.resource.data.fechaResolucion == request.time)
+                    && historialVinculado(id, request.resource.data);
+            }
+
+            function retiroPermitido() {
+                return administrador()
+                    && !resource.data.get('eliminado', false)
+                    && request.resource.data.eliminado == true
+                    && request.resource.data.eliminadoPor == request.auth.uid
+                    && request.resource.data.fechaEliminacion == request.time
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                        'eliminado', 'eliminadoPor', 'fechaEliminacion', 'fechaActualizacion'
+                    ]);
+            }
+
+            allow update: if autenticado() && datosValidos(request.resource.data)
+                && (edicionPermitida() || seguimientoPermitido() || retiroPermitido());
+            allow delete: if false;
+
+            match /historial_estados/{movimientoId} {
+                allow read: if puedeLeer(get(/databases/$(database)/documents/incidencias/$(id)).data);
+                allow create: if autenticado()
+                    && request.resource.data.keys().hasOnly([
+                        'estadoAnterior', 'estadoNuevo', 'responsableId', 'responsable', 'comentario', 'fecha'
+                    ])
+                    && request.resource.data.responsableId == request.auth.uid
+                    && request.resource.data.fecha == request.time
+                    && texto(request.resource.data.comentario, 1, 500)
+                    && getAfter(/databases/$(database)/documents/incidencias/$(id)).data.ultimoMovimientoId == movimientoId
+                    && getAfter(/databases/$(database)/documents/incidencias/$(id)).data.estado == request.resource.data.estadoNuevo
+                    && (
+                        (!exists(/databases/$(database)/documents/incidencias/$(id))
+                            && request.resource.data.estadoAnterior == null
+                            && request.resource.data.estadoNuevo == 'reportado'
+                            && getAfter(/databases/$(database)/documents/incidencias/$(id)).data.reportanteId == request.auth.uid)
+                        || (personal()
+                            && get(/databases/$(database)/documents/incidencias/$(id)).data.estado == request.resource.data.estadoAnterior
+                            && request.resource.data.estadoAnterior != request.resource.data.estadoNuevo)
+                    );
+                allow update, delete: if false;
+            }
+        }
+
+        match /contadores/{id} {
+            allow read: if autenticado();
+            function contadorValido() {
+                let datos = request.resource.data;
+                return autenticado()
+                    && datos.keys().hasOnly(['ultimoFolio', 'ultimaIncidenciaId'])
+                    && datos.ultimoFolio is int
+                    && datos.ultimoFolio > 0
+                    && !exists(/databases/$(database)/documents/incidencias/$(datos.ultimaIncidenciaId))
+                    && getAfter(/databases/$(database)/documents/incidencias/$(datos.ultimaIncidenciaId)).data.reportanteId == request.auth.uid;
+            }
+            allow create: if contadorValido() && request.resource.data.ultimoFolio == 1;
+            allow update: if contadorValido() && request.resource.data.ultimoFolio == resource.data.ultimoFolio + 1;
+            allow delete: if false;
+        }
+
+        match /categorias/{id} {
+            allow read: if true;
+            allow write: if administrador();
+        }
+
+        match /edificios/{id} {
+            allow read: if true;
+            allow write: if administrador();
+        }
+
+        match /{documento=**} {
+            allow read, write: if false;
+        }
+    }
+}

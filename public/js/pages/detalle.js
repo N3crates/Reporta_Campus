@@ -1,260 +1,225 @@
-import { obtenerMapaCatalogos } from '../catalogos.js'
-import { obtenerIncidencia, actualizarIncidencia } from '../incidencias.js';
-import { cargarVista, asignarTexto, mostrarEstado, asignarFecha, asignarIcono, estados } from '../funciones.js';
-import { usuarioActual } from '../auth.js';
-import { db } from '../firebase.js';
-import { addDoc, collection, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
+import { obtenerIncidencia, eliminarIncidencia } from '../incidencias-ui.js';
+import { obtenerCatalogos, nombreCatalogo } from '../catalogos-ui.js';
+import {
+    cargarVista,
+    asignarTexto,
+    mostrarEstado,
+    asignarFecha,
+    asignarIcono,
+    estados
+} from '../funciones.js';
+import { protegerPagina } from '../auth.js';
+import { esPersonal, puedeEditar } from '../permisos.js';
+import { cambiarEstado } from '../estados.js';
+import { calcularAntiguedad } from '../antiguedad.js';
+import { mensajeError, mostrarMensaje, crearError } from '../mensajes.js';
 
 const contenido = document.getElementById('detalle-contenido');
-const nombreCategoria = id => categorias[id] ?? id ?? 'Sin categoría';
-const nombreEdificio = id => edificios[id] ?? id ?? 'Sin edificio';
-const capitalizar = texto => texto ? texto[0].toUpperCase() + texto.slice(1) : 'Sin definir';
-const etiquetaEstado = estado => estados?.[estado]?.label ?? estado ?? 'Sin estado';
-
-let categoriasMap = {}
-let edificiosMap = {}
 
 function crearMovimiento(movimiento, indice, cantidad, plantilla) {
     const vista = plantilla.content.cloneNode(true);
-    const fila = vista.querySelector('li');
-
     if (indice < cantidad - 1) {
-        fila.classList.add('border-l', 'border-stone-200', 'pb-8');
+        vista.querySelector('li').classList.add('border-l', 'border-stone-200', 'pb-8');
     }
-
-    const indicador = vista.querySelector('[data-indicador]');
     let color = 'bg-[#8c6e39]';
-
     if (movimiento.estadoNuevo === 'resuelto') {
         color = 'bg-emerald-600';
     }
-
-    indicador.classList.add(color);
-    asignarTexto(vista, '[data-estado]', etiquetaEstado(movimiento.estadoNuevo));
+    vista.querySelector('[data-indicador]').classList.add(color);
+    asignarTexto(
+        vista,
+        '[data-estado]',
+        estados[movimiento.estadoNuevo]?.label || 'Estado desconocido'
+    );
     asignarFecha(vista.querySelector('[data-fecha]'), movimiento.fecha, true);
-    asignarTexto(vista, '[data-comentario]', movimiento.comentario ?? '');
-    asignarTexto(vista, '[data-responsable]', movimiento.responsable ?? movimiento.responsableId ?? '');
+    asignarTexto(vista, '[data-comentario]', movimiento.comentario || '');
+    asignarTexto(
+        vista,
+        '[data-responsable]',
+        movimiento.responsable || movimiento.responsableId || 'Sin responsable'
+    );
     return vista;
 }
 
-function panelGestion(incidencia, usuario){
-    const seccion = document.createElement('section')
-    seccion.className = 'panel p-6 mt-6 border-l-4 border-[#ffd300]'
-    seccion.innerHTML = `
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <div>
-                <h2 class="text-base font-extrabold text-[#0a263d]">
-                    Gestion de seguimiento
-                </h2>
-                <p class="text-sm text-slate-500 mt-1">
-                    Actualizar el estado de atencion de esta incidencia y agregar una nota al historial.
-                </p>
-            </div>
-            <button 
-                type="button" 
-                id="btn-toggle-gestion" 
-                aria-expanded="false" 
-                aria-controls="contenedor-form-gestion" 
-                class="btn-secondary shrink-0"
-                >
-                <span id="texto-toggle-gestion">
-                    Actualizar estado
-                </span>
-                <span id="icono-toggle-gestion" aria-hidden="true">▾</span>
-            </button>
-        </div>
-        <div id="contenedor-form-gestion" class="hidden border-t border-slate-100 mt-5 pt-5">
-            <form id="form-actualizar-estado" class="grid sm:grid-cols-2 gap-4 mt-4">
-                <div>
-                    <label for="nuevo-estado" class="field-label">
-                        Nuevo estado
-                    </label>
-                    <select id="nuevo-estado" class="field">
-                        <option value="reportado" ${ incidencia.estado === 'reportado' ? 'selected' : '' }>
-                            Reportado
-                        </option>
-                        <option value="en_proceso" ${ incidencia.estado === 'en_proceso' ? 'selected' : '' }>
-                            En proceso
-                        </option>
-                        <option value="resuelto" ${ incidencia.estado === 'resuelto' ? 'selected' : '' }>
-                            Resuelto
-                        </option>
-                    </select>
-                </div>
-                <div>
-                    <label for="nueva-prioridad" class="field-label">
-                        Prioridad
-                    </label>
-                    <select id="nueva-prioridad" class="field">
-                        <option value="baja" ${ incidencia.prioridad === 'baja' ? 'selected' : '' }>
-                            Baja
-                        </option>
-                        <option value="media" ${ incidencia.prioridad === 'media' ? 'selected' : '' }>
-                            Media
-                        </option>
-                        <option value="alta" ${ incidencia.prioridad === 'alta' ? 'selected' : '' }>
-                            Alta
-                        </option>
-                    </select>
-                </div>
-                <div class="sm:col-span-2">
-                    <label for="comentario-seguimiento" class="field-label">
-                        Comentario de actualizacion
-                    </label>
-                    <input type="text" id="comentario-seguimiento" required maxlength="250" class="field" />
-                </div>
-                <div class="sm:col-span-2 flex items-center justify-between gap-3">
-                    <span id="msg-gestion" class="text-xs font-semibold"></span>
-                    <button type="submit" id="btn-guardar-estado" class="btn-primary">
-                        Guardar actualizacion
-                    </button>
-                </div>
-            </form>
-        </div>
-    `
-
-    const btntoggle = seccion.querySelector('#btn-toggle-gestion')
-    const contenedorForm = seccion.querySelector('#contenedor-form-gestion')
-    const textoToggle = seccion.querySelector('#texto-toggle-gestion')
-    const iconoTogle = seccion.querySelector('#icono-toggle-gestion')
-
-    btntoggle.addEventListener('click', () => {
-        const abierto = !contenedorForm.classList.contains('hidden')
-        
-        contenedorForm.classList.toggle('hidden', abierto)
-        btntoggle.setAttribute('aria-expanded', String(!abierto))
-        textoToggle.textContent = abierto ? 'Actualizar estado' : 'Cerrar'
-        iconoTogle.textContent = abierto ? '▾' : '▴'
-
-        if(!abierto){
-            seccion.querySelector('#nuevo-estado')?.focus()
+async function prepararGestion(incidencia, usuario) {
+    if (!esPersonal(usuario) || incidencia.estado === 'resuelto') {
+        return;
+    }
+    const plantilla = await cargarVista('vistas/gestion-incidencia.html');
+    contenido.append(plantilla.content.cloneNode(true));
+    const selector = document.getElementById('nuevo-estado');
+    if (incidencia.estado === 'reportado') {
+        selector.add(new Option('En proceso', 'en_proceso'));
+    } else if (incidencia.estado === 'en_proceso') {
+        selector.add(new Option('Resuelto', 'resuelto'));
+    } else {
+        selector.disabled = true;
+        document.getElementById('btn-guardar-estado').disabled = true;
+        return;
+    }
+    const formulario = document.getElementById('form-actualizar-estado');
+    formulario.addEventListener('submit', async function (evento) {
+        evento.preventDefault();
+        const boton = document.getElementById('btn-guardar-estado');
+        const alerta = document.getElementById('error-gestion');
+        const comentario = document.getElementById('comentario-seguimiento').value.trim();
+        if (boton.disabled) {
+            return;
         }
-    })
-
-    seccion.querySelector('#form-actualizar-estado').addEventListener('submit', async(e) => {
-        e.preventDefault()
-        
-        const btn = seccion.querySelector('#btn-guardar-estado')
-        const msg = seccion.querySelector('#msg-gestion')
-        const estadoNuevo = seccion.querySelector('#nuevo-estado').value
-        const prioridadNueva = seccion.querySelector('#nueva-prioridad').value
-        const comentario = seccion.querySelector('#comentario-seguimiento').value.trim()
-
-        if(!comentario)
-            return
-
+        alerta.classList.add('hidden');
+        if (!comentario || comentario.length > 500) {
+            mostrarMensaje(
+                alerta,
+                'Describe la atención realizada, en un máximo de 500 caracteres.'
+            );
+            document.getElementById('comentario-seguimiento').focus();
+            return;
+        }
+        boton.disabled = true;
+        boton.textContent = 'Guardando seguimiento…';
         try {
-            btn.disabled = true
-            btn.textContent = 'Guardado...'
-
-            const ahoraISO = new Date().toISOString()
-            await actualizarIncidencia(incidencia.id, {
-                estado: estadoNuevo,
-                prioridad: prioridadNueva,
-                responsableId: usuario.uid
-            })
-
-            const movimientoDoc = {
-                estadoAnterior: incidencia.estado,
-                estadoNuevo,
-                comentario,
-                responsableId: usuario.uid,
-                responsable: usuario.nombre || usuario.email,
-                fecha: serverTimestamp()
-            }
-
-            await addDoc(collection(db, 'incidencias', incidencia.id, 'historial_estados'), movimientoDoc)
-
-            incidencia.estado = estadoNuevo
-            incidencia.prioridad = prioridadNueva
-            incidencia.responsableId = usuario.uid
-            incidencia.historial = [...(incidencia.historial ?? []), {...movimientoDoc, fecha: ahoraISO}]
-
-            await mostrarDetalle(incidencia, usuario)
+            await cambiarEstado(incidencia.id, selector.value, comentario, usuario.uid);
+            await iniciarDetalle('Seguimiento actualizado correctamente.');
         } catch (error) {
-            console.error('Error al actualizar incidencia:', error)
-            msg.className = 'text-xs font-semibold text-red-700'
-            msg.textContent = 'No se pudo actualizar.'
-            btn.disabled = false
-            btn.textContent = 'Guardar actualizacion'
+            mostrarMensaje(alerta, mensajeError(error));
+        } finally {
+            boton.disabled = false;
+            boton.textContent = 'Guardar seguimiento ↗';
         }
-    })
-
-    return seccion
+    });
 }
 
-async function mostrarDetalle(incidencia, usuario) {
-    const plantilla = await cargarVista('vistas/detalle-incidencia.html');
-    const plantillaMovimiento = await cargarVista('vistas/movimiento-historial.html');
+async function mostrarDetalle(incidencia, usuario, catalogos, aviso) {
+    const [plantilla, plantillaMovimiento] = await Promise.all([
+        cargarVista('vistas/detalle-incidencia.html'),
+        cargarVista('vistas/movimiento-historial.html')
+    ]);
     const vista = plantilla.content.cloneNode(true);
-
     document.title = incidencia.folio + ' · ReportaCampus';
-    asignarTexto(vista, '[data-folio]', incidencia.folio ?? '');
-    asignarTexto(vista, '[data-titulo]', incidencia.titulo ?? '');
+    asignarTexto(vista, '[data-folio]', incidencia.folio);
+    asignarTexto(vista, '[data-titulo]', incidencia.titulo);
     asignarFecha(vista.querySelector('[data-fecha]'), incidencia.fechaCreacion, true);
     mostrarEstado(vista.querySelector('[data-estado]'), incidencia.estado);
     asignarIcono(vista.querySelector('[data-icono]'), incidencia.categoriaId);
-    asignarTexto(vista, '[data-categoria]', nombreCategoria(incidencia.categoriaId));
-    asignarTexto(vista, '[data-prioridad]', capitalizar(incidencia.prioridad));
-    asignarTexto(vista, '[data-edificio]', nombreEdificio(incidencia.edificioId));
-    asignarTexto(vista, '[data-aula]', incidencia.aula ?? '');
-    asignarTexto(vista, '[data-descripcion]', incidencia.descripcion ?? '');
-
-    const movimientos = [...(incidencia.historial ?? [])];
-    movimientos.sort(function (anterior, siguiente) {
-        return new Date(anterior.fecha) - new Date(siguiente.fecha);
-    });
-
+    asignarTexto(
+        vista,
+        '[data-categoria]',
+        nombreCatalogo(catalogos.categorias, incidencia.categoriaId)
+    );
+    asignarTexto(vista, '[data-prioridad]', incidencia.prioridad);
+    asignarTexto(
+        vista,
+        '[data-edificio]',
+        nombreCatalogo(catalogos.edificios, incidencia.edificioId)
+    );
+    asignarTexto(vista, '[data-aula]', incidencia.aula);
+    asignarTexto(vista, '[data-descripcion]', incidencia.descripcion);
+    const antiguedad = calcularAntiguedad(incidencia.fechaCreacion, incidencia.fechaResolucion);
+    let textoAntiguedad = 'Fecha no disponible';
+    if (antiguedad) {
+        textoAntiguedad = antiguedad.dias + ' días · ' + antiguedad.rango;
+        if (incidencia.estado === 'resuelto') {
+            textoAntiguedad += ' · al resolver';
+        }
+    }
+    asignarTexto(vista, '[data-antiguedad]', textoAntiguedad);
     const historial = vista.querySelector('[data-historial]');
-
-    if (movimientos.length === 0) {
-        const aviso = document.createElement('p');
-        aviso.className = 'text-sm text-stone-500';
-        aviso.textContent = 'Aún no hay movimientos registrados para esta incidencia.';
-        historial.replaceWith(aviso);
+    if (incidencia.errorHistorial || incidencia.historial.length === 0) {
+        const mensaje = document.createElement('li');
+        mensaje.className = 'text-sm text-stone-500';
+        mensaje.textContent = 'Aún no hay movimientos registrados.';
+        if (incidencia.errorHistorial) {
+            mensaje.textContent =
+                'No se pudo consultar el historial. ' + mensajeError(incidencia.errorHistorial);
+        }
+        historial.append(mensaje);
     } else {
-        movimientos.forEach(function (movimiento, indice) {
-            const fila = crearMovimiento(movimiento, indice, movimientos.length, plantillaMovimiento);
-            historial.append(fila);
+        incidencia.historial.forEach(function (movimiento, indice) {
+            historial.append(
+                crearMovimiento(
+                    movimiento,
+                    indice,
+                    incidencia.historial.length,
+                    plantillaMovimiento
+                )
+            );
         });
     }
-
-    contenido.replaceChildren(vista);
-
-    const puedeGestionar = usuario && (usuario.rol === 'responsable' || usuario.rol === 'admin')
-    if(puedeGestionar && !incidencia.esDemo){
-        contenido.append(panelGestion(incidencia, usuario))
-    }
-}
-
-async function iniciarDetalle() {
-    try {
-        const usuario = await usuarioActual()
-        if(!usuario){
-            window.location.href = 'login.html'
-            return
-        }
-
-        const parametros = new URLSearchParams(window.location.search);
-        const id = parametros.get('id');
-        const[incidencia, catalogos] = await Promise.all([
-            id ? obtenerIncidencia(id) : null,
-            obtenerMapaCatalogos()
-        ])
-        categoriasMap = catalogos.categoriasMap
-        edificiosMap = catalogos.edificiosMap
-
-        if (!incidencia) {
-            const plantilla = await cargarVista('vistas/no-encontrado.html');
-            document.title = 'Incidencia no encontrada · ReportaCampus';
-            contenido.replaceChildren(plantilla.content.cloneNode(true));
+    const editar = vista.querySelector('#editar-incidencia');
+    editar.hidden = !puedeEditar(usuario, incidencia);
+    editar.href = 'editar.html?id=' + encodeURIComponent(incidencia.id);
+    const eliminar = vista.querySelector('#eliminar-incidencia');
+    eliminar.hidden = usuario.rol !== 'admin';
+    eliminar.addEventListener('click', async function () {
+        if (
+            !window.confirm(
+                '¿Retirar la incidencia ' +
+                    incidencia.folio +
+                    ' del listado? Se conservará su historial.'
+            )
+        ) {
             return;
         }
+        eliminar.disabled = true;
+        try {
+            await eliminarIncidencia(incidencia.id, incidencia.fechaActualizacion);
+            window.location.href = 'incidencias.html?retirada=1';
+        } catch (error) {
+            const alerta = document.getElementById('aviso-detalle');
+            alerta.className = 'form-alert form-alert-error mb-6';
+            mostrarMensaje(alerta, mensajeError(error));
+            eliminar.disabled = false;
+        }
+    });
+    contenido.replaceChildren(vista);
+    const alerta = document.createElement('p');
+    alerta.id = 'aviso-detalle';
+    alerta.tabIndex = -1;
+    alerta.setAttribute('role', 'status');
+    alerta.className = 'hidden form-alert form-alert-success mb-6';
+    contenido.prepend(alerta);
+    if (aviso) {
+        mostrarMensaje(alerta, aviso);
+    }
+    await prepararGestion(incidencia, usuario);
+}
 
-        await mostrarDetalle(incidencia, usuario);
+async function iniciarDetalle(aviso = '') {
+    try {
+        const usuario = await protegerPagina();
+        if (!usuario) {
+            return;
+        }
+        const id = new URLSearchParams(window.location.search).get('id');
+        if (!id) {
+            throw crearError('not-found');
+        }
+        const [incidencia, catalogos] = await Promise.all([
+            obtenerIncidencia(id),
+            obtenerCatalogos()
+        ]);
+        if (!incidencia || incidencia.eliminado) {
+            throw crearError('not-found');
+        }
+        await mostrarDetalle(incidencia, usuario, catalogos, aviso);
     } catch (error) {
-        console.error('No se pudo cargar el detalle:', error);
-        contenido.textContent = 'No se pudo cargar el detalle. Intenta recargar la página.';
+        if (error.code === 'not-found') {
+            const vista = await cargarVista('vistas/no-encontrado.html');
+            contenido.replaceChildren(vista.content.cloneNode(true));
+            return;
+        }
+        const mensaje = document.createElement('p');
+        mensaje.className = 'form-alert form-alert-error';
+        mensaje.setAttribute('role', 'alert');
+        mensaje.textContent = mensajeError(error);
+        const reintentar = document.createElement('button');
+        reintentar.type = 'button';
+        reintentar.className = 'btn-secondary mt-5';
+        reintentar.textContent = 'Reintentar carga';
+        reintentar.addEventListener('click', function () {
+            iniciarDetalle();
+        });
+        contenido.replaceChildren(mensaje, reintentar);
     }
 }
 

@@ -1,0 +1,69 @@
+<section
+    class="panel p-6 sm:p-8 mt-6"
+    aria-labelledby="gestion-titulo"
+>
+    <p class="eyebrow mb-3">ATENCIÓN A LA COMUNIDAD</p>
+    <h2
+        id="gestion-titulo"
+        class="font-bold text-lg"
+    >
+        Actualizar seguimiento
+    </h2>
+    <p class="text-sm text-stone-500 leading-6 mt-2">
+        Cada cambio conserva la fecha, el responsable y el comentario en el historial.
+    </p>
+    <div
+        id="error-gestion"
+        role="alert"
+        tabindex="-1"
+        class="hidden form-alert form-alert-error mt-5"
+    ></div>
+    <form
+        id="form-actualizar-estado"
+        novalidate
+        class="mt-6 space-y-5"
+    >
+        <div>
+            <label
+                for="nuevo-estado"
+                class="field-label"
+            >
+                Siguiente estado
+            </label>
+            <select
+                id="nuevo-estado"
+                class="field"
+                required
+            ></select>
+        </div>
+        <div>
+            <label
+                for="comentario-seguimiento"
+                class="field-label"
+            >
+                Comentario de seguimiento *
+            </label>
+            <textarea
+                id="comentario-seguimiento"
+                class="field"
+                rows="3"
+                maxlength="500"
+                required
+                aria-describedby="comentario-ayuda"
+            ></textarea>
+            <p
+                id="comentario-ayuda"
+                class="field-help"
+            >
+                Explica la atención realizada. Para resolver, el comentario es obligatorio.
+            </p>
+        </div>
+        <button
+            id="btn-guardar-estado"
+            class="btn-primary"
+            type="submit"
+        >
+            Guardar seguimiento ↗
+        </button>
+    </form>
+</section>

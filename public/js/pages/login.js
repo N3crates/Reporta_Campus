@@ -1,66 +1,62 @@
-import { iniciarSesion, registrarUsuario, redirigirSiAuntenticado } from "../auth.js";
+import { iniciarSesion, registrarUsuario, redirigirSiAuntenticado } from '../auth.js';
+import { mensajeError, mostrarMensaje } from '../mensajes.js';
+import {
+    validarAcceso,
+    mostrarErroresFormulario,
+    limpiarErroresFormulario
+} from '../validaciones.js';
 
-// Si el usuario ya inicio sesion se manda a inicio
-redirigirSiAuntenticado()
+const formulario =
+    document.getElementById('form-login') || document.getElementById('form-registro');
+const registro = formulario.id === 'form-registro';
+const alerta = document.getElementById('alert-error');
+const boton = document.getElementById('btn-submit');
+const etiqueta = registro ? 'Crear mi cuenta ↗' : 'Iniciar sesión ↗';
 
-const formLogin = document.getElementById('form-login')
-const formRegistro = document.getElementById('form-registro')
-const alertError = document.getElementById('alert-error')
-const btnSubmit = document.getElementById('btn-submit')
+document.getElementById('mostrar-password').addEventListener('click', function (evento) {
+    const campo = document.getElementById('password');
+    const mostrar = campo.type === 'password';
+    campo.type = mostrar ? 'text' : 'password';
+    evento.currentTarget.textContent = mostrar ? 'Ocultar' : 'Mostrar';
+    evento.currentTarget.setAttribute('aria-pressed', String(mostrar));
+});
 
-function mostrarError(codigo){
-    const mensajes = {
-        'auth/invalid-credential': 'Correo o contraseña incorrectos.',
-        'auth/user-not-fund': 'No existe una cuenta con este correo.',
-        'auth/wrong-password': 'Contraseña incorrecta.',
-        'auth/email-already-in-use': 'Este correo ya esta registrado',
-        'auth/weak-password': 'La contraseña debe de tener al menos 6 caracteres',
-        'auth/invalid-email': 'El formato del correo electronico no es valido'
+formulario.addEventListener('submit', async function (evento) {
+    evento.preventDefault();
+    if (boton.disabled) {
+        return;
     }
-
-    alertError.textContent = mensajes[codigo] || 'Ocurrio un error al procesar la solicitud.'
-    alertError.classList.remove('hidden')
-}
-
-if(formLogin){
-    formLogin.addEventListener('submit', async (e) => {
-        e.preventDefault()
-        alertError.classList.add('hidden')
-        btnSubmit.disabled = true
-        btnSubmit.textContent = 'Ingresando...'
-
-        const correo = document.getElementById('correo').value
-        const password = document.getElementById('password').value
-
-        try {
-            await iniciarSesion(correo, password)
-            window.location.href = 'index.html'
-        } catch (error) {
-            mostrarError(error.code)
-            btnSubmit.disabled = false
-            btnSubmit.textContent = 'Ingresar'
+    limpiarErroresFormulario(formulario, alerta);
+    const datos = {
+        nombre: document.getElementById('nombre')?.value || '',
+        correo: document.getElementById('correo').value,
+        password: document.getElementById('password').value,
+        confirmacion: document.getElementById('confirmar-password')?.value || ''
+    };
+    const errores = validarAcceso(datos, registro);
+    if (errores.length > 0) {
+        mostrarErroresFormulario(formulario, alerta, errores);
+        return;
+    }
+    boton.disabled = true;
+    formulario.setAttribute('aria-busy', 'true');
+    boton.textContent = registro ? 'Creando tu cuenta…' : 'Iniciando sesión…';
+    try {
+        if (registro) {
+            await registrarUsuario(datos.nombre, datos.correo, datos.password);
+        } else {
+            await iniciarSesion(datos.correo, datos.password);
         }
-    })
-}
+        window.location.href = 'incidencias.html';
+    } catch (error) {
+        mostrarMensaje(alerta, mensajeError(error));
+    } finally {
+        boton.disabled = false;
+        boton.textContent = etiqueta;
+        formulario.removeAttribute('aria-busy');
+    }
+});
 
-if(formRegistro){
-    formRegistro.addEventListener('submit', async (e) => {
-        e.preventDefault()
-        alertError.classList.add('hidden')
-        btnSubmit.disabled = true
-        btnSubmit.textContent = 'Creando cuenta...'
-
-        const nombre = document.getElementById('nombre').value
-        const correo = document.getElementById('correo').value
-        const password = document.getElementById('password').value
-
-        try {
-            await registrarUsuario(nombre, correo, password)
-            window.location.href = 'index.html'
-        } catch (error) {
-            mostrarError(error.code)
-            btnSubmit.disabled = false
-            btnSubmit.textContent = 'Registrate'
-        }
-    })
-}
+redirigirSiAuntenticado().catch(function (error) {
+    mostrarMensaje(alerta, mensajeError(error));
+});

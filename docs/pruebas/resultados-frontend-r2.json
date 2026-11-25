@@ -1,0 +1,184 @@
+{
+    "fecha": "2026-11-24",
+    "entorno": "Firebase Authentication y Firestore Emulator; Edge; SDK web 10.8.0. No se escribió en el proyecto Firebase remoto.",
+    "pruebas": [
+        {
+            "prueba": "Reglas: el reportante no puede promover su rol a administrador",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "login: identidad UG y sin desborde a 320px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "registro: identidad UG y sin desborde a 320px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "login: identidad UG y sin desborde a 390px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "registro: identidad UG y sin desborde a 390px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "login: identidad UG y sin desborde a 768px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "registro: identidad UG y sin desborde a 768px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "login: identidad UG y sin desborde a 1440px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "registro: identidad UG y sin desborde a 1440px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Registro: contraseña no coincidente se explica y conserva los datos",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Registro: cuenta y perfil se guardan mediante Authentication y Firestore locales",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Login: credenciales incorrectas muestran un mensaje comprensible",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Login: sesión válida y listado vacío con catálogos reales",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Alta: validación de requeridos y foco en el campo",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Alta: incidencia, contador e historial se guardan en una transacción",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Detalle: conserva datos al recargar y ofrece edición al propietario",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Edición: precarga, cancela al detalle y guarda sin modificar folio ni autor",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Reglas: otro reportante no puede consultar o editar el reporte",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Reglas: no se permite saltar de reportado a resuelto ni cambiar folio",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Edición: un rechazo conserva los campos y reactiva el botón",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "reportar: sin desborde y navegación a 320px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "editar: sin desborde y navegación a 320px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "incidencias: sin desborde y navegación a 320px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "detalle: sin desborde y navegación a 320px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "reportar: sin desborde y navegación a 390px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "editar: sin desborde y navegación a 390px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "incidencias: sin desborde y navegación a 390px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "detalle: sin desborde y navegación a 390px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "reportar: sin desborde y navegación a 768px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "editar: sin desborde y navegación a 768px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "incidencias: sin desborde y navegación a 768px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "detalle: sin desborde y navegación a 768px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "reportar: sin desborde y navegación a 1440px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "editar: sin desborde y navegación a 1440px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "incidencias: sin desborde y navegación a 1440px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "detalle: sin desborde y navegación a 1440px",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Menú móvil: abre, cierra con Escape y conserva aria-expanded",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Filtros: combinación, vacío, limpieza y conservación en URL",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Seguimiento: comentario obligatorio, transición atómica e historial visible",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Edición: reporte resuelto ya no ofrece edición ni seguimiento",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Detalle: ID inexistente se presenta como no encontrado",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Seguridad de presentación: el nombre se muestra como texto, sin interpretar HTML",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Eliminación: solo administrador, confirma y conserva el historial",
+            "resultado": "Correcto"
+        },
+        {
+            "prueba": "Sesión: logout y protección del formulario sin autenticar",
+            "resultado": "Correcto"
+        }
+    ],
+    "erroresNavegador": [],
+    "completo": true
+}
