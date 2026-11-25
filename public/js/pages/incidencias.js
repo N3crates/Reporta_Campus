@@ -1,4 +1,4 @@
-import { categorias, edificios } from '../demo-data.js';
+import { obtenerMapaCatalogos } from '../catalogos.js';
 import { obtenerIncidencias } from '../incidencias.js';
 import { cargarVista, asignarTexto, mostrarEstado, asignarFecha, asignarIcono, normalizarTexto } from '../funciones.js';
 import { usuarioActual } from '../auth.js';
@@ -11,31 +11,38 @@ usuarioActual().then((usuario) => {
 
 const formulario = document.getElementById('filtros');
 const lista = document.getElementById('lista-incidencias');
-let plantilla;
-let todas = [];
 
-const nombreCategoria = id => categorias[id] ?? id ?? 'Sin categoría';
-const nombreEdificio = id => edificios[id] ?? id ?? 'Sin edificio';
+let plantilla;
+let incidenciasConsultadas = []
+let categoriasMap = {}
+let edificiosMap = {}
+
+const nombreCategoria = id => categoriasMap[id] ?? id ?? 'Sin categoría';
+const nombreEdificio = id => edificiosMap[id] ?? id ?? 'Sin edificio';
 
 function leerFiltros() {
     return {
         busqueda: normalizarTexto(document.getElementById('buscar').value),
         estado: document.getElementById('estado').value,
         prioridad: document.getElementById('prioridad').value,
-        categoria: document.getElementById('categoria').value,
-        edificio: document.getElementById('edificio').value
+        categoriaId: document.getElementById('categoria').value,
+        edificioId: document.getElementById('edificio').value
     };
 }
 
-function coincideConFiltros(incidencia, filtros) {
-    const texto = normalizarTexto((incidencia.titulo ?? '') + ' ' + (incidencia.folio ?? ''));
-    const porTexto = filtros.busqueda === '' || texto.includes(filtros.busqueda);
-    const porEstado = filtros.estado === '' || incidencia.estado === filtros.estado;
-    const porPrioridad = filtros.prioridad === '' || incidencia.prioridad === filtros.prioridad;
-    const porCategoria = filtros.categoria === '' || incidencia.categoriaId === filtros.categoria;
-    const porEdificio = filtros.edificio === '' || incidencia.edificioId === filtros.edificio;
+function poblarFiltro(categorias, edificios) {
+    const selectCategoria = document.getElementById('categoria')
+    const selectEdificio = document.getElementById('edificio')
 
-    return porTexto && porEstado && porPrioridad && porCategoria && porEdificio;
+    selectCategoria.replaceChildren(new Option('Todas las categorias', ''))
+    for(const cat of categorias){
+        selectCategoria.append(new Option(cat.nombre, cat.id))
+    }
+
+    selectEdificio.replaceChildren(new Option('Todos los edificios', ''))
+    for(const edif of edificios){
+        selectEdificio.append(new Option(edif.nombre, edif.id))
+    }
 }
 
 function crearTarjeta(incidencia) {
@@ -69,25 +76,40 @@ function crearTarjeta(incidencia) {
     return vista;
 }
 
-function mostrarIncidencias() {
-    const filtros = leerFiltros();
-    const incidencias = todas.filter(function (incidencia) {
-        return coincideConFiltros(incidencia, filtros);
-    });
+function renderizarTarjetas(){
+    const { busqueda } = leerFiltros()
+    const filtradasPorTexto = incidenciasConsultadas.filter((incidencia) => {
+        if(!busqueda)
+            return true
 
-    const cantidad = incidencias.length;
-    let mensaje = cantidad + ' incidencias encontradas';
+        const texto = normalizarTexto((incidencia.titulo ?? '') + ' ' + (incidencia.folio ?? ''))
+        return texto.includes(busqueda)
+    })
 
-    if (cantidad === 1) {
-        mensaje = '1 incidencia encontrada';
+    const cantidad = filtradasPorTexto.length
+    document.getElementById('resultados-conteo').textContent = cantidad === 1 ? '1 incidencia encontrada' : `${cantidad} incidencias encontradas`
+    document.getElementById('estado-vacio').classList.toggle('hidden', cantidad !== 0)
+    lista.replaceChildren()
+
+    for(const incidencia of filtradasPorTexto){
+        lista.append(crearTarjeta(incidencia))
     }
+}
 
-    document.getElementById('resultados-conteo').textContent = mensaje;
-    document.getElementById('estado-vacio').classList.toggle('hidden', cantidad !== 0);
-    lista.replaceChildren();
+async function mostrarIncidencias() {
+    
+    try {
+        document.getElementById('resultados-conteo').textContent = 'Consultando incidencias...'
+        const { estado, prioridad, categoriaId, edificioId} = leerFiltros()
 
-    for (const incidencia of incidencias) {
-        lista.append(crearTarjeta(incidencia));
+        incidenciasConsultadas = await obtenerIncidencias({
+            estado, prioridad, categoriaId, edificioId
+        })
+
+        renderizarTarjetas()
+    } catch (error) {
+        console.error('Error al consultar incidencias filtradas:', error)
+        document.getElementById('resultados-conteo').textContent = 'Error al consultar las incidencias. Revisa los indices en consola.'
     }
 }
 
@@ -98,20 +120,38 @@ function limpiarFiltros() {
 
 async function iniciarListado() {
     try {
-        document.getElementById('resultados-conteo').textContent = 'Cargando incidencias…';
-        plantilla = await cargarVista('vistas/tarjeta-incidencia.html');
-        todas = await obtenerIncidencias();
+        const usuario = await usuarioActual()
+        if(!usuario){
+            window.location.href = 'login.html'
+        }
 
-        formulario.addEventListener('input', mostrarIncidencias);
-        formulario.addEventListener('change', mostrarIncidencias);
-        formulario.addEventListener('submit', function (evento) {
-            evento.preventDefault();
-            mostrarIncidencias();
-        });
+        document.getElementById('resultados-conteo').textContent = 'Cargando incidencias…';
+        const [plantillaCargada, catalogos] = await Promise.all([
+            cargarVista('vistas/tarjeta-incidencia.html'),
+            obtenerMapaCatalogos()
+        ])
+
+        plantilla = plantillaCargada
+        categoriasMap = catalogos.categoriasMap
+        edificiosMap = catalogos.edificiosMap
+        poblarFiltro(catalogos.categorias, catalogos.edificios)
+
+        document.getElementById('buscar').addEventListener('input', renderizarTarjetas)
+        formulario.addEventListener('change', (e) => {
+            if(e.target.id !== 'buscar'){
+                mostrarIncidencias()
+            }
+        })
+
+        formulario.addEventListener('submit', (evento) => {
+            evento.preventDefault()
+            mostrarIncidencias()
+        })
 
         document.getElementById('limpiar-filtros').addEventListener('click', limpiarFiltros);
         document.getElementById('limpiar-vacio').addEventListener('click', limpiarFiltros);
-        mostrarIncidencias();
+        
+        await mostrarIncidencias();
     } catch (error) {
         console.error('No se pudo cargar el listado:', error);
         document.getElementById('resultados-conteo').textContent =

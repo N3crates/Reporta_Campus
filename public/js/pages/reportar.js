@@ -1,5 +1,6 @@
-import { createDemoReport } from '../demo-data.js';
 import { usuarioActual } from '../auth.js'
+import { obtenerCategorias, obtenerEdificios } from '../catalogos.js'
+import { registrarIncidencia } from '../folio.js'
 
 usuarioActual().then((usuario) => {
     if(!usuario){
@@ -27,6 +28,11 @@ const errorAlert = document.getElementById('error-alert');
 const successAlert = document.getElementById('success-alert');
 const folioGeneradoEl = document.getElementById('folio-generado');
 const btnSubmit = document.getElementById('btn-submit');
+const selectCategoria = document.getElementById('categoriaId')
+const selectEdificio = document.getElementById('edificioId')
+const selectAula = document.getElementById('aula')
+
+let edificiosCargados = []
 
 function mostrarErrores(errores) {
     errorAlert.replaceChildren();
@@ -54,18 +60,78 @@ function ocultarAlertas() {
 }
 
 function setLoading(isLoading) {
-    if (isLoading) {
-        btnSubmit.disabled = true;
-        btnSubmit.textContent = 'Registrando reporte...';
-        btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
-    } else {
-        btnSubmit.disabled = false;
-        btnSubmit.textContent = document.getElementById('modo-demo').checked
-            ? 'Probar sin enviar'
-            : 'Enviar reporte';
-        btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+    btnSubmit.disabled = isLoading
+    btnSubmit.textContent = isLoading ? 'Registrando reporte...' : 'Enviar reporte'
+    btnSubmit.classList.toggle('opacity-50', isLoading)
+    btnSubmit.classList.toggle('cursor-not-allowed', isLoading)
+}
+
+function poblarAulas(edificioId){
+    selectAula.replaceChildren()
+   
+    const edificio = edificiosCargados.find(e => e.id === edificioId)
+    const aulas = edificio?.aulas ?? []
+
+    if(!edificioId || aulas.length === 0){
+        selectAula.desabled = true
+
+        const opt = document.createElement('option')
+        opt.value = ''
+        opt.textContent = edificioId ? 'Sin aulas registradas' : 'Selecciona un edificio'
+        selectAula.append(opt)
+        return
+    }
+
+    selectAula.disabled = false
+    
+    const defaultOpt = document.createElement('option')
+    defaultOpt.value = ''
+    defaultOpt.textContent = 'Selecciona un aula o espacio'
+    selectAula.append(defaultOpt)
+
+    for(const aula of aulas){
+        const opt = document.createElement('option')
+        opt.value = aula
+        opt.textContent = aula
+        selectAula.append(opt)
     }
 }
+
+async function iniciarFormulario(){
+    const usuario = await usuarioActual()
+    if(!usuario){
+        window.location.href = 'login.html'
+        return
+    }
+
+    try {
+        const [categorias, edificios] = await Promise.all([
+            obtenerCategorias(),
+            obtenerEdificios()
+        ])
+
+        edificiosCargados = edificios
+
+        selectCategoria.replaceChildren(new Option('Selecciona una categoria', ''))
+        for(const cat of categorias){
+            selectCategoria.append(new Option(cat.nombre, cat.id))
+        }
+
+        selectEdificio.replaceChildren(new Option('Selecciona un edificio', ''))
+        for(const edif of edificios){
+            selectEdificio.append(new Option(edif.nombre, edif.id))
+        }
+
+        poblarAulas('')
+    } catch (error) {
+        console.error('Error al cargar catalogos:', error)
+        mostrarErrores(['No se pudieron cargar las categorias y edificios desde la base de datos.'])
+    }
+}
+
+selectEdificio.addEventListener('change', (e) => {
+    poblarAulas(e.target.value)
+})
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -79,9 +145,9 @@ form.addEventListener('submit', async (e) => {
 
     const payload = {
         titulo: document.getElementById('titulo').value,
-        categoriaId: document.getElementById('categoriaId').value,
-        edificioId: document.getElementById('edificioId').value,
-        aula: document.getElementById('aula').value,
+        categoriaId: selectCategoria.value,
+        edificioId: selectEdificio.value,
+        aula: selectAula.value,
         descripcion: document.getElementById('descripcion').value,
         reportanteId: usuario.id,
         reportanteNombre: usuario.nombre || usuario.email,
@@ -105,38 +171,20 @@ form.addEventListener('submit', async (e) => {
     }
 
     try {
-        setLoading(true);
+        setLoading(true)
+        
+        const resultado = await registrarIncidencia({ ...payload, prioridad: 'media'})
+        folioGeneradoEl.textContent = resultado.folio
 
-        const isDemo = document.getElementById('modo-demo').checked;
-        let resultado;
-        if (isDemo) {
-            resultado = createDemoReport(payload);
-        } else {
-            // Mantiene la transacción original. La carga diferida permite validar
-            // y explorar la interfaz aun sin una configuración Firebase disponible.
-            const { registrarIncidencia } = await import('../folio.js');
-            resultado = await registrarIncidencia({ ...payload, prioridad: 'media' });
-        }
-        document.getElementById('success-title').textContent = isDemo
-            ? '¡Demostración completada!'
-            : '¡Incidencia registrada con éxito!';
-        document.getElementById('success-note').textContent = isDemo
-            ? 'Folio de muestra. No se guardó un reporte real; está disponible en esta pestaña.'
-            : 'Guarda tu folio para consultar el avance.';
-        const detailLink = document.getElementById('success-detail');
-        detailLink.href = isDemo
-            ? `detalle.html?id=${encodeURIComponent(resultado.id)}`
-            : 'incidencias.html';
-        detailLink.textContent = isDemo ? 'Ver reporte de muestra →' : 'Consultar incidencias →';
+        const detailLink = document.getElementById('success-detail')
+        detailLink.href = `detalle.html?id=${encodeURIComponent(resultado.id)}`
+        detailLink.textContent = 'Ver detalle'
 
-        // Exito: mostramos el folio
-        folioGeneradoEl.textContent = resultado.folio;
-        successAlert.classList.remove('hidden');
-        const demoWasEnabled = document.getElementById('modo-demo').checked;
-        form.reset();
-        document.getElementById('modo-demo').checked = demoWasEnabled;
-        updateCounter();
-        successAlert.scrollIntoView({ behavior: 'smooth' });
+        successAlert.classList.remove('hidden')
+        form.reset()
+        poblarAulas('')
+        updateCounter()
+        successAlert.scrollIntoView({ behavior: 'smooth' })
     } catch (error) {
         console.error('Error al registrar reporte:', error);
         mostrarErrores([
@@ -147,12 +195,10 @@ form.addEventListener('submit', async (e) => {
     }
 });
 
-const demoToggle = document.getElementById('modo-demo');
-demoToggle.addEventListener('change', () => {
-    btnSubmit.textContent = demoToggle.checked ? 'Probar sin enviar' : 'Enviar reporte';
-});
 function updateCounter() {
     document.getElementById('descripcion-contador').textContent =
         `${document.getElementById('descripcion').value.length} / 500`;
 }
 document.getElementById('descripcion').addEventListener('input', updateCounter);
+
+iniciarFormulario()
