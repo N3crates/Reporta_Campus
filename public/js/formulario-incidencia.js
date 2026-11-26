@@ -7,6 +7,7 @@ import { puedeEditar } from './permisos.js';
 import { mensajeError, mostrarMensaje, crearError } from './mensajes.js';
 import {
     validarIncidencia,
+    validarCatalogos,
     mostrarErroresFormulario,
     limpiarErroresFormulario
 } from './validaciones.js';
@@ -99,6 +100,11 @@ export async function iniciarFormulario(edicion) {
             boton.textContent = 'Guardando…';
             formulario.setAttribute('aria-busy', 'true');
             try {
+                const erroresCatalogo = await validarCatalogos(datos);
+                if (erroresCatalogo.length > 0) {
+                    mostrarErroresFormulario(formulario, alerta, erroresCatalogo);
+                    return;
+                }
                 let resultado;
                 if (edicion) {
                     resultado = await actualizarIncidencia(

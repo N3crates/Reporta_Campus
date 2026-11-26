@@ -43,6 +43,14 @@ service cloud.firestore {
                 && datos.fechaActualizacion == request.time;
         }
 
+        function contenidoValido(datos) {
+            return texto(datos.titulo, 3, 100)
+                && texto(datos.descripcion, 10, 500)
+                && datos.titulo.matches('(?s).*[^\\s].*')
+                && datos.descripcion.matches('(?s).*[^\\s].*')
+                && datos.aula.matches('(?s).*[^\\s].*');
+        }
+
         function catalogosValidos(datos) {
             return exists(/databases/$(database)/documents/categorias/$(datos.categoriaId))
                 && exists(/databases/$(database)/documents/edificios/$(datos.edificioId));
@@ -87,6 +95,7 @@ service cloud.firestore {
                     'fechaActualizacion', 'ultimoMovimientoId', 'reportanteNombre', 'correoReportante'
                 ])
                 && datosValidos(request.resource.data)
+                && contenidoValido(request.resource.data)
                 && catalogosValidos(request.resource.data)
                 && request.resource.data.reportanteId == request.auth.uid
                 && request.resource.data.estado == 'reportado'
@@ -102,6 +111,7 @@ service cloud.firestore {
                         'titulo', 'descripcion', 'categoriaId', 'edificioId', 'aula',
                         'prioridad', 'fechaActualizacion'
                     ])
+                    && contenidoValido(request.resource.data)
                     && catalogosValidos(request.resource.data);
             }
 
