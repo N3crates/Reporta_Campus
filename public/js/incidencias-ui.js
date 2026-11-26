@@ -1,4 +1,7 @@
-import { db, doc, runTransaction, serverTimestamp } from './firebase.js';
+import {
+    db, collection, doc, getDocsFromServer, orderBy, query, runTransaction, serverTimestamp, where
+} from './firebase.js';
+import { normalizarTexto } from './funciones.js';
 import { protegerPagina } from './auth.js';
 import { puedeEditar } from './permisos.js';
 import { validarIncidencia } from './validaciones.js';
@@ -33,6 +36,26 @@ export async function obtenerIncidencias(filtros = {}) {
     const incidencias = await consultarIncidencias(filtros);
     return incidencias.filter(function (incidencia) {
         return !incidencia.eliminado;
+    });
+}
+
+export async function existeIncidenciaReciente(uid, datos) {
+    const limite = new Date(Date.now() - 5 * 60 * 1000);
+    const consulta = query(
+        collection(db, 'incidencias'),
+        where('reportanteId', '==', uid),
+        where('fechaCreacion', '>=', limite),
+        orderBy('fechaCreacion', 'desc')
+    );
+    const registros = await getDocsFromServer(consulta);
+    const titulo = normalizarTexto(datos.titulo).replace(/\s+/g, ' ');
+    const aula = normalizarTexto(datos.aula).replace(/\s+/g, ' ');
+    return registros.docs.some(function (registro) {
+        const incidencia = registro.data();
+        return !incidencia.eliminado
+            && incidencia.edificioId === datos.edificioId
+            && normalizarTexto(incidencia.titulo).replace(/\s+/g, ' ') === titulo
+            && normalizarTexto(incidencia.aula).replace(/\s+/g, ' ') === aula;
     });
 }
 

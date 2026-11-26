@@ -1,10 +1,12 @@
 import { cargarVista, asignarFecha } from './funciones.js';
 import { protegerPagina } from './auth.js';
 import { obtenerCatalogos, llenarOpciones } from './catalogos-ui.js';
-import { obtenerIncidencia, actualizarIncidencia } from './incidencias-ui.js';
+import {
+    obtenerIncidencia, actualizarIncidencia, existeIncidenciaReciente
+} from './incidencias-ui.js';
 import { registrarIncidencia } from './folio.js';
 import { puedeEditar } from './permisos.js';
-import { mensajeError, mostrarMensaje, crearError } from './mensajes.js';
+import { mensajeError, mostrarMensaje, ocultarMensaje, crearError } from './mensajes.js';
 import {
     validarIncidencia,
     validarCatalogos,
@@ -15,8 +17,9 @@ import {
 export async function iniciarFormulario(edicion) {
     const alerta = document.getElementById('error-alert');
     const carga = document.getElementById('cargando-formulario');
+    mostrarMensaje(carga, 'Verificando tu sesión…', { enfocar: false });
     try {
-        const usuario = await protegerPagina();
+        const usuario = await protegerPagina(['reportante', 'responsable', 'admin']);
         if (!usuario) {
             return;
         }
@@ -34,6 +37,7 @@ export async function iniciarFormulario(edicion) {
                 throw crearError('permission-denied');
             }
         }
+        mostrarMensaje(carga, 'Cargando formulario…', { enfocar: false });
         const [vista, catalogos] = await Promise.all([
             cargarVista('vistas/formulario-incidencia.html'),
             obtenerCatalogos()
@@ -63,6 +67,14 @@ export async function iniciarFormulario(edicion) {
         const boton = document.getElementById('btn-submit');
         const exito = document.getElementById('success-alert');
         const contador = document.getElementById('descripcion-contador');
+        const avisoDuplicado = document.getElementById('aviso-duplicado');
+        let reportePorConfirmar = null;
+        formulario.addEventListener('input', function () {
+            reportePorConfirmar = null;
+            if (avisoDuplicado) {
+                ocultarMensaje(avisoDuplicado);
+            }
+        });
         const etiqueta = edicion ? 'Guardar cambios ↗' : 'Enviar reporte ↗';
         boton.textContent = etiqueta;
         if (edicion) {
@@ -89,7 +101,10 @@ export async function iniciarFormulario(edicion) {
                 return;
             }
             limpiarErroresFormulario(formulario, alerta);
-            exito.classList.add('hidden');
+            ocultarMensaje(exito);
+            if (avisoDuplicado) {
+                ocultarMensaje(avisoDuplicado);
+            }
             const datos = Object.fromEntries(new FormData(formulario));
             const errores = validarIncidencia(datos);
             if (errores.length > 0) {
@@ -97,7 +112,8 @@ export async function iniciarFormulario(edicion) {
                 return;
             }
             boton.disabled = true;
-            boton.textContent = 'Guardando…';
+            boton.textContent = 'Validando…';
+            mostrarMensaje(carga, 'Validando el reporte…', { enfocar: false });
             formulario.setAttribute('aria-busy', 'true');
             try {
                 const erroresCatalogo = await validarCatalogos(datos);
@@ -105,6 +121,21 @@ export async function iniciarFormulario(edicion) {
                     mostrarErroresFormulario(formulario, alerta, erroresCatalogo);
                     return;
                 }
+                if (!edicion) {
+                    const reporte = JSON.stringify(datos);
+                    if (reporte !== reportePorConfirmar &&
+                        await existeIncidenciaReciente(usuario.uid, datos)) {
+                        reportePorConfirmar = reporte;
+                        mostrarMensaje(
+                            avisoDuplicado,
+                            'Ya enviaste un reporte con ese título, edificio y aula en los últimos ' +
+                            '5 minutos. Vuelve a pulsar Enviar reporte para confirmar.'
+                        );
+                        return;
+                    }
+                }
+                boton.textContent = 'Guardando…';
+                mostrarMensaje(carga, 'Guardando el reporte…', { enfocar: false });
                 let resultado;
                 if (edicion) {
                     resultado = await actualizarIncidencia(
@@ -121,21 +152,21 @@ export async function iniciarFormulario(edicion) {
                 document.getElementById('folio-generado').textContent = resultado.folio;
                 document.getElementById('success-detail').href =
                     'detalle.html?id=' + encodeURIComponent(resultado.id);
-                exito.classList.remove('hidden');
                 // Tras un alta o una edición se continúa desde el registro guardado.
                 formulario.hidden = true;
-                exito.focus();
+                mostrarMensaje(exito);
             } catch (error) {
                 mostrarMensaje(alerta, mensajeError(error));
             } finally {
                 boton.disabled = false;
                 boton.textContent = etiqueta;
                 formulario.removeAttribute('aria-busy');
+                ocultarMensaje(carga);
             }
         });
     } catch (error) {
         mostrarMensaje(alerta, mensajeError(error));
     } finally {
-        carga.hidden = true;
+        ocultarMensaje(carga);
     }
 }

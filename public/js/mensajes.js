@@ -30,10 +30,18 @@ export function mensajeError(error) {
     );
 }
 
-export function mostrarMensaje(elemento, mensaje) {
-    elemento.textContent = mensaje;
+export function mostrarMensaje(elemento, mensaje, { enfocar = true } = {}) {
+    if (mensaje != null) {
+        elemento.textContent = mensaje;
+    }
     elemento.classList.remove('hidden');
-    elemento.focus();
+    if (enfocar) {
+        elemento.focus();
+    }
+}
+
+export function ocultarMensaje(elemento) {
+    elemento.classList.add('hidden');
 }
 
 export function crearError(codigo, mensaje) {

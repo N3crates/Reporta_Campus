@@ -11,8 +11,10 @@ export default app;
 export {
     collection,
     getDocs,
+    getDocsFromServer,
     query,
     orderBy,
+    where,
     doc,
     getDoc,
     setDoc,
