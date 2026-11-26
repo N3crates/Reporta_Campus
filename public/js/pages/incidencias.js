@@ -1,3 +1,4 @@
+import { mostrarAntiguedad } from '../antiguedad.js';
 import { obtenerIncidencias } from '../incidencias-ui.js';
 import { protegerPagina } from '../auth.js';
 import { obtenerCatalogos, llenarOpciones, nombreCatalogo } from '../catalogos-ui.js';
@@ -77,6 +78,7 @@ function crearTarjeta(incidencia) {
     }
 
     asignarFecha(vista.querySelector('[data-fecha]'), incidencia.fechaCreacion);
+    mostrarAntiguedad(vista.querySelector('[data-antiguedad]'), incidencia);
 
     const detalle = vista.querySelector('[data-detalle]');
     detalle.href = enlace;

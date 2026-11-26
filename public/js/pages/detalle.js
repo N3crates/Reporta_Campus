@@ -11,7 +11,7 @@ import {
 import { protegerPagina } from '../auth.js';
 import { esPersonal, puedeEditar } from '../permisos.js';
 import { cambiarEstado } from '../estados.js';
-import { calcularAntiguedad } from '../antiguedad.js';
+import { mostrarAntiguedad } from '../antiguedad.js';
 import { mensajeError, mostrarMensaje, crearError } from '../mensajes.js';
 
 const contenido = document.getElementById('detalle-contenido');
@@ -114,15 +114,7 @@ async function mostrarDetalle(incidencia, usuario, catalogos, aviso) {
     );
     asignarTexto(vista, '[data-aula]', incidencia.aula);
     asignarTexto(vista, '[data-descripcion]', incidencia.descripcion);
-    const antiguedad = calcularAntiguedad(incidencia.fechaCreacion, incidencia.fechaResolucion);
-    let textoAntiguedad = 'Fecha no disponible';
-    if (antiguedad) {
-        textoAntiguedad = antiguedad.dias + ' días · ' + antiguedad.rango;
-        if (incidencia.estado === 'resuelto') {
-            textoAntiguedad += ' · al resolver';
-        }
-    }
-    asignarTexto(vista, '[data-antiguedad]', textoAntiguedad);
+    mostrarAntiguedad(vista.querySelector('[data-antiguedad]'), incidencia);
     const historial = vista.querySelector('[data-historial]');
     if (incidencia.errorHistorial || incidencia.historial.length === 0) {
         const mensaje = document.createElement('li');
